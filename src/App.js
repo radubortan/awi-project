@@ -4,7 +4,7 @@ import Home from './views/Home';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Parameters from './views/Parameters';
 import Stocks from './views/Stocks';
-import Ingredients from './views/Ingredients';
+import Ingredients from './views/ingredients/Ingredients';
 
 function App() {
   return (
