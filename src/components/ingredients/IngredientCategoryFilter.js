@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import classes from './Categories.module.css';
+import classes from './IngredientCategoryFilter.module.css';
 
-function Categories(props) {
+function IngredientCategoryFilter(props) {
   const CATEGORIES = [
     {
       nomCatIng: 'Fruit',
@@ -98,4 +98,4 @@ function Categories(props) {
   );
 }
 
-export default Categories;
+export default IngredientCategoryFilter;
