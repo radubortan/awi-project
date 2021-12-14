@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import IngredientCategoryFilter from '../components/ingredients/IngredientCategoryFilter';
+import IngredientCategoryFilter from '../components/ingredients/IngredientFilter';
 import Button from '../components/general/Button';
 import IngredientList from '../components/ingredients/IngredientList';
-import SearchIngredientsBar from '../components/general/SearchBar';
-import classes from './Ingredients.module.css';
+import SearchBar from '../components/general/SearchBar';
+import Card from '../components/ui/Card';
 
 function Ingredients() {
   const INGREDIENTS = [
@@ -43,7 +43,7 @@ function Ingredients() {
     }
   };
 
-  const categoriesFiltering = (listOfCheckedCategories) => {
+  const filterCategoryHandler = (listOfCheckedCategories) => {
     console.log(listOfCheckedCategories);
     if (listOfCheckedCategories.length !== 0) {
       const results = INGREDIENTS.filter((ingredient) => {
@@ -58,18 +58,26 @@ function Ingredients() {
   };
 
   return (
-    <div class='container'>
-      <div class='row'>
-        <SearchIngredientsBar searchBarFiltering={searchBarFiltering} />
+    <div className='container-fluid'>
+      <div className='row'>
+        <div className='col-3'></div>
+        <div className='col-6'>
+          <SearchBar searchBarFiltering={searchBarFiltering} />
+        </div>
+        <div className='col-3'></div>
       </div>
-      <div class='row'>
-        <div class='col-4'>
-          <IngredientCategoryFilter categoriesFiltering={categoriesFiltering} />
+      <div className='row'>
+        <div className='col-3'>
+          <IngredientCategoryFilter
+            categoriesFiltering={filterCategoryHandler}
+          />
         </div>
-        <div class='col-6'>
-          <IngredientList ingredientList={ingredientList} />
+        <div className='col-6'>
+          <Card>
+            <IngredientList ingredientList={ingredientList} />
+          </Card>
         </div>
-        <div class='col-2'>
+        <div className='col-3'>
           <Button>Ajouter ingrédient</Button>
         </div>
       </div>

@@ -1,13 +1,14 @@
 import React from 'react';
 import Ingredient from './Ingredient';
+import classes from './IngredientList.module.css';
 
 function IngredientList(props) {
   return (
-    <div class='container'>
+    <ul>
       {props.ingredientList.map((ingredient) => (
         <Ingredient nomIng={ingredient.nomIng} />
       ))}
-    </div>
+    </ul>
   );
 }
 

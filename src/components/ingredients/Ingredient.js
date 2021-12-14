@@ -1,24 +1,20 @@
 import React from 'react';
 import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
-import Card from '../ui/Card';
+import classes from './Ingredient.module.css';
 
 function Ingredient(props) {
   return (
-    <Card>
-      <div class='row'>
-        <div class='col align-items-center'>{props.nomIng}</div>
-        <div class='col'>
-          <button type='button' class='btn btn-info'>
-            <BsPencilFill />
-          </button>
-        </div>
-        <div class='col'>
-          <button type='button' class='btn btn-danger'>
-            <BsTrashFill />
-          </button>
-        </div>
+    <li className={classes.ingredient}>
+      <h3>{props.nomIng}</h3>
+      <div className={classes.buttons}>
+        <button type='button' class='btn btn-info'>
+          <BsPencilFill />
+        </button>
+        <button type='button' class='btn btn-danger'>
+          <BsTrashFill />
+        </button>
       </div>
-    </Card>
+    </li>
   );
 }
 
