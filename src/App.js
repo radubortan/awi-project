@@ -1,10 +1,11 @@
-import classes from './App.module.css';
-import Navigation from './components/Navigation';
-import Home from './views/Home';
 import { Routes, Route } from 'react-router-dom';
-import Parameters from './views/Parameters';
-import Stocks from './views/Stocks';
-import Ingredients from './views/ingredients/Ingredients';
+import classes from './App.module.css';
+
+import Navigation from './components/layout/Navigation';
+import Home from './pages/Home';
+import Parameters from './pages/Parameters';
+import Stocks from './pages/Stocks';
+import Ingredients from './pages/Ingredients';
 
 function App() {
   return (
