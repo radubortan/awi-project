@@ -1,18 +1,20 @@
 import React from 'react';
 import { BsSearch } from 'react-icons/bs';
+import classes from './SearchBar.module.css';
 
 function SearchBar(props) {
   return (
-    <div class='container'>
+    <form className={classes.search}>
       <input
         type='text'
         onChange={props.searchBarFiltering}
-        placeholder='Search..'
+        placeholder='Rechercher...'
+        className={classes.searchBar}
       />
-      <button type='button' class='btn btn-elegant'>
+      <button type='button' className={classes.button}>
         <BsSearch />
       </button>
-    </div>
+    </form>
   );
 }
 

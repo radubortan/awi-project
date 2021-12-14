@@ -1,9 +1,10 @@
 import React from 'react';
 import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
+import Card from '../ui/Card';
 
 function Ingredient(props) {
   return (
-    <div class='container card'>
+    <Card>
       <div class='row'>
         <div class='col align-items-center'>{props.nomIng}</div>
         <div class='col'>
@@ -17,7 +18,7 @@ function Ingredient(props) {
           </button>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

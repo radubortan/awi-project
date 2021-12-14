@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import AddIngredientButton from '../components/ingredients/AddIngredientButton';
-import Categories from '../components/ingredients/Categories';
+import IngredientCategoryFilter from '../components/ingredients/IngredientCategoryFilter';
+import Button from '../components/general/Button';
 import IngredientList from '../components/ingredients/IngredientList';
 import SearchIngredientsBar from '../components/general/SearchBar';
 import classes from './Ingredients.module.css';
@@ -64,13 +64,13 @@ function Ingredients() {
       </div>
       <div class='row'>
         <div class='col-4'>
-          <Categories categoriesFiltering={categoriesFiltering} />
+          <IngredientCategoryFilter categoriesFiltering={categoriesFiltering} />
         </div>
         <div class='col-6'>
           <IngredientList ingredientList={ingredientList} />
         </div>
         <div class='col-2'>
-          <AddIngredientButton />
+          <Button>Ajouter ingrédient</Button>
         </div>
       </div>
     </div>
