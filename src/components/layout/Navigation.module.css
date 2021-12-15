@@ -33,6 +33,7 @@
 
 .nav a:hover,
 .nav a:active,
+.nav a.active,
 .settings:hover {
   cursor: pointer;
   color: #e6fcfc;
