@@ -1,0 +1,6 @@
+.radioList {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-left: 80px;
+}

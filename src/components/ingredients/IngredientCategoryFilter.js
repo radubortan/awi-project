@@ -2,6 +2,7 @@ import { Fragment } from 'react';
 import Card from '../ui/Card';
 import Checkbox from '../general/Checkbox';
 import { useState, useEffect } from 'react';
+import classes from './IngredientCategoryFilter.module.css';
 
 const IngredientCategoryFilter = (props) => {
   const [checkedCategories, setCheckCategories] = useState([]);
@@ -26,7 +27,7 @@ const IngredientCategoryFilter = (props) => {
     <Fragment>
       <h3>Catégories</h3>
       <Card>
-        <ul>
+        <ul className={classes.checkboxList}>
           {props.CATEGORIES.map((categorie) => {
             return (
               <Checkbox
