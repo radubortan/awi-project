@@ -25,13 +25,15 @@
   font-size: 1.25rem;
 }
 
-.nav a {
+.nav a,
+.settings {
   text-decoration: none;
   color: #8bb2ec;
 }
 
 .nav a:hover,
 .nav a:active,
-.nav a.active {
+.settings:hover {
+  cursor: pointer;
   color: #e6fcfc;
 }

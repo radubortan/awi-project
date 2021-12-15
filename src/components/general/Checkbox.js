@@ -1,16 +1,16 @@
+import classes from './Checkbox.module.css';
+
 const Checkbox = (props) => {
   return (
-    <li class='form-check'>
+    <li>
       <input
-        class='form-check-input'
+        className={classes.input}
         type='checkbox'
         value={props.nomCatIng}
         id={props.nomCatIng}
         onChange={props.categoriesFiltering}
       />
-      <label class='form-check-label' for={props.nomCatIng}>
-        {props.nomCatIng}
-      </label>
+      <label for={props.nomCatIng}>{props.nomCatIng}</label>
     </li>
   );
 };
