@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import IngredientCategoryFilter from '../components/ingredients/IngredientFilter';
+import IngredientFilter from '../components/ingredients/IngredientFilter';
 import Button from '../components/general/Button';
 import IngredientList from '../components/ingredients/IngredientList';
 import SearchBar from '../components/general/SearchBar';
@@ -68,9 +68,7 @@ function Ingredients() {
       </div>
       <div className='row'>
         <div className='col-3'>
-          <IngredientCategoryFilter
-            categoriesFiltering={filterCategoryHandler}
-          />
+          <IngredientFilter categoriesFiltering={filterCategoryHandler} />
         </div>
         <div className='col-6'>
           <Card>
