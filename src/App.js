@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import Parameters from './pages/Parameters';
 import Stocks from './pages/Stocks';
 import Ingredients from './pages/Ingredients';
+import AddIngredient from './components/ingredients/AddIngredient';
 import Settings from './components/general/Settings';
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
       <Navigation onShowSettings={showSettingsHandler} />
       <Routes>
         <Route path='/' element={<Home />} />
-        <Route path='/ingredients' element={<Ingredients />} />
+        <Route path='/ingredients' element={<Ingredients/>} />
         <Route path='/stocks' element={<Stocks />} />
         <Route path='/parametres' element={<Parameters />} />
       </Routes>

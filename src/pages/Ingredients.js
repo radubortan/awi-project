@@ -1,85 +1,135 @@
-import React, { useState } from 'react';
-import IngredientFilter from '../components/ingredients/IngredientFilter';
-import Button from '../components/general/Button';
-import IngredientList from '../components/ingredients/IngredientList';
-import SearchBar from '../components/general/SearchBar';
-import Card from '../components/ui/Card';
+import React, { useEffect, useState } from "react";
+import IngredientFilter from "../components/ingredients/IngredientFilter";
+import Button from "../components/general/Button";
+import IngredientList from "../components/ingredients/IngredientList";
+import AddIngredient from "../components/ingredients/AddIngredient";
+import SearchBar from "../components/general/SearchBar";
+import Card from "../components/ui/Card";
+import { Fragment } from "react/cjs/react.production.min";
 
 function Ingredients() {
-  const INGREDIENTS = [
+  let INGREDIENTS = [
     {
-      nomIng: 'Tomate',
-      nomCatIng: 'Fruit',
+      nomIng: "Tomate",
+      nomCatIng: "Fruit",
     },
     {
-      nomIng: 'Carotte',
-      nomCatIng: 'Légume',
+      nomIng: "Carotte",
+      nomCatIng: "Légume",
     },
   ];
 
   const [ingredientList, setIngredientList] = useState(INGREDIENTS);
-  //Less prioritised filtering
-  const [
-    ingredientListForSearchBarFiltering,
-    setingredientListForSearchBarFiltering,
-  ] = useState(INGREDIENTS);
-  let filteredIngredientList = [...INGREDIENTS];
+  const [filteredIngredientList, setFilteredIngredientList] =
+    useState(INGREDIENTS);
+  const [filteringOptions, setFilteringOptions] = useState({
+    patternToMatch: "",
+    categories: [],
+    allergenCategories: [],
+  });
+
+  //Filtering method
+
+  const filterIngredient = (ingredient) => {
+    const { patternToMatch, categories, allergenCategories } = filteringOptions;
+    if (
+      patternToMatch !== "" &&
+      !ingredient.nomIng.toLowerCase().startsWith(patternToMatch.toLowerCase())
+    ) {
+      return false;
+    }
+    if (categories.length !== 0 && !categories.includes(ingredient.nomCatIng)) {
+      return false;
+    }
+    if (
+      allergenCategories.length !== 0 &&
+      !allergenCategories.includes(ingredient.nomCatAllerg)
+    ) {
+      return false;
+    }
+    return true;
+  };
+
+  const filterIngredients = () => {
+    const filteredList = ingredientList.filter(filterIngredient);
+    console.log(filteringOptions);
+    console.log(ingredientList);
+    setFilteredIngredientList(filteredList);
+  };
+
   const searchBarFiltering = (e) => {
-    const keyword = e.target.value;
+    filteringOptions.patternToMatch = e.target.value;
+    setFilteringOptions(filteringOptions);
 
-    if (keyword !== '') {
-      const results = ingredientListForSearchBarFiltering.filter(
-        (ingredient) => {
-          return ingredient.nomIng
-            .toLowerCase()
-            .startsWith(keyword.toLowerCase());
-          // Use the toLowerCase() method to make it case-insensitive
-        }
-      );
-      setIngredientList(results);
-    } else {
-      setIngredientList(ingredientListForSearchBarFiltering);
-      // If the text field is empty, show all users
-    }
+    filterIngredients();
   };
 
-  const filterCategoryHandler = (listOfCheckedCategories) => {
-    console.log(listOfCheckedCategories);
-    if (listOfCheckedCategories.length !== 0) {
-      const results = INGREDIENTS.filter((ingredient) => {
-        return listOfCheckedCategories.includes(ingredient.nomCatIng);
-      });
-      setingredientListForSearchBarFiltering(results);
-      setIngredientList(results);
-    } else {
-      setingredientListForSearchBarFiltering(INGREDIENTS);
-      setIngredientList(INGREDIENTS);
-    }
+  const filterCategoryHandler = (checkedCategories) => {
+    filteringOptions.categories = checkedCategories;
+    setFilteringOptions(filteringOptions);
+    filterIngredients();
   };
+
+  const filterAllergenCategoryHandler = (checkedAllergenCategories) => {
+    filteringOptions.allergenCategories = checkedAllergenCategories;
+    setFilteringOptions(filteringOptions);
+    filterIngredients();
+  };
+
+  // Add Ingredient
+  const [onAddIngredient, setOnAddIngredient] = useState(false);
+
+  const hideAddIngredientPanel = () => {
+    setOnAddIngredient(false);
+  };
+
+  const showAddIngredientPanel = () => {
+    setOnAddIngredient(true);
+  };
+
+  const addIngredient = (newIngredient) => {
+    console.log(filteringOptions);
+    setIngredientList([...ingredientList, newIngredient]);
+  };
+
+  useEffect(() => {
+    filterIngredients();
+  }, [ingredientList]);
 
   return (
-    <div className='container-fluid'>
-      <div className='row'>
-        <div className='col-3'></div>
-        <div className='col-6'>
-          <SearchBar searchBarFiltering={searchBarFiltering} />
+    <Fragment>
+      {onAddIngredient && (
+        <AddIngredient
+          onClose={hideAddIngredientPanel}
+          addIngredient={addIngredient}
+        />
+      )}
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-3"></div>
+          <div className="col-6">
+            <SearchBar onChange={searchBarFiltering} />
+          </div>
+          <div className="col-3"></div>
         </div>
-        <div className='col-3'></div>
+        <div className="row">
+          <div className="col-3">
+            <IngredientFilter
+              categoriesFiltering={filterCategoryHandler}
+              allergenCategoriesFiltering={filterAllergenCategoryHandler}
+            />
+          </div>
+          <div className="col-6">
+            <Card>
+              <IngredientList ingredientList={filteredIngredientList} />
+            </Card>
+          </div>
+          <div className="col-3">
+            <Button onClick={showAddIngredientPanel}>Ajouter ingrédient</Button>
+          </div>
+        </div>
       </div>
-      <div className='row'>
-        <div className='col-3'>
-          <IngredientFilter categoriesFiltering={filterCategoryHandler} />
-        </div>
-        <div className='col-6'>
-          <Card>
-            <IngredientList ingredientList={ingredientList} />
-          </Card>
-        </div>
-        <div className='col-3'>
-          <Button>Ajouter ingrédient</Button>
-        </div>
-      </div>
-    </div>
+    </Fragment>
   );
 }
 
