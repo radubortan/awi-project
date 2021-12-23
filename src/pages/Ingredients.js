@@ -143,7 +143,6 @@ function Ingredients() {
   };
 
   const showViewIngredientPanel = (ingredient) => {
-    console.log("ttest");
     setOnViewIngredient(ingredient);
   };
 

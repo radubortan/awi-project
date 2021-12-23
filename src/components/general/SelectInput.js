@@ -1,5 +1,4 @@
 function SelectInput(props) {
-  console.log(props);
   return (
     <div>
       <label for={props.label}>{props.label}</label>

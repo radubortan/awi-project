@@ -5,6 +5,7 @@ import TextInput from "../general/TextInput";
 import SelectInput from "../general/SelectInput";
 import Card from "../ui/Card";
 import Modal from "../ui/Modal";
+import Checkbox from "../general/Checkbox";
 
 const AddIngredient = (props) => {
   const UNITE = [{ nomUnite: "g" }, { nomUnite: "l" }];
@@ -33,6 +34,27 @@ const AddIngredient = (props) => {
     },
   ];
 
+  // Allergene Checkbox
+  const [isAllergen, setIsAllergen] = useState(false);
+
+  const checkboxHandler = (e) => {
+    if (e.target.checked) {
+      setIsAllergen(true);
+      setNewIngredient({
+        ...newIngredient,
+
+        nomCatAllerg: ALLERGENCATEGORIES[0].nomCatAllerg,
+      });
+    } else {
+      setIsAllergen(false);
+      setNewIngredient({
+        ...newIngredient,
+
+        nomCatAllerg: undefined,
+      });
+    }
+  };
+
   // Issue with predefined value, they need to be set here manually
   // according to each SelectInput preselected value
   const [newIngredient, setNewIngredient] = useState({
@@ -40,7 +62,7 @@ const AddIngredient = (props) => {
     prixUnitaire: 0,
     nomUnite: UNITE[0].nomUnite,
     nomCatIng: CATEGORIES[0].nomCatIng,
-    nomCatAllerg: ALLERGENCATEGORIES[0].nomCatAllerg,
+    nomCatAllerg: undefined,
   });
 
   const handleChange = (e) => {
@@ -97,14 +119,17 @@ const AddIngredient = (props) => {
                 optionIdentifier="nomCatIng"
                 onChange={handleChange}
               ></SelectInput>
-              <SelectInput
-                label="Catégorie allergène"
-                name="nomCatAllerg"
-                selected={newIngredient.nomCatAllerg}
-                dropDownList={ALLERGENCATEGORIES}
-                optionIdentifier="nomCatAllerg"
-                onChange={handleChange}
-              ></SelectInput>
+              <Checkbox label="Allergène" onChange={checkboxHandler}></Checkbox>
+              {isAllergen && (
+                <SelectInput
+                  label="Catégorie allergène"
+                  name="nomCatAllerg"
+                  selected={newIngredient.nomCatAllerg}
+                  dropDownList={ALLERGENCATEGORIES}
+                  optionIdentifier="nomCatAllerg"
+                  onChange={handleChange}
+                ></SelectInput>
+              )}
             </div>
           </div>
         </Card>

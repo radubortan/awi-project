@@ -13,7 +13,9 @@ const ViewIngredient = (props) => {
           </div>
           <div className="col">
             <h2>Catégorie {props.ingredient.nomCatIng}</h2>
-            <h2>Catégorie d'allergène {props.ingredient.nomCatAllerg}</h2>
+            {props.ingredient.nomCatAllerg && (
+              <h2>Catégorie d'allergène {props.ingredient.nomCatAllerg}</h2>
+            )}
           </div>
         </div>
       </Card>
