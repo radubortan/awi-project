@@ -90,8 +90,47 @@ const EditIngredient = (props) => {
 
   const saveIngredient = (e) => {
     e.preventDefault();
-    props.onClose();
-    props.editIngredient(currentIngredient, props.ingredientInfo.index);
+    if (isValid()) {
+      props.onClose();
+      props.editIngredient(currentIngredient, props.ingredientInfo.index);
+    }
+  };
+
+  // Validation
+
+  const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
+  const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
+  const [prixUnitaireError, setPrixUnitaireError] = useState(false);
+
+  const isValid = () => {
+    setnomIngEmptyError(false);
+    setNomIngUnvailableError(false);
+    setPrixUnitaireError(false);
+
+    let isValid = true;
+
+    if (currentIngredient.nomIng === "") {
+      setnomIngEmptyError(true);
+      isValid = false;
+    }
+    if (
+      props.ingredientList.some(
+        (ingredient, index) =>
+          ingredient.nomIng === currentIngredient.nomIng &&
+          index !== props.ingredientInfo.index
+      )
+    ) {
+      setNomIngUnvailableError(true);
+      isValid = false;
+    }
+
+    if (
+      !/^(?!0\d)\d+(\.\d+)?$/.test(currentIngredient.prixUnitaire.toString())
+    ) {
+      setPrixUnitaireError(true);
+      isValid = false;
+    }
+    return isValid;
   };
 
   return (
@@ -108,12 +147,15 @@ const EditIngredient = (props) => {
                 value={currentIngredient.nomIng}
                 onChange={handleChange}
               ></TextInput>
+              {nomIngEmptyError && <p>Le nom ne peut pas etre vide</p>}
+              {nomIngUnvailableError && <p>Ce nom existe deja</p>}
               <NumberInput
                 label="Prix"
                 name="prixUnitaire"
                 value={currentIngredient.prixUnitaire}
                 onChange={handleChange}
               ></NumberInput>
+              {prixUnitaireError && <p>Le prix doit etre un nombre decimal</p>}
               <SelectInput
                 label="Unité"
                 name="nomUnite"

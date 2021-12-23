@@ -152,6 +152,7 @@ function Ingredients() {
         <AddIngredient
           onClose={hideAddIngredientPanel}
           addIngredient={addIngredient}
+          ingredientList={ingredientList}
         />
       )}
       {onEditIngredient && (
@@ -159,6 +160,7 @@ function Ingredients() {
           onClose={hideEditIngredientPanel}
           ingredientInfo={onEditIngredient}
           editIngredient={editIngredient}
+          ingredientList={ingredientList}
         />
       )}
       {onDeleteIngredient !== null && (

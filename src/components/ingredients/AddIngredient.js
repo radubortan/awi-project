@@ -77,8 +77,45 @@ const AddIngredient = (props) => {
 
   const saveIngredient = (e) => {
     e.preventDefault();
-    props.onClose();
-    props.addIngredient(newIngredient);
+
+    // Validation
+    if (isValid()) {
+      props.onClose();
+      props.addIngredient(newIngredient);
+    }
+  };
+
+  // Validation
+
+  const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
+  const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
+  const [prixUnitaireError, setPrixUnitaireError] = useState(false);
+
+  const isValid = () => {
+    setnomIngEmptyError(false);
+    setNomIngUnvailableError(false);
+    setPrixUnitaireError(false);
+
+    let isValid = true;
+
+    if (newIngredient.nomIng === "") {
+      setnomIngEmptyError(true);
+      isValid = false;
+    }
+    if (
+      props.ingredientList.some(
+        (ingredient) => ingredient.nomIng === newIngredient.nomIng
+      )
+    ) {
+      setNomIngUnvailableError(true);
+      isValid = false;
+    }
+
+    if (!/^(?!0\d)\d+(\.\d+)?$/.test(newIngredient.prixUnitaire.toString())) {
+      setPrixUnitaireError(true);
+      isValid = false;
+    }
+    return isValid;
   };
 
   return (
@@ -95,12 +132,15 @@ const AddIngredient = (props) => {
                 value={newIngredient.nomIng}
                 onChange={handleChange}
               ></TextInput>
+              {nomIngEmptyError && <p>Le nom ne peut pas etre vide</p>}
+              {nomIngUnvailableError && <p>Ce nom existe deja</p>}
               <NumberInput
                 label="Prix"
                 name="prixUnitaire"
                 value={newIngredient.prixUnitaire}
                 onChange={handleChange}
               ></NumberInput>
+              {prixUnitaireError && <p>Le prix doit etre un nombre decimal</p>}
               <SelectInput
                 label="Unité"
                 name="nomUnite"
