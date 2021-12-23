@@ -132,15 +132,15 @@ const AddIngredient = (props) => {
                 value={newIngredient.nomIng}
                 onChange={handleChange}
               ></TextInput>
-              {nomIngEmptyError && <p>Le nom ne peut pas etre vide</p>}
-              {nomIngUnvailableError && <p>Ce nom existe deja</p>}
+              {nomIngEmptyError && <p>Le nom ne peut pas être vide</p>}
+              {nomIngUnvailableError && <p>Ce nom existe déjà</p>}
               <NumberInput
                 label="Prix"
                 name="prixUnitaire"
                 value={newIngredient.prixUnitaire}
                 onChange={handleChange}
               ></NumberInput>
-              {prixUnitaireError && <p>Le prix doit etre un nombre decimal</p>}
+              {prixUnitaireError && <p>Le prix doit être un nombre décimal</p>}
               <SelectInput
                 label="Unité"
                 name="nomUnite"
