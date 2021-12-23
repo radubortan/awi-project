@@ -1,17 +1,14 @@
 function SelectInput(props) {
+  console.log(props);
   return (
     <div>
       <label for={props.label}>{props.label}</label>
-      <select
-        name={props.name}
-        id={props.label}
-        onChange={props.onChange}
-        selected={
-          props.selected !== null ? props.selected : props.dropDownList[0]
-        }
-      >
+      <select name={props.name} id={props.label} onChange={props.onChange}>
         {props.dropDownList.map((item, index) => (
-          <option value={item[props.optionIdentifier]} selected={index === 0}>
+          <option
+            value={item[props.optionIdentifier]}
+            selected={props.selected == item[props.optionIdentifier]}
+          >
             {item[props.optionIdentifier]}
           </option>
         ))}

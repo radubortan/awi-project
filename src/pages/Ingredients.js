@@ -3,6 +3,7 @@ import IngredientFilter from "../components/ingredients/IngredientFilter";
 import Button from "../components/general/Button";
 import IngredientList from "../components/ingredients/IngredientList";
 import AddIngredient from "../components/ingredients/AddIngredient";
+import EditIngredient from "../components/ingredients/EditIngredient";
 import SearchBar from "../components/general/SearchBar";
 import Card from "../components/ui/Card";
 import { Fragment } from "react/cjs/react.production.min";
@@ -52,8 +53,6 @@ function Ingredients() {
 
   const filterIngredients = () => {
     const filteredList = ingredientList.filter(filterIngredient);
-    console.log(filteringOptions);
-    console.log(ingredientList);
     setFilteredIngredientList(filteredList);
   };
 
@@ -88,7 +87,6 @@ function Ingredients() {
   };
 
   const addIngredient = (newIngredient) => {
-    console.log(filteringOptions);
     setIngredientList([...ingredientList, newIngredient]);
   };
 
@@ -96,12 +94,40 @@ function Ingredients() {
     filterIngredients();
   }, [ingredientList]);
 
+  // Edit Ingredient
+
+  const [onEditIngredient, setOnEditIngredient] = useState(null);
+
+  const hideEditIngredientPanel = () => {
+    setOnEditIngredient(null);
+  };
+
+  const showEditIngredientPanel = (ingredient, index) => {
+    const ingredientInfo = {
+      ingredient: ingredient,
+      index: index,
+    };
+    setOnEditIngredient(ingredientInfo);
+  };
+
+  const editIngredient = (editedIngredient, indexIngredient) => {
+    ingredientList.splice(indexIngredient, 1, editedIngredient);
+    setIngredientList([...ingredientList]);
+  };
+
   return (
     <Fragment>
       {onAddIngredient && (
         <AddIngredient
           onClose={hideAddIngredientPanel}
           addIngredient={addIngredient}
+        />
+      )}
+      {onEditIngredient && (
+        <EditIngredient
+          onClose={hideEditIngredientPanel}
+          ingredientInfo={onEditIngredient}
+          editIngredient={editIngredient}
         />
       )}
       <div className="container-fluid">
@@ -121,7 +147,11 @@ function Ingredients() {
           </div>
           <div className="col-6">
             <Card>
-              <IngredientList ingredientList={filteredIngredientList} />
+              <IngredientList
+                ingredientList={filteredIngredientList}
+                wholeIngredientList={ingredientList}
+                onEditIngredient={showEditIngredientPanel}
+              />
             </Card>
           </div>
           <div className="col-3">
