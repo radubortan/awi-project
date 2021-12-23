@@ -9,6 +9,8 @@ function IngredientList(props) {
         <Ingredient
           ingredient={ingredient}
           onEditIngredient={props.onEditIngredient}
+          onDeleteIngredient={props.onDeleteIngredient}
+          onViewIngredient={props.onViewIngredient}
           index={props.wholeIngredientList.indexOf(ingredient)}
         />
       ))}

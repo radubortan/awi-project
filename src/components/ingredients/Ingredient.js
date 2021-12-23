@@ -4,19 +4,33 @@ import classes from "./Ingredient.module.css";
 
 function Ingredient(props) {
   return (
-    <li className={classes.ingredient}>
+    <li
+      className={classes.ingredient}
+      onClick={() => {
+        console.log(props);
+        props.onViewIngredient(props.ingredient);
+      }}
+    >
       <h3>{props.ingredient.nomIng}</h3>
       <div className={classes.buttons}>
         <button
           type="button"
           class="btn btn-info"
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             props.onEditIngredient(props.ingredient, props.index);
           }}
         >
           <BsPencilFill />
         </button>
-        <button type="button" class="btn btn-danger">
+        <button
+          type="button"
+          class="btn btn-danger"
+          onClick={(e) => {
+            e.stopPropagation();
+            props.onDeleteIngredient(props.index);
+          }}
+        >
           <BsTrashFill />
         </button>
       </div>

@@ -7,6 +7,8 @@ import EditIngredient from "../components/ingredients/EditIngredient";
 import SearchBar from "../components/general/SearchBar";
 import Card from "../components/ui/Card";
 import { Fragment } from "react/cjs/react.production.min";
+import DeleteIngredient from "../components/ingredients/DeleteIngredient";
+import ViewIngredient from "../components/ingredients/ViewIngredient";
 
 function Ingredients() {
   let INGREDIENTS = [
@@ -115,6 +117,36 @@ function Ingredients() {
     setIngredientList([...ingredientList]);
   };
 
+  // Delete Ingredient
+
+  const [onDeleteIngredient, setOnDeleteIngredient] = useState(null);
+
+  const hideDeleteIngredientPanel = () => {
+    setOnDeleteIngredient(null);
+  };
+
+  const showDeleteIngredientPanel = (indexIngredient) => {
+    setOnDeleteIngredient(indexIngredient);
+  };
+
+  const deleteIngredient = (indexIngredient) => {
+    ingredientList.splice(indexIngredient, 1);
+    setIngredientList([...ingredientList]);
+  };
+
+  // View Ingredient
+
+  const [onViewIngredient, setOnViewIngredient] = useState(null);
+
+  const hideViewIngredientPanel = () => {
+    setOnViewIngredient(null);
+  };
+
+  const showViewIngredientPanel = (ingredient) => {
+    console.log("ttest");
+    setOnViewIngredient(ingredient);
+  };
+
   return (
     <Fragment>
       {onAddIngredient && (
@@ -128,6 +160,19 @@ function Ingredients() {
           onClose={hideEditIngredientPanel}
           ingredientInfo={onEditIngredient}
           editIngredient={editIngredient}
+        />
+      )}
+      {onDeleteIngredient !== null && (
+        <DeleteIngredient
+          onClose={hideDeleteIngredientPanel}
+          indexIngredient={onDeleteIngredient}
+          onDeleteIngredient={deleteIngredient}
+        />
+      )}
+      {onViewIngredient && (
+        <ViewIngredient
+          onClose={hideViewIngredientPanel}
+          ingredient={onViewIngredient}
         />
       )}
       <div className="container-fluid">
@@ -151,6 +196,8 @@ function Ingredients() {
                 ingredientList={filteredIngredientList}
                 wholeIngredientList={ingredientList}
                 onEditIngredient={showEditIngredientPanel}
+                onDeleteIngredient={showDeleteIngredientPanel}
+                onViewIngredient={showViewIngredientPanel}
               />
             </Card>
           </div>
