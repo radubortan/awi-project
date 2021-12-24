@@ -1,43 +1,44 @@
-import { useState } from "react";
-import Button from "../general/Button";
-import NumberInput from "../general/NumberInput";
-import TextInput from "../general/TextInput";
-import SelectInput from "../general/SelectInput";
-import Card from "../ui/Card";
-import Modal from "../ui/Modal";
-import Checkbox from "../general/Checkbox";
+import { useState } from 'react';
+import Button from '../general/Button';
+import NumberInput from '../general/NumberInput';
+import TextInput from '../general/TextInput';
+import SelectInput from '../general/SelectInput';
+import Card from '../ui/Card';
+import Modal from '../ui/Modal';
+import Checkbox from '../general/Checkbox';
+import classes from './EditIngredient.module.css';
 
 const EditIngredient = (props) => {
-  const UNITE = [{ nomUnite: "g" }, { nomUnite: "l" }];
+  const UNITE = [{ nomUnite: 'g' }, { nomUnite: 'l' }];
 
   const CATEGORIES = [
     {
-      nomCatIng: "Fruit",
+      nomCatIng: 'Fruit',
     },
     {
-      nomCatIng: "Légume",
+      nomCatIng: 'Légume',
     },
     {
-      nomCatIng: "Lait",
+      nomCatIng: 'Lait',
     },
     {
-      nomCatIng: "Poisson",
+      nomCatIng: 'Poisson',
     },
   ];
 
   const ALLERGENCATEGORIES = [
     {
-      nomCatAllerg: "Crustaces",
+      nomCatAllerg: 'Crustaces',
     },
     {
-      nomCatAllerg: "Fruit a coque",
+      nomCatAllerg: 'Fruit a coque',
     },
   ];
 
   const givenIngredient = props.ingredientInfo.ingredient;
 
   const [currentIngredient, setCurrentIngredient] = useState({
-    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : "",
+    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',
     prixUnitaire:
       givenIngredient.prixUnitaire !== undefined
         ? givenIngredient.prixUnitaire
@@ -109,7 +110,7 @@ const EditIngredient = (props) => {
 
     let isValid = true;
 
-    if (currentIngredient.nomIng === "") {
+    if (currentIngredient.nomIng === '') {
       setnomIngEmptyError(true);
       isValid = false;
     }
@@ -135,71 +136,82 @@ const EditIngredient = (props) => {
 
   return (
     <Modal onClose={props.onClose}>
-      <h1>Modification d'un ingrédient</h1>
-
-      <form method="post" onSubmit={saveIngredient}>
-        <Card>
-          <div className="row">
-            <div className="col">
-              <TextInput
-                label="Nom"
-                name="nomIng"
-                value={currentIngredient.nomIng}
-                onChange={handleChange}
-              ></TextInput>
-              {nomIngEmptyError && <p>Le nom ne peut pas être vide</p>}
-              {nomIngUnvailableError && <p>Ce nom existe déjà</p>}
-              <NumberInput
-                label="Prix"
-                name="prixUnitaire"
-                value={currentIngredient.prixUnitaire}
-                onChange={handleChange}
-              ></NumberInput>
-              {prixUnitaireError && <p>Le prix doit être un nombre décimal</p>}
-              <SelectInput
-                label="Unité"
-                name="nomUnite"
-                selected={currentIngredient.nomUnite}
-                dropDownList={UNITE}
-                optionIdentifier="nomUnite"
-                onChange={handleChange}
-              ></SelectInput>
-            </div>
-            <div className="col">
-              <SelectInput
-                label="Catégorie"
-                name="nomCatIng"
-                selected={currentIngredient.nomCatIng}
-                dropDownList={CATEGORIES}
-                optionIdentifier="nomCatIng"
-                onChange={handleChange}
-              ></SelectInput>
-              <Checkbox
-                label="Allergène"
-                onChange={checkboxHandler}
-                checked={isAllergen}
-              ></Checkbox>
-              {isAllergen && (
-                <SelectInput
-                  label="Catégorie allergène"
-                  name="nomCatAllerg"
-                  selected={currentIngredient.nomCatAllerg}
-                  dropDownList={ALLERGENCATEGORIES}
-                  optionIdentifier="nomCatAllerg"
-                  onChange={handleChange}
-                ></SelectInput>
-              )}
-            </div>
+      <h1 className={classes.title}>Modification d'un ingrédient</h1>
+      <form className={classes.form} method='post' onSubmit={saveIngredient}>
+        <div className='col-5'>
+          <div className={`row ${classes.input}`}>
+            <TextInput
+              label='Nom'
+              name='nomIng'
+              value={currentIngredient.nomIng}
+              onChange={handleChange}
+            />
+            {nomIngEmptyError && <p>Le nom ne peut pas être vide</p>}
+            {nomIngUnvailableError && <p>Ce nom existe déjà</p>}
           </div>
-        </Card>
+          <div className={`row ${classes.input}`}>
+            <NumberInput
+              label='Prix'
+              name='prixUnitaire'
+              value={currentIngredient.prixUnitaire}
+              onChange={handleChange}
+            />
+            {prixUnitaireError && <p>Le prix doit être un nombre</p>}
+          </div>
+          <div className={`row ${classes.input}`}>
+            <SelectInput
+              label='Unité'
+              name='nomUnite'
+              selected={currentIngredient.nomUnite}
+              dropDownList={UNITE}
+              optionIdentifier='nomUnite'
+              onChange={handleChange}
+            />
+          </div>
+        </div>
+        <div className='col-2' />
+        <div className='col-5'>
+          <div className={`row ${classes.input}`}>
+            <SelectInput
+              label='Catégorie'
+              name='nomCatIng'
+              selected={currentIngredient.nomCatIng}
+              dropDownList={CATEGORIES}
+              optionIdentifier='nomCatIng'
+              onChange={handleChange}
+            />
+          </div>
+          <div className={`row ${classes.input}`}>
+            <Checkbox
+              label='Allergène'
+              onChange={checkboxHandler}
+              checked={isAllergen}
+              className={classes.checkbox}
+            />
+          </div>
+          <div className={`row ${classes.input}`}>
+            {isAllergen && (
+              <SelectInput
+                label='Catégorie allergène'
+                name='nomCatAllerg'
+                selected={currentIngredient.nomCatAllerg}
+                dropDownList={ALLERGENCATEGORIES}
+                optionIdentifier='nomCatAllerg'
+                onChange={handleChange}
+              />
+            )}
+          </div>
+        </div>
       </form>
-      <div className="row">
-        <div className="col-6">
+      <div className={`row ${classes.buttons}`}>
+        <div className='col-4' />
+        <div className={`col-2`}>
           <Button onClick={saveIngredient}>Modifier</Button>
         </div>
-        <div className="col-6">
+        <div className={`col-2`}>
           <Button onClick={props.onClose}>Annuler</Button>
         </div>
+        <div className='col-4' />
       </div>
     </Modal>
   );

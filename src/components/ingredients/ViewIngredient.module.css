@@ -1,0 +1,23 @@
+.title {
+  text-align: center;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.informationArea {
+  padding: 20px;
+}
+
+.information:nth-of-type(odd) {
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 1.7rem;
+}
+
+.value {
+  font-size: 1.3rem;
+}
