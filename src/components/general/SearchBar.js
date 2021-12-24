@@ -7,7 +7,7 @@ function SearchBar(props) {
     <form className={classes.search}>
       <input
         type='text'
-        onChange={props.searchBarFiltering}
+        onChange={props.onChange}
         placeholder='Rechercher...'
         className={classes.searchBar}
       />

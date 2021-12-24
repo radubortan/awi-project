@@ -1,17 +1,19 @@
-import classes from './Checkbox.module.css';
+import { Fragment } from "react";
+import classes from "./Checkbox.module.css";
 
 const Checkbox = (props) => {
   return (
-    <li>
+    <Fragment>
       <input
         className={classes.input}
-        type='checkbox'
-        value={props.nomCatIng}
-        id={props.nomCatIng}
-        onChange={props.categoriesFiltering}
+        type="checkbox"
+        value={props.label}
+        id={props.label}
+        onChange={props.onChange}
+        checked={props.checked}
       />
-      <label for={props.nomCatIng}>{props.nomCatIng}</label>
-    </li>
+      <label for={props.label}>{props.label}</label>
+    </Fragment>
   );
 };
 

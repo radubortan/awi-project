@@ -1,10 +1,10 @@
 import React from 'react';
-function AddIngredientButton(props) {
+function Button(props) {
   return (
     <div class='container'>
-      <button className='btn btn-primary'>{props.children}</button>
+      <button onClick={props.onClick} className='btn btn-primary'>{props.children}</button>
     </div>
   );
 }
 
-export default AddIngredientButton;
+export default Button;
