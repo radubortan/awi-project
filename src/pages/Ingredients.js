@@ -17,12 +17,14 @@ function Ingredients() {
       nomCatIng: 'Fruit',
       prixUnitaire: 2,
       nomUnite: 'g',
+      nomCatAllerg: undefined,
     },
     {
       nomIng: 'Carotte',
       nomCatIng: 'Légume',
       prixUnitaire: 1,
       nomUnite: 'g',
+      nomCatAllerg: undefined,
     },
   ];
 
