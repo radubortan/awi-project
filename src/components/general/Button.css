@@ -1,0 +1,35 @@
+.addButton {
+  background-color: #0c548f !important;
+  color: white;
+}
+
+.addButton:hover,
+.addButton:active,
+.addButton:visited {
+  background-color: #0c4472 !important;
+  color: white;
+}
+
+.cancelButton {
+  background-color: #ba2525 !important;
+  color: white;
+}
+
+.cancelButton:hover,
+.cancelButton:active,
+.cancelButton:visited {
+  background-color: #9e1212 !important;
+  color: white;
+}
+
+.confirmButton {
+  background-color: #0c548f !important;
+  color: white;
+}
+
+.confirmButton:hover,
+.confirmButton:active,
+.confirmButton:visited {
+  background-color: #0c4472 !important;
+  color: white;
+}

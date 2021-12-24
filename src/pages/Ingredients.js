@@ -209,7 +209,9 @@ function Ingredients() {
             </Card>
           </div>
           <div className='col-3'>
-            <Button onClick={showAddIngredientPanel}>Ajouter ingrédient</Button>
+            <Button className='addButton' onClick={showAddIngredientPanel}>
+              Ajouter ingrédient
+            </Button>
           </div>
         </div>
       </div>

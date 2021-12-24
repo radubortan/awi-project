@@ -146,8 +146,14 @@ const EditIngredient = (props) => {
               value={currentIngredient.nomIng}
               onChange={handleChange}
             />
-            {nomIngEmptyError && <p>Le nom ne peut pas être vide</p>}
-            {nomIngUnvailableError && <p>Ce nom existe déjà</p>}
+            {nomIngEmptyError && (
+              <p className={classes.errorMessage}>
+                Le nom ne peut pas être vide
+              </p>
+            )}
+            {nomIngUnvailableError && (
+              <p className={classes.errorMessage}>Ce nom existe déjà</p>
+            )}
           </div>
           <div className={`row ${classes.input}`}>
             <NumberInput
@@ -156,7 +162,11 @@ const EditIngredient = (props) => {
               value={currentIngredient.prixUnitaire}
               onChange={handleChange}
             />
-            {prixUnitaireError && <p>Le prix doit être un nombre</p>}
+            {prixUnitaireError && (
+              <p className={classes.errorMessage}>
+                Le prix doit être un nombre
+              </p>
+            )}
           </div>
           <div className={`row ${classes.input}`}>
             <SelectInput
@@ -206,10 +216,14 @@ const EditIngredient = (props) => {
       <div className={`row ${classes.buttons}`}>
         <div className='col-4' />
         <div className={`col-2`}>
-          <Button onClick={saveIngredient}>Modifier</Button>
+          <Button className='confirmButton' onClick={saveIngredient}>
+            Modifier
+          </Button>
         </div>
         <div className={`col-2`}>
-          <Button onClick={props.onClose}>Annuler</Button>
+          <Button className='cancelButton' onClick={props.onClose}>
+            Annuler
+          </Button>
         </div>
         <div className='col-4' />
       </div>

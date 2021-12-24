@@ -1,8 +1,10 @@
 import React from 'react';
+import './Button.css';
+
 function Button(props) {
   return (
-    <div className={props.className}>
-      <button onClick={props.onClick} className='btn btn-primary'>
+    <div>
+      <button onClick={props.onClick} className={`btn ${props.className}`}>
         {props.children}
       </button>
     </div>

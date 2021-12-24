@@ -27,8 +27,8 @@ li {
   align-items: center;
 }
 
-.buttons button {
-  margin-left: 20px;
+.buttons {
+  display: flex;
 }
 
 .allergeneMessage {
@@ -39,4 +39,8 @@ li {
 
 .allergeneMessage p {
   display: inline;
+}
+
+.btnSpacing {
+  margin-right: 20px;
 }
