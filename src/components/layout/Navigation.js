@@ -4,7 +4,11 @@ import { NavLink } from 'react-router-dom';
 const Navigation = (props) => {
   return (
     <header className={classes.header}>
-      <div className={classes.logo}>PolyCook</div>
+      <div>
+        <NavLink to='/' className={classes.logo}>
+          PolyCook
+        </NavLink>
+      </div>
       <nav className={classes.nav}>
         <ul>
           <li>

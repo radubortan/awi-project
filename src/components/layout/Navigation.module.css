@@ -11,6 +11,11 @@
 .logo {
   font-size: 2rem;
   color: white;
+  text-decoration: none;
+}
+
+.logo:hover {
+  color: white;
 }
 
 .nav ul {
