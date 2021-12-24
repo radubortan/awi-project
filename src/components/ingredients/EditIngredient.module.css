@@ -1,0 +1,21 @@
+.title {
+  text-align: center;
+}
+
+.form {
+  padding: 20px;
+  padding-top: 0;
+}
+
+.input {
+  margin-top: 10px;
+}
+
+.checkbox {
+  margin-top: 25px;
+  margin-bottom: 5px;
+}
+
+.buttons {
+  margin-top: 20px;
+}

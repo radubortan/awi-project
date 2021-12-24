@@ -1,24 +1,28 @@
-import React, { useEffect, useState } from "react";
-import IngredientFilter from "../components/ingredients/IngredientFilter";
-import Button from "../components/general/Button";
-import IngredientList from "../components/ingredients/IngredientList";
-import AddIngredient from "../components/ingredients/AddIngredient";
-import EditIngredient from "../components/ingredients/EditIngredient";
-import SearchBar from "../components/general/SearchBar";
-import Card from "../components/ui/Card";
-import { Fragment } from "react/cjs/react.production.min";
-import DeleteIngredient from "../components/ingredients/DeleteIngredient";
-import ViewIngredient from "../components/ingredients/ViewIngredient";
+import React, { useEffect, useState } from 'react';
+import IngredientFilter from '../components/ingredients/IngredientFilter';
+import Button from '../components/general/Button';
+import IngredientList from '../components/ingredients/IngredientList';
+import AddIngredient from '../components/ingredients/AddIngredient';
+import EditIngredient from '../components/ingredients/EditIngredient';
+import SearchBar from '../components/general/SearchBar';
+import Card from '../components/ui/Card';
+import { Fragment } from 'react/cjs/react.production.min';
+import DeleteIngredient from '../components/ingredients/DeleteIngredient';
+import ViewIngredient from '../components/ingredients/ViewIngredient';
 
 function Ingredients() {
   let INGREDIENTS = [
     {
-      nomIng: "Tomate",
-      nomCatIng: "Fruit",
+      nomIng: 'Tomate',
+      nomCatIng: 'Fruit',
+      prixUnitaire: 2,
+      nomUnite: 'g',
     },
     {
-      nomIng: "Carotte",
-      nomCatIng: "Légume",
+      nomIng: 'Carotte',
+      nomCatIng: 'Légume',
+      prixUnitaire: 1,
+      nomUnite: 'g',
     },
   ];
 
@@ -26,7 +30,7 @@ function Ingredients() {
   const [filteredIngredientList, setFilteredIngredientList] =
     useState(INGREDIENTS);
   const [filteringOptions, setFilteringOptions] = useState({
-    patternToMatch: "",
+    patternToMatch: '',
     categories: [],
     allergenCategories: [],
   });
@@ -36,7 +40,7 @@ function Ingredients() {
   const filterIngredient = (ingredient) => {
     const { patternToMatch, categories, allergenCategories } = filteringOptions;
     if (
-      patternToMatch !== "" &&
+      patternToMatch !== '' &&
       !ingredient.nomIng.toLowerCase().startsWith(patternToMatch.toLowerCase())
     ) {
       return false;
@@ -176,22 +180,22 @@ function Ingredients() {
           ingredient={onViewIngredient}
         />
       )}
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-3"></div>
-          <div className="col-6">
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col-3' />
+          <div className='col-6'>
             <SearchBar onChange={searchBarFiltering} />
           </div>
-          <div className="col-3"></div>
+          <div className='col-3' />
         </div>
-        <div className="row">
-          <div className="col-3">
+        <div className='row'>
+          <div className='col-3'>
             <IngredientFilter
               categoriesFiltering={filterCategoryHandler}
               allergenCategoriesFiltering={filterAllergenCategoryHandler}
             />
           </div>
-          <div className="col-6">
+          <div className='col-6'>
             <Card>
               <IngredientList
                 ingredientList={filteredIngredientList}
@@ -202,7 +206,7 @@ function Ingredients() {
               />
             </Card>
           </div>
-          <div className="col-3">
+          <div className='col-3'>
             <Button onClick={showAddIngredientPanel}>Ajouter ingrédient</Button>
           </div>
         </div>

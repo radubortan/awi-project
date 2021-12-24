@@ -1,8 +1,16 @@
+import { Fragment } from 'react';
+import classes from './SelectInput.module.css';
+
 function SelectInput(props) {
   return (
-    <div>
+    <Fragment>
       <label for={props.label}>{props.label}</label>
-      <select name={props.name} id={props.label} onChange={props.onChange}>
+      <select
+        name={props.name}
+        id={props.label}
+        onChange={props.onChange}
+        className={classes.input}
+      >
         {props.dropDownList.map((item, index) => (
           <option
             value={item[props.optionIdentifier]}
@@ -12,7 +20,7 @@ function SelectInput(props) {
           </option>
         ))}
       </select>
-    </div>
+    </Fragment>
   );
 }
 
