@@ -23,8 +23,20 @@
 
 li {
   list-style-type: none;
+  display: flex;
+  align-items: center;
 }
 
 .buttons button {
   margin-left: 20px;
+}
+
+.allergeneMessage {
+  font-size: 1.3rem;
+  color: red;
+  margin-left: auto;
+}
+
+.allergeneMessage p {
+  display: inline;
 }

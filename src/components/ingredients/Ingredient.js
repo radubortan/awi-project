@@ -1,6 +1,6 @@
-import React from "react";
-import { BsPencilFill, BsTrashFill } from "react-icons/bs";
-import classes from "./Ingredient.module.css";
+import React from 'react';
+import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
+import classes from './Ingredient.module.css';
 
 function Ingredient(props) {
   return (
@@ -12,10 +12,15 @@ function Ingredient(props) {
       }}
     >
       <h3>{props.ingredient.nomIng}</h3>
+      {props.ingredient.nomCatAllerg && (
+        <div className={classes.allergeneMessage}>
+          <p>Allergène</p>
+        </div>
+      )}
       <div className={classes.buttons}>
         <button
-          type="button"
-          class="btn btn-info"
+          type='button'
+          class='btn btn-info'
           onClick={(e) => {
             e.stopPropagation();
             props.onEditIngredient(props.ingredient, props.index);
@@ -24,8 +29,8 @@ function Ingredient(props) {
           <BsPencilFill />
         </button>
         <button
-          type="button"
-          class="btn btn-danger"
+          type='button'
+          class='btn btn-danger'
           onClick={(e) => {
             e.stopPropagation();
             props.onDeleteIngredient(props.index);
