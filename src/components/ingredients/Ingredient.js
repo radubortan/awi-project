@@ -1,4 +1,3 @@
-import React from 'react';
 import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
 import classes from './Ingredient.module.css';
 
