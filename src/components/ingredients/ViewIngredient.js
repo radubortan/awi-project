@@ -40,7 +40,9 @@ const ViewIngredient = (props) => {
       <div className={`row ${classes.buttons}`}>
         <div className='col-5' />
         <div className='col-2'>
-          <Button onClick={props.onClose}>Fermer</Button>
+          <Button className='cancelButton' onClick={props.onClose}>
+            Fermer
+          </Button>
         </div>
         <div className='col-5' />
       </div>

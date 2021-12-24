@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import Card from "../ui/Card";
-import Checkbox from "../general/Checkbox";
-import { useState, useEffect } from "react";
-import classes from "./CategoriesCheckbox.module.css";
+import { Fragment } from 'react';
+import Card from '../ui/Card';
+import Checkbox from '../general/Checkbox';
+import { useState, useEffect } from 'react';
+import classes from './CategoriesCheckbox.module.css';
 
 const CategoriesCheckBox = (props) => {
   const [checkedCategories, setCheckedCategories] = useState([]);
@@ -27,7 +27,7 @@ const CategoriesCheckBox = (props) => {
   return (
     <Fragment>
       <h3>{props.name}</h3>
-      <Card>
+      <Card className='subCard'>
         <ul className={classes.checkboxList}>
           {props.categories.map((categorie) => {
             return (

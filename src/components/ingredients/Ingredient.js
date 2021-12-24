@@ -1,5 +1,6 @@
 import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
 import classes from './Ingredient.module.css';
+import Button from '../general/Button';
 
 function Ingredient(props) {
   return (
@@ -17,26 +18,26 @@ function Ingredient(props) {
         </div>
       )}
       <div className={classes.buttons}>
-        <button
-          type='button'
-          class='btn btn-info'
-          onClick={(e) => {
-            e.stopPropagation();
-            props.onEditIngredient(props.ingredient, props.index);
-          }}
-        >
-          <BsPencilFill />
-        </button>
-        <button
-          type='button'
-          class='btn btn-danger'
+        <div className={classes.btnSpacing}>
+          <Button
+            className='addButton'
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onEditIngredient(props.ingredient, props.index);
+            }}
+          >
+            <BsPencilFill />
+          </Button>
+        </div>
+        <Button
+          className='cancelButton'
           onClick={(e) => {
             e.stopPropagation();
             props.onDeleteIngredient(props.index);
           }}
         >
           <BsTrashFill />
-        </button>
+        </Button>
       </div>
     </li>
   );

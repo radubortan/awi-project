@@ -13,15 +13,21 @@
   margin-top: 10px;
 }
 
-.checkbox {
-  margin-top: 25px;
-  margin-bottom: 5px;
-}
-
 .buttons {
   margin-top: 20px;
 }
 
 .errorMessage {
   color: red;
+}
+
+.titles {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.columnTitle {
+  text-align: center;
+  font-size: 1.8rem;
 }

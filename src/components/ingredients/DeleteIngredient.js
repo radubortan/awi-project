@@ -18,13 +18,16 @@ const DeleteIngredient = (props) => {
               props.onClose();
               props.onDeleteIngredient(props.indexIngredient);
             }}
+            className='cancelButton'
           >
             Supprimer
           </Button>
         </div>
         <div className='col-2' />
         <div className='col-2'>
-          <Button onClick={props.onClose}>Annuler</Button>
+          <Button className='confirmButton' onClick={props.onClose}>
+            Annuler
+          </Button>
         </div>
         <div className='col-3' />
       </div>
