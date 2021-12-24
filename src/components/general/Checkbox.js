@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import classes from './Checkbox.module.css';
 
 const Checkbox = (props) => {

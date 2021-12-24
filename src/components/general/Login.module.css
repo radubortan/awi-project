@@ -1,0 +1,54 @@
+.title {
+  text-align: center;
+  border-bottom: 1px solid rgb(179, 179, 179);
+  padding-bottom: 10px;
+}
+
+.input {
+  border-radius: 10px;
+  border: 1px solid rgb(173, 173, 173);
+  height: 50px;
+  margin-top: 5px;
+  font-size: 1.5rem;
+}
+
+.information {
+  display: infline;
+  width: 70%;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+.buttons {
+  margin-top: 40px;
+}
+
+.label {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.buttonRow {
+  padding: 30px 0 10px 0;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.loading {
+  font-size: 1.5rem;
+}
+
+.connectionError {
+  color: red;
+  font-size: 1.3rem;
+  text-align: center;
+}

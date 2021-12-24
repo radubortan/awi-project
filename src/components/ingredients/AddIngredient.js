@@ -3,7 +3,6 @@ import Button from '../general/Button';
 import NumberInput from '../general/NumberInput';
 import TextInput from '../general/TextInput';
 import SelectInput from '../general/SelectInput';
-import Card from '../ui/Card';
 import Modal from '../ui/Modal';
 import Checkbox from '../general/Checkbox';
 import classes from './AddIngredient.module.css';

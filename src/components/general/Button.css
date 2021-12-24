@@ -33,3 +33,10 @@
   background-color: #0c4472 !important;
   color: white;
 }
+
+.big {
+  width: 130px;
+  height: 60px;
+  border-radius: 10px;
+  font-size: 1.4rem;
+}

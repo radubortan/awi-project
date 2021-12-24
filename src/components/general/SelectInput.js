@@ -14,7 +14,7 @@ function SelectInput(props) {
         {props.dropDownList.map((item, index) => (
           <option
             value={item[props.optionIdentifier]}
-            selected={props.selected == item[props.optionIdentifier]}
+            selected={props.selected === item[props.optionIdentifier]}
           >
             {item[props.optionIdentifier]}
           </option>
