@@ -1,0 +1,25 @@
+.recipe {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.recipe h3 {
+  margin: 0 0 0.25rem 0;
+}
+
+li {
+  list-style-type: none;
+  display: flex;
+  align-items: center;
+}
+
+.buttons {
+  display: flex;
+}
+
+.btnSpacing {
+  margin-right: 20px;
+}

@@ -1,13 +1,13 @@
 import Modal from '../ui/Modal';
 import Button from '../general/Button';
-import classes from './DeleteIngredient.module.css';
+import classes from './DeleteRecipe.module.css';
 
-const DeleteIngredient = (props) => {
+const DeleteRecipe = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <div className={`row`}>
         <h2 className={classes.title}>
-          Voulez vous vraiment supprimer cet ingrédient?
+          Voulez vous vraiment supprimer cette recette?
         </h2>
       </div>
       <div className={`row ${classes.buttons}`}>
@@ -16,7 +16,7 @@ const DeleteIngredient = (props) => {
           <Button
             onClick={() => {
               props.onClose();
-              props.onDeleteIngredient(props.indexIngredient);
+              props.onDeleteRecipe(props.indexRecipe);
             }}
             className='cancelButton'
           >
@@ -34,4 +34,4 @@ const DeleteIngredient = (props) => {
     </Modal>
   );
 };
-export default DeleteIngredient;
+export default DeleteRecipe;
