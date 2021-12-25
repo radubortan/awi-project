@@ -1,6 +1,6 @@
 import { Fragment } from 'react';
 import Card from '../ui/Card';
-import Checkbox from '../general/Checkbox';
+import Checkbox from './Checkbox';
 import { useState, useEffect } from 'react';
 import classes from './CategoriesCheckbox.module.css';
 
@@ -26,20 +26,22 @@ const CategoriesCheckBox = (props) => {
 
   return (
     <Fragment>
-      <h3>{props.name}</h3>
+      <h3 className={classes.title}>{props.name}</h3>
       <Card>
-        <ul className={classes.checkboxList}>
-          {props.categories.map((categorie) => {
-            return (
-              <li>
-                <Checkbox
-                  label={categorie[props.labelIdentifier]}
-                  onChange={checkboxHandler}
-                />
-              </li>
-            );
-          })}
-        </ul>
+        <div className={classes.listContainer}>
+          <ul className={classes.checkboxList}>
+            {props.categories.map((categorie) => {
+              return (
+                <li>
+                  <Checkbox
+                    label={categorie[props.labelIdentifier]}
+                    onChange={checkboxHandler}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </Card>
     </Fragment>
   );

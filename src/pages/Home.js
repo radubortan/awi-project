@@ -128,11 +128,11 @@ function Home() {
           </div>
         </div>
         <div className='row'>
-          <div className='col-3'></div>
-          <div className='col-6'>
+          <div className='col-md-3'></div>
+          <div className='col-md-6 col-sm-12'>
             <SearchBar onChange={searchBarFiltering} />
           </div>
-          <div className='col-3'></div>
+          <div className='col-md-3'></div>
         </div>
         <div class='row'>
           <div class='col-3'>

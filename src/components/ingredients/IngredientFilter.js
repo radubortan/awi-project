@@ -1,5 +1,5 @@
 import Card from '../ui/Card';
-import CategoriesCheckBox from './CategoriesCheckBox';
+import CategoriesCheckBox from '../general/CategoriesCheckBox';
 
 function IngredientFilter(props) {
   const CATEGORIES = [
@@ -22,25 +22,24 @@ function IngredientFilter(props) {
       nomCatAllerg: 'Crustaces',
     },
     {
-        nomCatAllerg: 'Fruit a coque',
-    }
+      nomCatAllerg: 'Fruit a coque',
+    },
   ];
 
   return (
     <Card>
       <CategoriesCheckBox
-      name ='Catégorie'
+        name='Catégorie'
         onChange={props.categoriesFiltering}
         categories={CATEGORIES}
-        labelIdentifier = "nomCatIng"
+        labelIdentifier='nomCatIng'
       />
       <CategoriesCheckBox
-      name ="Catégorie d'allergène"
+        name="Catégorie d'allergène"
         onChange={props.allergenCategoriesFiltering}
         categories={ALLERGENCATEGORIES}
-        labelIdentifier = "nomCatAllerg"
+        labelIdentifier='nomCatAllerg'
       />
-
     </Card>
   );
 }

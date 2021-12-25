@@ -5,6 +5,13 @@
 .title {
   font-size: 3rem;
   font-weight: 700;
-  margin-top: 30px;
+  margin: 20px 0;
   color: #0c548f;
+}
+
+@media (max-width: 900px) {
+  .title {
+    font-size: 2.5rem;
+    margin: 10px 0;
+  }
 }

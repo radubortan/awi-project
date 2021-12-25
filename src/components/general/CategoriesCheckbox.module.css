@@ -1,0 +1,25 @@
+.checkboxList {
+  min-width: 50%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  max-height: 25vh;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.listContainer {
+  display: flex;
+  justify-content: center;
+}
+
+@media (max-width: 800px) {
+  .checkboxList {
+    width: 100%;
+  }
+  .title {
+    font-size: 1rem;
+  }
+}

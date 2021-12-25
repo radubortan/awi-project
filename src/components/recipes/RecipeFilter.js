@@ -1,5 +1,5 @@
 import Card from '../ui/Card';
-import CategoriesCheckBox from '../ingredients/CategoriesCheckBox';
+import CategoriesCheckBox from '../general/CategoriesCheckBox';
 
 function RecipeFilter(props) {
   const CATEGORIES = [

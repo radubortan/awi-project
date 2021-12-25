@@ -189,11 +189,11 @@ function Ingredients() {
           </div>
         </div>
         <div className='row'>
-          <div className='col-3' />
-          <div className='col-6'>
+          <div className='col-md-3' />
+          <div className='col-md-6 col-sm-12'>
             <SearchBar onChange={searchBarFiltering} />
           </div>
-          <div className='col-3' />
+          <div className='col-md-3' />
         </div>
         <div className='row'>
           <div className='col-3'>
