@@ -208,7 +208,7 @@ function Ingredients() {
               />
             </Card>
           </div>
-          <div className='col-3'>
+          <div className='col-3 d-flex justify-content-start'>
             <Button className='addButton' onClick={showAddIngredientPanel}>
               Ajouter ingrédient
             </Button>
