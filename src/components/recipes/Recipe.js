@@ -1,28 +1,23 @@
 import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
-import classes from './Ingredient.module.css';
+import classes from './Recipe.module.css';
 import Button from '../general/Button';
 
-function Ingredient(props) {
+function Recipe(props) {
   return (
     <li
-      className={classes.ingredient}
+      className={classes.recipe}
       onClick={() => {
-        props.onViewIngredient(props.ingredient);
+        props.onViewRecipe(props.recipe);
       }}
     >
-      <h3>{props.ingredient.nomIng}</h3>
-      {props.ingredient.nomCatAllerg && (
-        <div className={classes.allergeneMessage}>
-          <p>Allergène</p>
-        </div>
-      )}
+      <h3>{props.recipe.nomRecipe}</h3>
       <div className={classes.buttons}>
         <div className={classes.btnSpacing}>
           <Button
             className='addButton'
             onClick={(e) => {
               e.stopPropagation();
-              props.onEditIngredient(props.ingredient, props.index);
+              props.onEditRecipe(props.recipe, props.index);
             }}
           >
             <BsPencilFill />
@@ -32,7 +27,7 @@ function Ingredient(props) {
           className='cancelButton'
           onClick={(e) => {
             e.stopPropagation();
-            props.onDeleteIngredient(props.index);
+            props.onDeleteRecipe(props.index);
           }}
         >
           <BsTrashFill />
@@ -42,4 +37,4 @@ function Ingredient(props) {
   );
 }
 
-export default Ingredient;
+export default Recipe;

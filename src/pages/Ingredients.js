@@ -9,6 +9,7 @@ import Card from '../components/ui/Card';
 import { Fragment } from 'react/cjs/react.production.min';
 import DeleteIngredient from '../components/ingredients/DeleteIngredient';
 import ViewIngredient from '../components/ingredients/ViewIngredient';
+import classes from './Ingredients.module.css';
 
 function Ingredients() {
   let INGREDIENTS = [
@@ -67,7 +68,6 @@ function Ingredients() {
   const searchBarFiltering = (e) => {
     filteringOptions.patternToMatch = e.target.value;
     setFilteringOptions(filteringOptions);
-
     filterIngredients();
   };
 
@@ -183,6 +183,11 @@ function Ingredients() {
         />
       )}
       <div className='container-fluid'>
+        <div className='row'>
+          <div className='col'>
+            <h1 className={classes.title}>Ingrédients</h1>
+          </div>
+        </div>
         <div className='row'>
           <div className='col-3' />
           <div className='col-6'>

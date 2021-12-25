@@ -27,7 +27,7 @@ const CategoriesCheckBox = (props) => {
   return (
     <Fragment>
       <h3>{props.name}</h3>
-      <Card className='subCard'>
+      <Card>
         <ul className={classes.checkboxList}>
           {props.categories.map((categorie) => {
             return (
