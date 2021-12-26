@@ -12,6 +12,22 @@ const EditIngredient = (props) => {
   const [allergenCategories, setAllergenCategories] = useState([]);
   const [units, setUnits] = useState([]);
 
+  const sortAllergens = (a, b) => {
+    const textA = a.nomCatAllerg;
+    const textB = b.nomCatAllerg;
+    return textA < textB ? -1 : textA > textB ? 1 : 0;
+  };
+  const sortIngredientCategories = (a, b) => {
+    const textA = a.nomCatIng;
+    const textB = b.nomCatIng;
+    return textA < textB ? -1 : textA > textB ? 1 : 0;
+  };
+  const sortUnits = (a, b) => {
+    const textA = a.nomUnite;
+    const textB = b.nomUnite;
+    return textA < textB ? -1 : textA > textB ? 1 : 0;
+  };
+
   const fetchCategories = async () => {
     const response = await fetch(
       'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredientCategory.json'
@@ -21,6 +37,7 @@ const EditIngredient = (props) => {
     for (const key in data) {
       loadedCategories.push({ nomCatIng: data[key] });
     }
+    loadedCategories.sort(sortIngredientCategories);
     setCategories(loadedCategories);
   };
 
@@ -33,6 +50,7 @@ const EditIngredient = (props) => {
     for (const key in data) {
       loadedAllergen.push({ nomCatAllerg: data[key] });
     }
+    loadedAllergen.sort(sortAllergens);
     setAllergenCategories(loadedAllergen);
   };
 
@@ -45,6 +63,7 @@ const EditIngredient = (props) => {
     for (const key in data) {
       loadedUnits.push({ nomUnite: data[key] });
     }
+    loadedUnits.sort(sortUnits);
     setUnits(loadedUnits);
   };
 
@@ -56,7 +75,6 @@ const EditIngredient = (props) => {
   }, []);
 
   const givenIngredient = props.ingredientInfo.ingredient;
-
   const [currentIngredient, setCurrentIngredient] = useState({
     id: givenIngredient.id,
     nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',

@@ -1,4 +1,6 @@
-import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
+import { FaTrash } from 'react-icons/fa';
+import { MdModeEdit } from 'react-icons/md';
+import { CgDanger } from 'react-icons/cg';
 import classes from './Ingredient.module.css';
 import Button from '../general/Button';
 
@@ -18,7 +20,9 @@ function Ingredient(props) {
       )}
       {props.ingredient.nomCatAllerg && (
         <div className={classes.allergeneMessageSmall}>
-          <p>A</p>
+          <p>
+            <CgDanger />
+          </p>
         </div>
       )}
       <div className={classes.buttons}>
@@ -30,7 +34,7 @@ function Ingredient(props) {
               props.onEditIngredient(props.ingredient, props.index);
             }}
           >
-            <BsPencilFill />
+            <MdModeEdit />
           </Button>
         </div>
         <Button
@@ -40,7 +44,7 @@ function Ingredient(props) {
             props.onDeleteIngredient(props.index, props.ingredient);
           }}
         >
-          <BsTrashFill />
+          <FaTrash />
         </Button>
       </div>
     </li>

@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 import DeleteRecipe from '../components/recipes/DeleteRecipe';
 import classes from './Home.module.css';
 import RecipeFilter from '../components/recipes/RecipeFilter';
+import { HiPlus } from 'react-icons/hi';
 
 function Home() {
   let RECIPES = [
@@ -109,7 +110,6 @@ function Home() {
       const newRecipeList = oldRecipeList.splice(indexRecipe, 1);
       return newRecipeList;
     });
-    console.log(recipeList);
   };
 
   return (
@@ -153,7 +153,9 @@ function Home() {
             </Card>
           </div>
           <div class='col-3 d-flex justify-content-start'>
-            <Button className='addButton'>Créer Recette</Button>
+            <Button className='addButton'>
+              <HiPlus /> Ajouter Recette
+            </Button>
           </div>
         </div>
       </div>

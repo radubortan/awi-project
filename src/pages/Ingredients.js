@@ -10,6 +10,7 @@ import { Fragment } from 'react/cjs/react.production.min';
 import DeleteIngredient from '../components/ingredients/DeleteIngredient';
 import ViewIngredient from '../components/ingredients/ViewIngredient';
 import classes from './Ingredients.module.css';
+import { HiPlus } from 'react-icons/hi';
 
 function Ingredients() {
   const [ingredientList, setIngredientList] = useState([]);
@@ -98,9 +99,9 @@ function Ingredients() {
     setOnAddIngredient(true);
   };
 
-  const addIngredient = async (newIngredient) => {
-    setIngredientList([...ingredientList, newIngredient]);
-    await fetch(
+  const addIngredient = (newIngredient) => {
+    // setFilteredIngredientList([...ingredientList, newIngredient]);
+    fetch(
       'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json',
       {
         method: 'POST',
@@ -109,7 +110,14 @@ function Ingredients() {
           'Content-Type': 'application/json',
         },
       }
-    );
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        newIngredient.id = data.name;
+        setIngredientList([...ingredientList, newIngredient]);
+      });
   };
 
   useEffect(() => {
@@ -133,8 +141,9 @@ function Ingredients() {
   };
 
   const editIngredient = async (editedIngredient, indexIngredient) => {
-    ingredientList.splice(indexIngredient, 1, editedIngredient);
-    setIngredientList([...ingredientList]);
+    const updatedIngredients = [...ingredientList];
+    updatedIngredients.splice(indexIngredient, 1, editedIngredient);
+    setIngredientList([...updatedIngredients]);
     await fetch(
       `https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${editedIngredient.id}.json`,
       {
@@ -249,7 +258,7 @@ function Ingredients() {
           </div>
           <div className='col-3 d-flex justify-content-start'>
             <Button className='addButton' onClick={showAddIngredientPanel}>
-              Ajouter ingrédient
+              <HiPlus /> Ajouter ingrédient
             </Button>
           </div>
         </div>

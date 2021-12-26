@@ -13,6 +13,16 @@
   justify-content: start;
 }
 
+.checkbox {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.checkbox label {
+  text-align: left;
+}
+
 @media (max-width: 800px) {
   .checkboxList {
     width: 100%;
