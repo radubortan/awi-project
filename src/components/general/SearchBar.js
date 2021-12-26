@@ -14,9 +14,6 @@ function SearchBar(props) {
         placeholder='Rechercher...'
         className={classes.searchBar}
       />
-      {/* <button type='button' className={classes.button}>
-        <BsSearch />
-      </button> */}
     </form>
   );
 }

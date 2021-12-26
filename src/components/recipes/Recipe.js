@@ -1,4 +1,5 @@
-import { BsPencilFill, BsTrashFill } from 'react-icons/bs';
+import { FaTrash } from 'react-icons/fa';
+import { MdModeEdit } from 'react-icons/md';
 import classes from './Recipe.module.css';
 import Button from '../general/Button';
 
@@ -20,7 +21,7 @@ function Recipe(props) {
               props.onEditRecipe(props.recipe, props.index);
             }}
           >
-            <BsPencilFill />
+            <MdModeEdit />
           </Button>
         </div>
         <Button
@@ -30,7 +31,7 @@ function Recipe(props) {
             props.onDeleteRecipe(props.index);
           }}
         >
-          <BsTrashFill />
+          <FaTrash />
         </Button>
       </div>
     </li>

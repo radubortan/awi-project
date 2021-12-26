@@ -36,6 +36,7 @@ const CategoriesCheckBox = (props) => {
                   <Checkbox
                     label={categorie[props.labelIdentifier]}
                     onChange={checkboxHandler}
+                    className={classes.checkbox}
                   />
                 </li>
               );

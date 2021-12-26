@@ -13,12 +13,7 @@ const EditIngredient = (props) => {
   const [coeffMultiAvecError, setCoeffMultiAvecError] = useState(false);
 
   //settings state
-  const [currentSettings, setCurrentSettings] = useState({
-    coutHoraireMoyen: 1,
-    coutHoraireForfaitaire: 1,
-    coeffMultiAvec: 1,
-    coeffMultiSans: 1,
-  });
+  const [currentSettings, setCurrentSettings] = useState({});
 
   //to fetch the stored values when the component loads
   useEffect(() => {
@@ -29,6 +24,7 @@ const EditIngredient = (props) => {
       const data = await response.json();
       setCurrentSettings(data);
     };
+    fetchSettings();
   }, []);
 
   const handleChange = (e) => {
