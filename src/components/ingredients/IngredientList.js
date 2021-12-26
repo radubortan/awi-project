@@ -6,7 +6,7 @@ function IngredientList(props) {
   return (
     <ul className={classes.list}>
       {props.ingredientList.length === 0 && (
-        <p className={classes.nothingFound}>Aucun résultat</p>
+        <p className={classes.nothingFound}>Aucun ingrédient</p>
       )}
       {props.ingredientList.length !== 0 &&
         props.ingredientList.map((ingredient) => (

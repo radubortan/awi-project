@@ -16,6 +16,7 @@ const ViewIngredient = (props) => {
                 className={classes.value}
               >{`${props.ingredient.prixUnitaire}€`}</h3>
             </div>
+            <div className={`row ${classes.separator}`} />
             <div className={`row ${classes.information}`}>
               <h2 className={classes.label}>Unité:</h2>
               <h3 className={classes.value}>{props.ingredient.nomUnite}</h3>
@@ -26,6 +27,7 @@ const ViewIngredient = (props) => {
               <h2 className={classes.label}>Catégorie:</h2>
               <h3 className={classes.value}>{props.ingredient.nomCatIng}</h3>
             </div>
+            <div className={`row ${classes.separator}`} />
             {props.ingredient.nomCatAllerg && (
               <div className={`row ${classes.information}`}>
                 <h2 className={classes.label}>Catégorie d'allergène:</h2>

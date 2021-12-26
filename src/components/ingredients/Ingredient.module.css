@@ -31,16 +31,58 @@ li {
   display: flex;
 }
 
-.allergeneMessage {
+.btnSpacing {
+  margin-right: 20px;
+}
+
+.allergeneMessageSmall {
+  display: none;
   font-size: 1.3rem;
+  font-weight: 700;
   color: red;
   margin-left: auto;
+  margin-right: 10px;
+}
+
+.allergeneMessageSmall p {
+  display: inline;
+}
+
+.allergeneMessage {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: red;
+  margin-left: auto;
+  margin-right: 10px;
 }
 
 .allergeneMessage p {
   display: inline;
 }
 
-.btnSpacing {
-  margin-right: 20px;
+@media (min-width: 1000px) {
+  .allergeneMessage {
+    margin-right: 3rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .allergeneMessage {
+    display: none;
+  }
+  .allergeneMessageSmall {
+    display: inline;
+    margin-right: 5px;
+  }
+}
+
+@media (max-width: 600px) {
+  .btnSpacing {
+    margin-right: 5px;
+  }
+  .ingredient {
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-bottom: 0.5rem;
+  }
 }

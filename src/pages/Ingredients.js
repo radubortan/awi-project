@@ -12,34 +12,38 @@ import ViewIngredient from '../components/ingredients/ViewIngredient';
 import classes from './Ingredients.module.css';
 
 function Ingredients() {
-  let INGREDIENTS = [
-    {
-      nomIng: 'Tomate',
-      nomCatIng: 'Fruit',
-      prixUnitaire: 2,
-      nomUnite: 'g',
-      nomCatAllerg: undefined,
-    },
-    {
-      nomIng: 'Carotte',
-      nomCatIng: 'Légume',
-      prixUnitaire: 1,
-      nomUnite: 'g',
-      nomCatAllerg: undefined,
-    },
-  ];
-
-  const [ingredientList, setIngredientList] = useState(INGREDIENTS);
-  const [filteredIngredientList, setFilteredIngredientList] =
-    useState(INGREDIENTS);
+  const [ingredientList, setIngredientList] = useState([]);
+  const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
     patternToMatch: '',
     categories: [],
     allergenCategories: [],
   });
 
-  //Filtering method
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      const response = await fetch(
+        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
+      );
+      const data = await response.json();
+      const loadedIngredients = [];
+      for (const key in data) {
+        loadedIngredients.push({
+          id: key,
+          nomIng: data[key].nomIng,
+          nomCatIng: data[key].nomCatIng,
+          prixUnitaire: data[key].prixUnitaire,
+          nomUnite: data[key].nomUnite,
+          nomCatAllerg: data[key].nomCatAllerg,
+        });
+      }
+      setIngredientList(loadedIngredients);
+      setFilteredIngredientList(loadedIngredients);
+    };
+    fetchIngredients();
+  }, []);
 
+  //Filtering method
   const filterIngredient = (ingredient) => {
     const { patternToMatch, categories, allergenCategories } = filteringOptions;
     if (
@@ -94,8 +98,18 @@ function Ingredients() {
     setOnAddIngredient(true);
   };
 
-  const addIngredient = (newIngredient) => {
+  const addIngredient = async (newIngredient) => {
     setIngredientList([...ingredientList, newIngredient]);
+    await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json',
+      {
+        method: 'POST',
+        body: JSON.stringify(newIngredient),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   };
 
   useEffect(() => {
@@ -118,25 +132,44 @@ function Ingredients() {
     setOnEditIngredient(ingredientInfo);
   };
 
-  const editIngredient = (editedIngredient, indexIngredient) => {
+  const editIngredient = async (editedIngredient, indexIngredient) => {
     ingredientList.splice(indexIngredient, 1, editedIngredient);
     setIngredientList([...ingredientList]);
+    await fetch(
+      `https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${editedIngredient.id}.json`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(editedIngredient),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   };
 
   // Delete Ingredient
 
-  const [onDeleteIngredient, setOnDeleteIngredient] = useState(null);
+  const [indexIngredientBeingDeleted, setIndexIngredientBeingDeleted] =
+    useState(null);
+  const [ingredientBeingDeleted, setIngredientBeingDeleted] = useState(null);
 
   const hideDeleteIngredientPanel = () => {
-    setOnDeleteIngredient(null);
+    setIndexIngredientBeingDeleted(null);
   };
 
-  const showDeleteIngredientPanel = (indexIngredient) => {
-    setOnDeleteIngredient(indexIngredient);
+  const showDeleteIngredientPanel = (indexIngredient, ingredient) => {
+    setIndexIngredientBeingDeleted(indexIngredient);
+    setIngredientBeingDeleted(ingredient);
   };
 
-  const deleteIngredient = (indexIngredient) => {
+  const deleteIngredient = async (indexIngredient, idIngredient) => {
     ingredientList.splice(indexIngredient, 1);
+    await fetch(
+      `https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${idIngredient}.json`,
+      {
+        method: 'DELETE',
+      }
+    );
     setIngredientList([...ingredientList]);
   };
 
@@ -169,10 +202,11 @@ function Ingredients() {
           ingredientList={ingredientList}
         />
       )}
-      {onDeleteIngredient !== null && (
+      {indexIngredientBeingDeleted !== null && (
         <DeleteIngredient
           onClose={hideDeleteIngredientPanel}
-          indexIngredient={onDeleteIngredient}
+          indexIngredient={indexIngredientBeingDeleted}
+          ingredient={ingredientBeingDeleted}
           onDeleteIngredient={deleteIngredient}
         />
       )}

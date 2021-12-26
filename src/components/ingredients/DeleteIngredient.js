@@ -16,7 +16,10 @@ const DeleteIngredient = (props) => {
           <Button
             onClick={() => {
               props.onClose();
-              props.onDeleteIngredient(props.indexIngredient);
+              props.onDeleteIngredient(
+                props.indexIngredient,
+                props.ingredient.id
+              );
             }}
             className='cancelButton'
           >

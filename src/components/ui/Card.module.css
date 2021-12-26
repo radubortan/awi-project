@@ -6,3 +6,10 @@
   background-color: white;
   align-items: center;
 }
+
+@media (max-width: 800px) {
+  .card {
+    padding-left: 3%;
+    padding-right: 3%;
+  }
+}

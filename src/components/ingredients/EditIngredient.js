@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../general/Button';
 import NumberInput from '../general/NumberInput';
 import TextInput from '../general/TextInput';
@@ -8,35 +8,57 @@ import Checkbox from '../general/Checkbox';
 import classes from './EditIngredient.module.css';
 
 const EditIngredient = (props) => {
-  const UNITE = [{ nomUnite: 'g' }, { nomUnite: 'l' }];
+  const [categories, setCategories] = useState([]);
+  const [allergenCategories, setAllergenCategories] = useState([]);
+  const [units, setUnits] = useState([]);
 
-  const CATEGORIES = [
-    {
-      nomCatIng: 'Fruit',
-    },
-    {
-      nomCatIng: 'Légume',
-    },
-    {
-      nomCatIng: 'Lait',
-    },
-    {
-      nomCatIng: 'Poisson',
-    },
-  ];
+  const fetchCategories = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredientCategory.json'
+    );
+    const data = await response.json();
+    const loadedCategories = [];
+    for (const key in data) {
+      loadedCategories.push({ nomCatIng: data[key] });
+    }
+    setCategories(loadedCategories);
+  };
 
-  const ALLERGENCATEGORIES = [
-    {
-      nomCatAllerg: 'Crustaces',
-    },
-    {
-      nomCatAllerg: 'Fruit a coque',
-    },
-  ];
+  const fetchAllergen = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/allergen.json'
+    );
+    const data = await response.json();
+    const loadedAllergen = [];
+    for (const key in data) {
+      loadedAllergen.push({ nomCatAllerg: data[key] });
+    }
+    setAllergenCategories(loadedAllergen);
+  };
+
+  const fetchUnits = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/units.json'
+    );
+    const data = await response.json();
+    const loadedUnits = [];
+    for (const key in data) {
+      loadedUnits.push({ nomUnite: data[key] });
+    }
+    setUnits(loadedUnits);
+  };
+
+  //fetching ingredient catagories, allergen categories and units
+  useEffect(() => {
+    fetchAllergen();
+    fetchCategories();
+    fetchUnits();
+  }, []);
 
   const givenIngredient = props.ingredientInfo.ingredient;
 
   const [currentIngredient, setCurrentIngredient] = useState({
+    id: givenIngredient.id,
     nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',
     prixUnitaire:
       givenIngredient.prixUnitaire !== undefined
@@ -45,15 +67,13 @@ const EditIngredient = (props) => {
     nomUnite:
       givenIngredient.nomUnite !== undefined
         ? givenIngredient.nomUnite
-        : UNITE[0].nomUnite,
+        : units[0].nomUnite,
     nomCatIng:
       givenIngredient.nomCatIng !== undefined
         ? givenIngredient.nomCatIng
-        : CATEGORIES[0].nomCatIng,
+        : categories[0].nomCatIng,
     nomCatAllerg: givenIngredient.nomCatAllerg,
   });
-
-  console.log(currentIngredient);
 
   // Allergene Checkbox
   const [isAllergen, setIsAllergen] = useState(
@@ -66,7 +86,7 @@ const EditIngredient = (props) => {
       setCurrentIngredient({
         ...currentIngredient,
 
-        nomCatAllerg: ALLERGENCATEGORIES[0].nomCatAllerg,
+        nomCatAllerg: allergenCategories[0].nomCatAllerg,
       });
     } else {
       setIsAllergen(false);
@@ -101,6 +121,8 @@ const EditIngredient = (props) => {
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
   const [prixUnitaireError, setPrixUnitaireError] = useState(false);
+  const [unitEmptyError, setUnitEmptyError] = useState(false);
+  const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
     setnomIngEmptyError(false);
@@ -123,6 +145,14 @@ const EditIngredient = (props) => {
       setNomIngUnvailableError(true);
       isValid = false;
     }
+    if (currentIngredient.nomCatIng === undefined) {
+      setCategoryEmptyError(true);
+      isValid = false;
+    }
+    if (currentIngredient.nomUnite === undefined) {
+      setUnitEmptyError(true);
+      isValid = false;
+    }
 
     if (
       !/^(?!0\d)\d+(\.\d+)?$/.test(currentIngredient.prixUnitaire.toString())
@@ -136,7 +166,7 @@ const EditIngredient = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <h1 className={classes.title}>Modification d'un ingrédient</h1>
-      <form className={classes.form} method='post' onSubmit={saveIngredient}>
+      <form className={classes.form} method='post'>
         <div className='col-5'>
           <div className={`row ${classes.input}`}>
             <TextInput
@@ -172,10 +202,13 @@ const EditIngredient = (props) => {
               label='Unité'
               name='nomUnite'
               selected={currentIngredient.nomUnite}
-              dropDownList={UNITE}
+              dropDownList={units}
               optionIdentifier='nomUnite'
               onChange={handleChange}
             />
+            {unitEmptyError && (
+              <p className={classes.errorMessage}>Choisissez une unité</p>
+            )}
           </div>
         </div>
         <div className='col-2' />
@@ -185,10 +218,13 @@ const EditIngredient = (props) => {
               label='Catégorie'
               name='nomCatIng'
               selected={currentIngredient.nomCatIng}
-              dropDownList={CATEGORIES}
+              dropDownList={categories}
               optionIdentifier='nomCatIng'
               onChange={handleChange}
             />
+            {categoryEmptyError && (
+              <p className={classes.errorMessage}>Choisissez une catégorie</p>
+            )}
           </div>
           <div className={`row ${classes.input}`}>
             <Checkbox
@@ -204,7 +240,7 @@ const EditIngredient = (props) => {
                 label='Catégorie allergène'
                 name='nomCatAllerg'
                 selected={currentIngredient.nomCatAllerg}
-                dropDownList={ALLERGENCATEGORIES}
+                dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
                 onChange={handleChange}
               />
