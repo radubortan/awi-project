@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../general/Button';
 import NumberInput from '../general/NumberInput';
 import TextInput from '../general/TextInput';
@@ -6,33 +6,62 @@ import SelectInput from '../general/SelectInput';
 import Modal from '../ui/Modal';
 import Checkbox from '../general/Checkbox';
 import classes from './AddIngredient.module.css';
+import { Fragment } from 'react/cjs/react.production.min';
 
 const AddIngredient = (props) => {
-  const UNITE = [{ nomUnite: 'g' }, { nomUnite: 'l' }];
+  const [newIngredient, setNewIngredient] = useState({
+    nomIng: '',
+    prixUnitaire: 0,
+    nomUnite: undefined,
+    nomCatIng: undefined,
+    nomCatAllerg: undefined,
+  });
+  const [categories, setCategories] = useState([]);
+  const [allergenCategories, setAllergenCategories] = useState([]);
+  const [units, setUnits] = useState([]);
 
-  const CATEGORIES = [
-    {
-      nomCatIng: 'Fruit',
-    },
-    {
-      nomCatIng: 'Légume',
-    },
-    {
-      nomCatIng: 'Lait',
-    },
-    {
-      nomCatIng: 'Poisson',
-    },
-  ];
+  const fetchCategories = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredientCategory.json'
+    );
+    const data = await response.json();
+    const loadedCategories = [];
+    for (const key in data) {
+      loadedCategories.push({ nomCatIng: data[key] });
+    }
+    setCategories(loadedCategories);
+  };
 
-  const ALLERGENCATEGORIES = [
-    {
-      nomCatAllerg: 'Crustaces',
-    },
-    {
-      nomCatAllerg: 'Fruit a coque',
-    },
-  ];
+  const fetchAllergen = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/allergen.json'
+    );
+    const data = await response.json();
+    const loadedAllergen = [];
+    for (const key in data) {
+      loadedAllergen.push({ nomCatAllerg: data[key] });
+    }
+    setAllergenCategories(loadedAllergen);
+  };
+
+  const fetchUnits = async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/units.json'
+    );
+    const data = await response.json();
+    const loadedUnits = [];
+    for (const key in data) {
+      loadedUnits.push({ nomUnite: data[key] });
+    }
+    setUnits(loadedUnits);
+  };
+
+  //fetching ingredient catagories, allergen categories and units
+  useEffect(() => {
+    fetchAllergen();
+    fetchCategories();
+    fetchUnits();
+  }, []);
 
   // Allergene Checkbox
   const [isAllergen, setIsAllergen] = useState(false);
@@ -42,8 +71,7 @@ const AddIngredient = (props) => {
       setIsAllergen(true);
       setNewIngredient({
         ...newIngredient,
-
-        nomCatAllerg: ALLERGENCATEGORIES[0].nomCatAllerg,
+        nomCatAllerg: allergenCategories[0].nomCatAllerg,
       });
     } else {
       setIsAllergen(false);
@@ -54,16 +82,6 @@ const AddIngredient = (props) => {
       });
     }
   };
-
-  // Issue with predefined value, they need to be set here manually
-  // according to each SelectInput preselected value
-  const [newIngredient, setNewIngredient] = useState({
-    nomIng: '',
-    prixUnitaire: 0,
-    nomUnite: UNITE[0].nomUnite,
-    nomCatIng: CATEGORIES[0].nomCatIng,
-    nomCatAllerg: undefined,
-  });
 
   const handleChange = (e) => {
     const value = e.target.value;
@@ -77,7 +95,7 @@ const AddIngredient = (props) => {
 
   const saveIngredient = (e) => {
     e.preventDefault();
-
+    console.log(newIngredient);
     // Validation
     if (isValid()) {
       props.onClose();
@@ -86,15 +104,18 @@ const AddIngredient = (props) => {
   };
 
   // Validation
-
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
   const [prixUnitaireError, setPrixUnitaireError] = useState(false);
+  const [unitEmptyError, setUnitEmptyError] = useState(false);
+  const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
     setnomIngEmptyError(false);
     setNomIngUnvailableError(false);
     setPrixUnitaireError(false);
+    setUnitEmptyError(false);
+    setCategoryEmptyError(false);
 
     let isValid = true;
 
@@ -110,7 +131,14 @@ const AddIngredient = (props) => {
       setNomIngUnvailableError(true);
       isValid = false;
     }
-
+    if (newIngredient.nomCatIng === undefined) {
+      setCategoryEmptyError(true);
+      isValid = false;
+    }
+    if (newIngredient.nomUnite === undefined) {
+      setUnitEmptyError(true);
+      isValid = false;
+    }
     if (!/^(?!0\d)\d+(\.\d+)?$/.test(newIngredient.prixUnitaire.toString())) {
       setPrixUnitaireError(true);
       isValid = false;
@@ -141,7 +169,7 @@ const AddIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <NumberInput
-              label='Prix'
+              label='Prix (€)'
               name='prixUnitaire'
               value={newIngredient.prixUnitaire}
               onChange={handleChange}
@@ -157,10 +185,13 @@ const AddIngredient = (props) => {
               label='Unité'
               name='nomUnite'
               selected={newIngredient.nomUnite}
-              dropDownList={UNITE}
+              dropDownList={units}
               optionIdentifier='nomUnite'
               onChange={handleChange}
             />
+            {unitEmptyError && (
+              <p className={classes.errorMessage}>Choisissez une unité</p>
+            )}
           </div>
         </div>
         <div className='col-2' />
@@ -170,10 +201,13 @@ const AddIngredient = (props) => {
               label='Catégorie'
               name='nomCatIng'
               selected={newIngredient.nomCatIng}
-              dropDownList={CATEGORIES}
+              dropDownList={categories}
               optionIdentifier='nomCatIng'
               onChange={handleChange}
             />
+            {categoryEmptyError && (
+              <p className={classes.errorMessage}>Choisissez une catégorie</p>
+            )}
           </div>
           <div className={`row ${classes.input}`}>
             <Checkbox
@@ -188,7 +222,7 @@ const AddIngredient = (props) => {
                 label='Catégorie allergène'
                 name='nomCatAllerg'
                 selected={newIngredient.nomCatAllerg}
-                dropDownList={ALLERGENCATEGORIES}
+                dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
                 onChange={handleChange}
               />

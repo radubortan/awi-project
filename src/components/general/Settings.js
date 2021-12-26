@@ -21,12 +21,14 @@ const EditIngredient = (props) => {
   });
 
   //to fetch the stored values when the component loads
-  useEffect(async () => {
-    const response = await fetch(
-      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json'
-    );
-    const data = await response.json();
-    setCurrentSettings(data);
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const response = await fetch(
+        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json'
+      );
+      const data = await response.json();
+      setCurrentSettings(data);
+    };
   }, []);
 
   const handleChange = (e) => {

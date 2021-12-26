@@ -16,6 +16,11 @@ function Ingredient(props) {
           <p>Allergène</p>
         </div>
       )}
+      {props.ingredient.nomCatAllerg && (
+        <div className={classes.allergeneMessageSmall}>
+          <p>A</p>
+        </div>
+      )}
       <div className={classes.buttons}>
         <div className={classes.btnSpacing}>
           <Button
@@ -32,7 +37,7 @@ function Ingredient(props) {
           className='cancelButton'
           onClick={(e) => {
             e.stopPropagation();
-            props.onDeleteIngredient(props.index);
+            props.onDeleteIngredient(props.index, props.ingredient);
           }}
         >
           <BsTrashFill />

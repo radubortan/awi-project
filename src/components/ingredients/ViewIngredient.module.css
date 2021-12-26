@@ -10,9 +10,9 @@
   padding: 20px;
 }
 
-.information:nth-of-type(odd) {
+/* .information:nth-of-type(odd) {
   margin-bottom: 20px;
-}
+} */
 
 .label {
   font-size: 1.7rem;
@@ -24,4 +24,10 @@
 
 .information {
   padding-left: 20px;
+}
+
+.separator {
+  height: 1px;
+  background-color: rgb(177, 177, 177);
+  margin: 5px 10px;
 }
