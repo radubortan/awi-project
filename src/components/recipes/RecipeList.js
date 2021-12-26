@@ -3,7 +3,6 @@ import Recipe from './Recipe';
 import classes from './RecipeList.module.css';
 
 function RecipeList(props) {
-  console.log('rerendered');
   return (
     <ul>
       {props.recipeList.length === 0 && (

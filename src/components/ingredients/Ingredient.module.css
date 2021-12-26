@@ -44,3 +44,14 @@ li {
 .btnSpacing {
   margin-right: 20px;
 }
+
+@media (max-width: 600px) {
+  .btnSpacing {
+    margin-right: 10px;
+  }
+  .ingredient {
+    margin-left: 2%;
+    margin-right: 2%;
+    padding-bottom: 0.5rem;
+  }
+}

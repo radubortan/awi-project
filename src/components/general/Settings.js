@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from '../general/Button';
 import NumberInput from '../general/NumberInput';
 import Modal from '../ui/Modal';
@@ -16,23 +16,42 @@ const EditIngredient = (props) => {
   const [currentSettings, setCurrentSettings] = useState({
     coutHoraireMoyen: 1,
     coutHoraireForfaitaire: 1,
-    coeffMultiSans: 1,
     coeffMultiAvec: 1,
+    coeffMultiSans: 1,
   });
+
+  //to fetch the stored values when the component loads
+  useEffect(async () => {
+    const response = await fetch(
+      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json'
+    );
+    const data = await response.json();
+    setCurrentSettings(data);
+  }, []);
 
   const handleChange = (e) => {
     const value = e.target.value;
-    setCurrentSettings({
-      ...currentSettings,
-      [e.target.name]: value,
+    setCurrentSettings((oldSettings) => {
+      const newSettings = { ...oldSettings };
+      newSettings[e.target.name] = value;
+      return newSettings;
     });
   };
 
-  const saveSettings = (e) => {
+  const saveSettingsHandler = async (e) => {
     e.preventDefault();
     if (isValid()) {
+      await fetch(
+        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json',
+        {
+          method: 'PUT',
+          body: JSON.stringify(currentSettings),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       props.onClose();
-      // props.editIngredient(currentIngredient, props.ingredientInfo.index);
     }
   };
 
@@ -76,7 +95,7 @@ const EditIngredient = (props) => {
           <h2 className={classes.columnTitle}>Coefficient Multiplicateur</h2>
         </div>
       </div>
-      <form className={classes.form} method='post' onSubmit={saveSettings}>
+      <form className={classes.form} method='post'>
         <div className='row'>
           <div className='col-5'>
             <div className={`row ${classes.input}`}>
@@ -132,7 +151,7 @@ const EditIngredient = (props) => {
       <div className={`row ${classes.buttons}`}>
         <div className='col-4' />
         <div className={`col-2`}>
-          <Button className='confirmButton' onClick={saveSettings}>
+          <Button className='confirmButton' onClick={saveSettingsHandler}>
             Confirmer
           </Button>
         </div>
