@@ -3,6 +3,8 @@ import Button from '../general/Button';
 import NumberInput from '../general/NumberInput';
 import Modal from '../ui/Modal';
 import classes from './Settings.module.css';
+import { db } from '../../firebase-config';
+import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 
 const EditIngredient = (props) => {
   //error states
@@ -15,16 +17,19 @@ const EditIngredient = (props) => {
   //settings state
   const [currentSettings, setCurrentSettings] = useState({});
 
+  const settingsCollectionRef = collection(db, 'settings');
+
   //to fetch the stored values when the component loads
   useEffect(() => {
-    const fetchSettings = async () => {
-      const response = await fetch(
-        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json'
-      );
-      const data = await response.json();
-      setCurrentSettings(data);
+    const getSettings = async () => {
+      const data = await getDocs(settingsCollectionRef);
+      let loadedSettings = {};
+      data.docs.map((doc) => {
+        return (loadedSettings = { ...doc.data(), id: doc.id });
+      });
+      setCurrentSettings(loadedSettings);
     };
-    fetchSettings();
+    getSettings();
   }, []);
 
   const handleChange = (e) => {
@@ -38,17 +43,11 @@ const EditIngredient = (props) => {
 
   const saveSettingsHandler = async (e) => {
     e.preventDefault();
+    const settingsDoc = doc(db, 'settings', currentSettings.id);
+    const newSettings = { ...currentSettings };
+    delete newSettings.id;
     if (isValid()) {
-      await fetch(
-        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/settings.json',
-        {
-          method: 'PUT',
-          body: JSON.stringify(currentSettings),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        }
-      );
+      await updateDoc(settingsDoc, newSettings);
       props.onClose();
     }
   };

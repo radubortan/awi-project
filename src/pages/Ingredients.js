@@ -11,6 +11,15 @@ import DeleteIngredient from '../components/ingredients/DeleteIngredient';
 import ViewIngredient from '../components/ingredients/ViewIngredient';
 import classes from './Ingredients.module.css';
 import { HiPlus } from 'react-icons/hi';
+import { db } from '../firebase-config';
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 
 function Ingredients() {
   const [ingredientList, setIngredientList] = useState([]);
@@ -21,27 +30,26 @@ function Ingredients() {
     allergenCategories: [],
   });
 
+  const ingredientsCollectionRef = collection(db, 'ingredients');
+
   useEffect(() => {
-    const fetchIngredients = async () => {
-      const response = await fetch(
-        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json'
-      );
-      const data = await response.json();
+    const getIngredients = async () => {
+      const data = await getDocs(ingredientsCollectionRef);
       const loadedIngredients = [];
-      for (const key in data) {
-        loadedIngredients.push({
-          id: key,
-          nomIng: data[key].nomIng,
-          nomCatIng: data[key].nomCatIng,
-          prixUnitaire: data[key].prixUnitaire,
-          nomUnite: data[key].nomUnite,
-          nomCatAllerg: data[key].nomCatAllerg,
+      data.docs.map((doc) => {
+        return loadedIngredients.push({
+          id: doc.id,
+          nomCatIng: doc.data().nomCatIng,
+          nomCatAllerg: doc.data().nomCatAllerg,
+          nomIng: doc.data().nomIng,
+          nomUnite: doc.data().nomUnite,
+          prixUnitaire: doc.data().prixUnitaire,
         });
-      }
+      });
       setIngredientList(loadedIngredients);
       setFilteredIngredientList(loadedIngredients);
     };
-    fetchIngredients();
+    getIngredients();
   }, []);
 
   //Filtering method
@@ -99,25 +107,21 @@ function Ingredients() {
     setOnAddIngredient(true);
   };
 
-  const addIngredient = (newIngredient) => {
-    // setFilteredIngredientList([...ingredientList, newIngredient]);
-    fetch(
-      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients.json',
-      {
-        method: 'POST',
-        body: JSON.stringify(newIngredient),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        newIngredient.id = data.name;
-        setIngredientList([...ingredientList, newIngredient]);
+  const addIngredient = async (newIngredient) => {
+    let response;
+    //if ingredient has an allergen set
+    if (newIngredient.nomCatAllerg) {
+      response = await addDoc(ingredientsCollectionRef, newIngredient);
+    }
+    //if no allergen was set, we set an empty string
+    else {
+      response = await addDoc(ingredientsCollectionRef, {
+        ...newIngredient,
+        nomCatAllerg: '',
       });
+    }
+    newIngredient.id = response.id;
+    setIngredientList([...ingredientList, newIngredient]);
   };
 
   useEffect(() => {
@@ -141,19 +145,20 @@ function Ingredients() {
   };
 
   const editIngredient = async (editedIngredient, indexIngredient) => {
+    const ingredientDoc = doc(db, 'ingredients', editedIngredient.id);
+    const newIngredient = { ...editedIngredient };
+    delete newIngredient.id;
+    if (newIngredient.nomCatAllerg) {
+      await updateDoc(ingredientDoc, newIngredient);
+    } else {
+      const noAllergIngredient = { ...newIngredient };
+      noAllergIngredient.nomCatAllerg = '';
+      await updateDoc(ingredientDoc, noAllergIngredient);
+    }
+
     const updatedIngredients = [...ingredientList];
     updatedIngredients.splice(indexIngredient, 1, editedIngredient);
     setIngredientList([...updatedIngredients]);
-    await fetch(
-      `https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${editedIngredient.id}.json`,
-      {
-        method: 'PUT',
-        body: JSON.stringify(editedIngredient),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
   };
 
   // Delete Ingredient
@@ -172,14 +177,12 @@ function Ingredients() {
   };
 
   const deleteIngredient = async (indexIngredient, idIngredient) => {
-    ingredientList.splice(indexIngredient, 1);
-    await fetch(
-      `https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredients/${idIngredient}.json`,
-      {
-        method: 'DELETE',
-      }
-    );
-    setIngredientList([...ingredientList]);
+    const ingredientDoc = doc(db, 'ingredients', idIngredient);
+    await deleteDoc(ingredientDoc);
+
+    const updatedIngredients = [...ingredientList];
+    updatedIngredients.splice(indexIngredient, 1);
+    setIngredientList([...updatedIngredients]);
   };
 
   // View Ingredient

@@ -6,6 +6,8 @@ import SelectInput from '../general/SelectInput';
 import Modal from '../ui/Modal';
 import Checkbox from '../general/Checkbox';
 import classes from './EditIngredient.module.css';
+import { db } from '../../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 
 const EditIngredient = (props) => {
   const [categories, setCategories] = useState([]);
@@ -28,50 +30,48 @@ const EditIngredient = (props) => {
     return textA < textB ? -1 : textA > textB ? 1 : 0;
   };
 
-  const fetchCategories = async () => {
-    const response = await fetch(
-      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredientCategory.json'
-    );
-    const data = await response.json();
+  const ingredientCategoriesCollectionRef = collection(
+    db,
+    'ingredientCategories'
+  );
+  const allergenCollectionRef = collection(db, 'allergens');
+  const unitsCollectionRef = collection(db, 'units');
+
+  const getCategories = async () => {
+    const data = await getDocs(ingredientCategoriesCollectionRef);
     const loadedCategories = [];
-    for (const key in data) {
-      loadedCategories.push({ nomCatIng: data[key] });
-    }
+    data.docs.map((doc) => {
+      return loadedCategories.push({ nomCatIng: doc.data().nomCatIng });
+    });
     loadedCategories.sort(sortIngredientCategories);
     setCategories(loadedCategories);
   };
 
-  const fetchAllergen = async () => {
-    const response = await fetch(
-      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/allergen.json'
-    );
-    const data = await response.json();
-    const loadedAllergen = [];
-    for (const key in data) {
-      loadedAllergen.push({ nomCatAllerg: data[key] });
-    }
-    loadedAllergen.sort(sortAllergens);
-    setAllergenCategories(loadedAllergen);
+  const getAllergen = async () => {
+    const data = await getDocs(allergenCollectionRef);
+    const loadedAllergens = [];
+    data.docs.map((doc) => {
+      return loadedAllergens.push({ nomCatAllerg: doc.data().nomCatAllerg });
+    });
+    loadedAllergens.sort(sortAllergens);
+    setAllergenCategories(loadedAllergens);
   };
 
-  const fetchUnits = async () => {
-    const response = await fetch(
-      'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/units.json'
-    );
-    const data = await response.json();
+  const getUnits = async () => {
+    const data = await getDocs(unitsCollectionRef);
     const loadedUnits = [];
-    for (const key in data) {
-      loadedUnits.push({ nomUnite: data[key] });
-    }
+    data.docs.map((doc) => {
+      return loadedUnits.push({ nomUnite: doc.data().nomUnite });
+    });
     loadedUnits.sort(sortUnits);
     setUnits(loadedUnits);
   };
 
   //fetching ingredient catagories, allergen categories and units
   useEffect(() => {
-    fetchAllergen();
-    fetchCategories();
-    fetchUnits();
+    getAllergen();
+    getCategories();
+    getUnits();
   }, []);
 
   const givenIngredient = props.ingredientInfo.ingredient;
@@ -95,7 +95,8 @@ const EditIngredient = (props) => {
 
   // Allergene Checkbox
   const [isAllergen, setIsAllergen] = useState(
-    currentIngredient.nomCatAllerg !== undefined
+    currentIngredient.nomCatAllerg !== undefined &&
+      currentIngredient.nomCatAllerg !== ''
   );
 
   const checkboxHandler = (e) => {
@@ -257,7 +258,11 @@ const EditIngredient = (props) => {
               <SelectInput
                 label='Catégorie allergène'
                 name='nomCatAllerg'
-                selected={currentIngredient.nomCatAllerg}
+                selected={
+                  currentIngredient.nomCatAllerg === undefined
+                    ? 'false'
+                    : 'true'
+                }
                 dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
                 onChange={handleChange}

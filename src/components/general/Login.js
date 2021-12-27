@@ -1,7 +1,7 @@
 import classes from './Login.module.css';
 import Button from './Button';
 import Modal from '../ui/Modal';
-import { Fragment, useRef, useState, useContext, useEffect } from 'react';
+import { Fragment, useRef, useState, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { useNavigate } from 'react-router-dom';
 
@@ -17,36 +17,30 @@ const Login = (props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasError, setHadError] = useState(false);
 
-  //used because of a problem with useState that doesn't want to use the latest value
-  const [isFirstTime, setIsFirstTime] = useState(true);
-
   const validateInput = (enteredEmail, enteredPassword) => {
     setEmailIsValid(true);
     setPasswordIsValid(true);
+    let emailOk = true;
+    let passwordOk = true;
     if (!enteredEmail.toLowerCase().match(/^\S+@\S+\.\S+$/)) {
       setEmailIsValid(false);
+      emailOk = false;
     }
     if (!(enteredPassword.trim().length > 0)) {
       setPasswordIsValid(false);
+      passwordOk = false;
     }
-    return emailIsValid && passwordIsValid;
+    return emailOk && passwordOk;
   };
-
-  useEffect(() => {
-    //used because of a problem with useState that doesn't want to use the latest value
-    if (isFirstTime) {
-      setIsFirstTime(false);
-    }
-  }, [emailIsValid, passwordIsValid]);
 
   const submitHandler = (event) => {
     event.preventDefault();
     setHadError(false);
     const url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBs8lRnKg3r90pb-pGbndKFSrT74F0S2QY';
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAtPfPbNmHoO_gZVV82-u-MxQM9phQl278';
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
-    if (validateInput(enteredEmail, enteredPassword) && !isFirstTime) {
+    if (validateInput(enteredEmail, enteredPassword)) {
       setIsLoading(true);
       fetch(url, {
         method: 'POST',

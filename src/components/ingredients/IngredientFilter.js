@@ -1,13 +1,15 @@
 import Card from '../ui/Card';
 import CategoriesCheckBox from '../general/CategoriesCheckBox';
 import { useEffect, useState } from 'react';
+import { db } from '../../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 
 const sortAllergens = (a, b) => {
   const textA = a.nomCatAllerg;
   const textB = b.nomCatAllerg;
   return textA < textB ? -1 : textA > textB ? 1 : 0;
 };
-const sortIngredients = (a, b) => {
+const sortIngredientCategories = (a, b) => {
   const textA = a.nomCatIng;
   const textB = b.nomCatIng;
   return textA < textB ? -1 : textA > textB ? 1 : 0;
@@ -17,34 +19,37 @@ function IngredientFilter(props) {
   const [categories, setCategories] = useState([]);
   const [allergenCategories, setAllergenCategories] = useState([]);
 
+  const ingredientCategoriesCollectionRef = collection(
+    db,
+    'ingredientCategories'
+  );
+  const allergenCollectionRef = collection(db, 'allergens');
+
   //fetching ingredient and allergen categories
   useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(
-        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/ingredientCategory.json'
-      );
-      const data = await response.json();
+    const getCategories = async () => {
+      const data = await getDocs(ingredientCategoriesCollectionRef);
       const loadedCategories = [];
-      for (const key in data) {
-        loadedCategories.push({ nomCatIng: data[key] });
-      }
-      loadedCategories.sort(sortIngredients);
+      data.docs.map((doc) => {
+        return loadedCategories.push({ nomCatIng: doc.data().nomCatIng });
+      });
+      loadedCategories.sort(sortIngredientCategories);
       setCategories(loadedCategories);
     };
-    const fetchAllergen = async () => {
-      const response = await fetch(
-        'https://projet-awi-4e549-default-rtdb.europe-west1.firebasedatabase.app/allergen.json'
-      );
-      const data = await response.json();
-      const loadedAllergen = [];
-      for (const key in data) {
-        loadedAllergen.push({ nomCatAllerg: data[key] });
-      }
-      loadedAllergen.sort(sortAllergens);
-      setAllergenCategories(loadedAllergen);
+
+    const getAllergen = async () => {
+      const data = await getDocs(allergenCollectionRef);
+      const loadedAllergens = [];
+      data.docs.map((doc) => {
+        return loadedAllergens.push({
+          nomCatAllerg: doc.data().nomCatAllerg,
+        });
+      });
+      loadedAllergens.sort(sortAllergens);
+      setAllergenCategories(loadedAllergens);
     };
-    fetchCategories();
-    fetchAllergen();
+    getCategories();
+    getAllergen();
   }, []);
 
   return (
