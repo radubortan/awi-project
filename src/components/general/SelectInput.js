@@ -11,7 +11,11 @@ function SelectInput(props) {
         onChange={props.onChange}
         className={classes.input}
       >
-        <option selected={props.selected ? 'false' : 'true'} disables hidden>
+        <option
+          selected={props.selected === 'false' ? 'true' : 'false'}
+          disables
+          hidden
+        >
           Choisir
         </option>
         {props.dropDownList.map((item, index) => (

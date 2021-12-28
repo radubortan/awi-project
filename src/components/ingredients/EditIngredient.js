@@ -78,10 +78,6 @@ const EditIngredient = (props) => {
   const [currentIngredient, setCurrentIngredient] = useState({
     id: givenIngredient.id,
     nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',
-    prixUnitaire:
-      givenIngredient.prixUnitaire !== undefined
-        ? givenIngredient.prixUnitaire
-        : 0,
     nomUnite:
       givenIngredient.nomUnite !== undefined
         ? givenIngredient.nomUnite
@@ -139,14 +135,12 @@ const EditIngredient = (props) => {
 
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
-  const [prixUnitaireError, setPrixUnitaireError] = useState(false);
   const [unitEmptyError, setUnitEmptyError] = useState(false);
   const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
     setnomIngEmptyError(false);
     setNomIngUnvailableError(false);
-    setPrixUnitaireError(false);
 
     let isValid = true;
 
@@ -172,13 +166,6 @@ const EditIngredient = (props) => {
       setUnitEmptyError(true);
       isValid = false;
     }
-
-    if (
-      !/^(?!0\d)\d+(\.\d+)?$/.test(currentIngredient.prixUnitaire.toString())
-    ) {
-      setPrixUnitaireError(true);
-      isValid = false;
-    }
     return isValid;
   };
 
@@ -201,19 +188,6 @@ const EditIngredient = (props) => {
             )}
             {nomIngUnvailableError && (
               <p className={classes.errorMessage}>Ce nom existe déjà</p>
-            )}
-          </div>
-          <div className={`row ${classes.input}`}>
-            <NumberInput
-              label='Prix'
-              name='prixUnitaire'
-              value={currentIngredient.prixUnitaire}
-              onChange={handleChange}
-            />
-            {prixUnitaireError && (
-              <p className={classes.errorMessage}>
-                Le prix doit être un nombre
-              </p>
             )}
           </div>
           <div className={`row ${classes.input}`}>
@@ -261,7 +235,7 @@ const EditIngredient = (props) => {
                 selected={
                   currentIngredient.nomCatAllerg === undefined
                     ? 'false'
-                    : 'true'
+                    : currentIngredient.nomCatAllerg
                 }
                 dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
@@ -271,19 +245,13 @@ const EditIngredient = (props) => {
           </div>
         </div>
       </form>
-      <div className={`row ${classes.buttons}`}>
-        <div className='col-4' />
-        <div className={`col-2`}>
-          <Button className='confirmButton' onClick={saveIngredient}>
-            Modifier
-          </Button>
-        </div>
-        <div className={`col-2`}>
-          <Button className='cancelButton' onClick={props.onClose}>
-            Annuler
-          </Button>
-        </div>
-        <div className='col-4' />
+      <div className={`${classes.buttons}`}>
+        <Button className='confirmButton' onClick={saveIngredient}>
+          Modifier
+        </Button>
+        <Button className='cancelButton' onClick={props.onClose}>
+          Annuler
+        </Button>
       </div>
     </Modal>
   );

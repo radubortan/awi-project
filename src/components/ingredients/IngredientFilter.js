@@ -54,18 +54,24 @@ function IngredientFilter(props) {
 
   return (
     <Card>
-      <CategoriesCheckBox
-        name='Catégorie'
-        onChange={props.categoriesFiltering}
-        categories={categories}
-        labelIdentifier='nomCatIng'
-      />
-      <CategoriesCheckBox
-        name="Catégorie d'allergène"
-        onChange={props.allergenCategoriesFiltering}
-        categories={allergenCategories}
-        labelIdentifier='nomCatAllerg'
-      />
+      <div className='row'>
+        <div className='col-6 col-sm-6 col-md-12'>
+          <CategoriesCheckBox
+            name='Catégorie'
+            onChange={props.categoriesFiltering}
+            categories={categories}
+            labelIdentifier='nomCatIng'
+          />
+        </div>
+        <div className='col-6 col-sm-6 col-md-12'>
+          <CategoriesCheckBox
+            name="Catégorie d'allergène"
+            onChange={props.allergenCategoriesFiltering}
+            categories={allergenCategories}
+            labelIdentifier='nomCatAllerg'
+          />
+        </div>
+      </div>
     </Card>
   );
 }
