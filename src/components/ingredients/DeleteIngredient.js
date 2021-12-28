@@ -10,29 +10,22 @@ const DeleteIngredient = (props) => {
           Voulez vous vraiment supprimer cet ingrédient?
         </h2>
       </div>
-      <div className={`row ${classes.buttons}`}>
-        <div className='col-3' />
-        <div className='col-2'>
-          <Button
-            onClick={() => {
-              props.onClose();
-              props.onDeleteIngredient(
-                props.indexIngredient,
-                props.ingredient.id
-              );
-            }}
-            className='cancelButton'
-          >
-            Supprimer
-          </Button>
-        </div>
-        <div className='col-2' />
-        <div className='col-2'>
-          <Button className='confirmButton' onClick={props.onClose}>
-            Annuler
-          </Button>
-        </div>
-        <div className='col-3' />
+      <div className={`${classes.buttons}`}>
+        <Button
+          onClick={() => {
+            props.onClose();
+            props.onDeleteIngredient(
+              props.indexIngredient,
+              props.ingredient.id
+            );
+          }}
+          className='cancelButton'
+        >
+          Supprimer
+        </Button>
+        <Button className='confirmButton' onClick={props.onClose}>
+          Annuler
+        </Button>
       </div>
     </Modal>
   );

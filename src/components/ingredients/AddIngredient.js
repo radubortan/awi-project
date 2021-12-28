@@ -12,7 +12,6 @@ import { collection, getDocs } from 'firebase/firestore';
 const AddIngredient = (props) => {
   const [newIngredient, setNewIngredient] = useState({
     nomIng: '',
-    prixUnitaire: 0,
     nomUnite: undefined,
     nomCatIng: undefined,
     nomCatAllerg: undefined,
@@ -123,14 +122,12 @@ const AddIngredient = (props) => {
   // Validation
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
-  const [prixUnitaireError, setPrixUnitaireError] = useState(false);
   const [unitEmptyError, setUnitEmptyError] = useState(false);
   const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
     setnomIngEmptyError(false);
     setNomIngUnvailableError(false);
-    setPrixUnitaireError(false);
     setUnitEmptyError(false);
     setCategoryEmptyError(false);
 
@@ -156,10 +153,6 @@ const AddIngredient = (props) => {
       setUnitEmptyError(true);
       isValid = false;
     }
-    if (!/^(?!0\d)\d+(\.\d+)?$/.test(newIngredient.prixUnitaire.toString())) {
-      setPrixUnitaireError(true);
-      isValid = false;
-    }
     return isValid;
   };
 
@@ -182,19 +175,6 @@ const AddIngredient = (props) => {
             )}
             {nomIngUnvailableError && (
               <p className={classes.errorMessage}>Ce nom existe déjà</p>
-            )}
-          </div>
-          <div className={`row ${classes.input}`}>
-            <NumberInput
-              label='Prix (€)'
-              name='prixUnitaire'
-              value={newIngredient.prixUnitaire}
-              onChange={handleChange}
-            />
-            {prixUnitaireError && (
-              <p className={classes.errorMessage}>
-                Le prix doit être un nombre
-              </p>
             )}
           </div>
           <div className={`row ${classes.input}`}>
@@ -249,19 +229,13 @@ const AddIngredient = (props) => {
           </div>
         </div>
       </form>
-      <div className={`row ${classes.buttons}`}>
-        <div className='col-4' />
-        <div className='col-2'>
-          <Button className='confirmButton' onClick={saveIngredient}>
-            Créer
-          </Button>
-        </div>
-        <div className='col-2'>
-          <Button className='cancelButton' onClick={props.onClose}>
-            Annuler
-          </Button>
-        </div>
-        <div className='col-4' />
+      <div className={`${classes.buttons}`}>
+        <Button className='confirmButton' onClick={saveIngredient}>
+          Créer
+        </Button>
+        <Button className='cancelButton' onClick={props.onClose}>
+          Annuler
+        </Button>
       </div>
     </Modal>
   );

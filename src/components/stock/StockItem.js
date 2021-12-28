@@ -1,10 +1,8 @@
-import { FaTrash } from 'react-icons/fa';
-import { MdModeEdit } from 'react-icons/md';
-import { CgDanger } from 'react-icons/cg';
-import classes from './Ingredient.module.css';
+import classes from './StockItem.module.css';
 import Button from '../general/Button';
+import { HiPlus, HiMinus } from 'react-icons/hi';
 
-function Ingredient(props) {
+function StockItem(props) {
   return (
     <li
       className={classes.ingredient}
@@ -22,25 +20,26 @@ function Ingredient(props) {
           </div>
         )}
         <div className={classes.buttons}>
-          <div className={classes.btnSpacing}>
-            <Button
-              className='addButton'
-              onClick={(e) => {
-                e.stopPropagation();
-                props.onEditIngredient(props.ingredient, props.index);
-              }}
-            >
-              <MdModeEdit />
-            </Button>
-          </div>
           <Button
-            className='cancelButton'
+            className='addButton'
             onClick={(e) => {
               e.stopPropagation();
-              props.onDeleteIngredient(props.index, props.ingredient);
+              props.onDecreaseStock(props.ingredient, props.index);
             }}
           >
-            <FaTrash />
+            <HiMinus />
+          </Button>
+          <div
+            className={classes.stockAmount}
+          >{`${props.ingredient.stock} ${props.ingredient.nomUnite}`}</div>
+          <Button
+            className='addButton'
+            onClick={(e) => {
+              e.stopPropagation();
+              props.onIncreaseStock(props.ingredient, props.index);
+            }}
+          >
+            <HiPlus />
           </Button>
         </div>
       </div>
@@ -48,4 +47,4 @@ function Ingredient(props) {
   );
 }
 
-export default Ingredient;
+export default StockItem;

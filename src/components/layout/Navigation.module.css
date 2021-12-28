@@ -19,6 +19,11 @@
   color: white;
 }
 
+.nav {
+  display: flex;
+  align-items: center;
+}
+
 .nav ul {
   list-style: none;
   display: flex;
@@ -46,6 +51,69 @@
   color: #e6fcfc;
 }
 
+.menuBtn {
+  display: none;
+  position: absolute;
+  right: 20px;
+  padding: 10px;
+  background: none;
+  border: 2px solid white;
+  border-radius: 10px;
+  color: white;
+}
+
+.menuBtn:hover {
+  border-color: #88c5ff;
+  color: #88c5ff;
+}
+
+.closeBtn {
+  float: right;
+  background: none;
+  border: none;
+  border-radius: 10px;
+  padding: 5px;
+  color: #0c548f;
+}
+
+.closeBtn:hover {
+  background-color: rgb(240, 240, 240);
+}
+
+.bigScreenNav {
+  display: inline;
+}
+
+.smallScreenLogin {
+  display: none;
+}
+
+.smallScreenLinks {
+  display: flex;
+  flex-direction: column;
+}
+
+.smallScreenLinks li {
+  margin: 0;
+  padding: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  padding-left: 20px;
+  margin-top: 10px;
+  color: #0c548f;
+  width: 0;
+}
+
+.smallScreenLinks a {
+  text-decoration: none;
+  color: #0c548f;
+}
+
+.smallScreenLinks li:hover,
+.smallScreenLinks a:hover {
+  color: #8bb2ec;
+}
+
 @media (max-width: 1000px) {
   .header {
     padding: 0 4%;
@@ -63,22 +131,21 @@
 }
 
 @media (max-width: 700px) {
-  .header {
-    padding: 0 4%;
-  }
   .nav li {
     font-size: 1rem;
   }
-  .logo {
-    font-size: 1.5rem;
+  .bigScreenNav ul {
+    display: none;
   }
-}
-
-@media (max-width: 700px) {
-  .header {
-    padding: 0 2%;
+  .menuBtn {
+    display: inline;
   }
-  .logo {
-    margin-right: 20px;
+  .smallScreenLogin li {
+    margin-right: 10px;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .smallScreenLogin {
+    display: inline;
   }
 }

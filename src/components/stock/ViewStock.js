@@ -1,10 +1,10 @@
 import Modal from '../ui/Modal';
 import Card from '../ui/Card';
-import classes from './ViewIngredient.module.css';
+import classes from './ViewStock.module.css';
 import Button from '../general/Button';
-import { Fragment } from 'react';
+import { Fragment } from 'react/cjs/react.production.min';
 
-const ViewIngredient = (props) => {
+const ViewStock = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <h1 className={classes.title}>{props.ingredient.nomIng}</h1>
@@ -56,4 +56,4 @@ const ViewIngredient = (props) => {
     </Modal>
   );
 };
-export default ViewIngredient;
+export default ViewStock;
