@@ -2,6 +2,8 @@ import Stage from "./Stage";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import DragHandle from "./DragHandle";
 import { Fragment } from "react";
+import classes from "./StagesList.module.css";
+
 function StagesList(props) {
   const updateListOrdering = (param) => {
     const sourceIndex = param.source.index;
@@ -21,23 +23,38 @@ function StagesList(props) {
               >
                 {(provided, snapshot) => (
                   <div
-                    className="row"
+                    className={`row ${
+                      stage.idEtape === props.idCurrentStage
+                        ? classes.active
+                        : ""
+                    } ${classes.box}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                   >
-                    <div className="col">
+                    <div className="col-10">
                       <Stage
                         stage={stage}
                         index={index}
+                        idCurrentStage={props.idCurrentStage}
                         indexCurrentStage={props.indexCurrentStage}
                         onChangeCurrentStage={props.onChangeCurrentStage}
                         onChangeStageTitle={props.onChangeStageTitle}
                         onDeleteStage={props.onDeleteStage}
                         isOnlyStage={props.stages.length == 1}
+                        errorStageNameEmpty={props.errorStageNameEmpty}
                       ></Stage>
                     </div>
-                    <div className="col" {...provided.dragHandleProps}>
-                      <DragHandle></DragHandle>
+                    <div
+                      className="col-2 d-flex align-items-center justify-content-center"
+                      {...provided.dragHandleProps}
+                    >
+                      <DragHandle
+                        className={
+                          stage.idEtape === props.idCurrentStage
+                            ? classes.white
+                            : ""
+                        }
+                      ></DragHandle>
                     </div>
                   </div>
                 )}

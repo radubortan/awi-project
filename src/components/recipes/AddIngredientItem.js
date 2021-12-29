@@ -24,6 +24,8 @@ function AddIngredientItem(props) {
         return loadedIngredients.push({
           nomIng: doc.data().nomIng,
           nomUnite: doc.data().nomUnite,
+          prixUnitaire: doc.data().prixUnitaire,
+          nomCatAllerg: doc.data().nomCatAllerg,
         });
       });
       loadedIngredients.sort(sortIngredients);
@@ -56,6 +58,8 @@ function AddIngredientItem(props) {
       setSelectedIngredient(null);
     }
   };
+
+  // Validation
 
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [qteEmptyError, setqteEmptyError] = useState(false);

@@ -1,0 +1,16 @@
+.active {
+  background-color: #0c548f;
+}
+
+.white {
+  color: whitesmoke;
+}
+
+.box {
+  padding: 1rem 0rem 1rem 0rem;
+  border-radius: 1em;
+}
+
+.iconSize {
+  size: 50px;
+}

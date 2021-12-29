@@ -1,13 +1,13 @@
-import React from 'react';
-import './Button.css';
+import React, { Fragment } from "react";
+import "./Button.css";
 
 function Button(props) {
   return (
-    <div>
+    <Fragment>
       <button onClick={props.onClick} className={`btn ${props.className}`}>
         {props.children}
       </button>
-    </div>
+    </Fragment>
   );
 }
 

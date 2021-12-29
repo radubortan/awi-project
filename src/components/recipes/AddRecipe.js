@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Button from "../general/Button";
 import NumberInput from "../general/NumberInput";
 import SelectInput from "../general/SelectInput";
@@ -8,6 +8,9 @@ import IngredientsPanel from "./IngredientsPanel";
 import StagesPanel from "./StagesPanel";
 import DetailPanel from "./DetailPanel";
 import { v4 as uuid } from "uuid";
+import classes from "./AddRecipe.module.css";
+import { db } from "../../firebase-config";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 import Summary from "./Summary";
 
@@ -17,7 +20,31 @@ const generateId = () => {
   return small_id;
 };
 
+const sortRecipes = (a, b) => {
+  const textA = a.nomRecette;
+  const textB = b.nomRecette;
+  return textA < textB ? -1 : textA > textB ? 1 : 0;
+};
+
 function AddRecipe() {
+  const recipesCollectionRef = collection(db, "recettes");
+
+  const [allRecipesList, setAllRecipesList] = useState([]);
+  useEffect(() => {
+    const getRecipes = async () => {
+      const data = await getDocs(recipesCollectionRef);
+      const loadedRecipes = [];
+      data.docs.map((doc) => {
+        return loadedRecipes.push({
+          idRecette: doc.id,
+          nomRecette: doc.data().nomRecette,
+        });
+      });
+      loadedRecipes.sort(sortRecipes);
+      setAllRecipesList(loadedRecipes);
+    };
+    getRecipes();
+  }, []);
   const CATEGORIES = [
     {
       nomCatRecipe: "Entrée",
@@ -37,6 +64,15 @@ function AddRecipe() {
     nomAuteur: "",
     nbCouverts: 0,
     nomCatRecette: "",
+    stages: [
+      {
+        idEtape: generateId(),
+        titreEtape: "",
+        description: "",
+        tempsEtape: "",
+        ingredients: [],
+      },
+    ],
   });
 
   const handleRecipeChange = (e) => {
@@ -48,25 +84,20 @@ function AddRecipe() {
   };
 
   const addStagesToRecipe = (stages) => {
-    setNewRecipe({
+    const updatedRecipe = {
       ...newRecipe,
-      stages: stages,
-    });
+      stages: [...stages],
+    };
+    setNewRecipe(updatedRecipe);
   };
 
   // Stages new recipe
 
-  const [stages, setStages] = useState([
-    {
-      idEtape: generateId(),
-      titreEtape: "",
-      ingredients: [],
-    },
-  ]);
+  const [stages, setStages] = useState([newRecipe.stages[0]]);
 
   const getIndexByIdStages = (idStage) => {
     return stages.findIndex((stage) => {
-      return stage.idEtape == idStage;
+      return stage.idEtape === idStage;
     });
   };
 
@@ -78,41 +109,53 @@ function AddRecipe() {
 
   const [idCurrentStage, setIdCurrentStage] = useState(stages[0].idEtape);
 
-  useEffect(() => {
-    console.log(idCurrentStage);
-  }, [idCurrentStage]);
-
   const addStage = () => {
     const newIdStage = generateId();
-    setStages(
-      [
-        ...stages,
-        {
-          idEtape: newIdStage,
-          titreEtape: "",
-          description: "",
-          tempsEtape: "",
-          ingredients: [],
-          nomRecette: "",
-          nbCouverts: 0,
-        },
-      ],
-      setIdCurrentStage(newIdStage)
+    const updatedStages = [
+      ...stages,
+      {
+        idEtape: newIdStage,
+        titreEtape: "",
+        description: "",
+        tempsEtape: "",
+        ingredients: [],
+      },
+    ];
+    setStages(updatedStages, setIdCurrentStage(newIdStage));
+    setSelectedRecipeType(
+      updatedStages[updatedStages.length - 1].nomRecette !== undefined
+        ? "recette"
+        : "in extenso"
     );
+    addStagesToRecipe(updatedStages);
   };
 
   const deleteStage = (idStage) => {
     const index = getIndexByIdStages(idStage);
     const updatedStages = [...stages];
-    updatedStages.filter((stage) => {
-      return stage.idEtape !== idStage;
-    });
+    updatedStages.splice(index, 1);
     setStages(
       updatedStages,
       index === 0
-        ? setIdCurrentStage(stages[0].idEtape)
-        : setIdCurrentStage(stages[index - 1].idEtape)
+        ? setIdCurrentStage(
+            updatedStages[0].idEtape,
+            setSelectedRecipeType(
+              updatedStages[0].nomRecette !== undefined
+                ? "recette"
+                : "in extenso"
+            )
+          )
+        : setIdCurrentStage(
+            updatedStages[index - 1].idEtape,
+            setSelectedRecipeType(
+              updatedStages[index - 1].nomRecette !== undefined
+                ? "recette"
+                : "in extenso"
+            )
+          )
     );
+
+    addStagesToRecipe(updatedStages);
   };
 
   const updateStages = (updatedCurrentStage) => {
@@ -123,6 +166,7 @@ function AddRecipe() {
       updatedCurrentStage
     );
     setStages(updatedStages);
+    addStagesToRecipe(updatedStages);
   };
 
   const handleCurrentStageChange = (e) => {
@@ -131,11 +175,15 @@ function AddRecipe() {
     const value = e.target.value;
     currentStage = { ...currentStage, [e.target.name]: value };
     updateStages(currentStage);
-    console.log(currentStage);
   };
 
   const changeCurrentStage = (idCurrentStage) => {
     setIdCurrentStage(idCurrentStage);
+    setSelectedRecipeType(
+      getStageById(idCurrentStage).nomRecette !== undefined
+        ? "recette"
+        : "in extenso"
+    );
   };
 
   const addIngredientItemToStage = (ingredientItem) => {
@@ -179,10 +227,9 @@ function AddRecipe() {
     currentStage = {
       ...currentStage,
       nomRecette: "",
-      nbCouverts: 0,
+      nbCouverts: "",
     };
     updateStages(currentStage);
-    console.log(currentStage);
   };
 
   const setCurrentStageToInExtensoMode = () => {
@@ -191,11 +238,125 @@ function AddRecipe() {
     currentStage = {
       ...currentStage,
       description: "",
-      tempsEtape: 0,
+      tempsEtape: "",
     };
     updateStages(currentStage);
-    console.log(currentStage);
   };
+
+  const [selectedRecipeType, setSelectedRecipeType] = useState(
+    getStageById(idCurrentStage).nomRecette !== undefined
+      ? "recette"
+      : "in extenso"
+  );
+  useEffect(() => {
+    console.log(selectedRecipeType);
+  }, [selectedRecipeType]);
+
+  const recipeTypeChange = (e) => {
+    if (e.target.value === "recette") {
+      setSelectedRecipeType("recette");
+      setCurrentStageToRecipeMode();
+    } else {
+      setSelectedRecipeType("in extenso");
+      setCurrentStageToInExtensoMode();
+    }
+  };
+
+  // Add recipe
+
+  //Validation
+
+  const [errorRecipeNameEmpty, setErrorRecipeNameEmpty] = useState(false);
+  const [errorRecipeNameExists, setErrorRecipeNameExists] = useState(false);
+  const [errorAuthorNameEmpty, setErrorAuthorNameEmpty] = useState(false);
+  const [errorCategoryEmpty, setErrorCategoryEmpty] = useState(false);
+  const [errorNbDiners, setErrorNbDiners] = useState(false);
+
+  const [errorStageNameEmpty, setErrorStageNameEmpty] = useState([]);
+
+  const isValid = () => {
+    setErrorRecipeNameEmpty(false);
+    setErrorRecipeNameExists(false);
+    setErrorAuthorNameEmpty(false);
+    setErrorCategoryEmpty(false);
+    setErrorNbDiners(false);
+
+    errorStageNameEmpty.length = 0;
+    setErrorStageNameEmpty([...errorStageNameEmpty]);
+
+    let isValid = true;
+    if (newRecipe.nomRecette === "") {
+      setErrorRecipeNameEmpty(true);
+      isValid = false;
+    }
+    if (
+      allRecipesList.some(
+        (recipe) => recipe.nomRecette === newRecipe.nomRecette
+      )
+    ) {
+      setErrorRecipeNameExists(true);
+      isValid = false;
+    }
+    if (newRecipe.nomAuteur === "") {
+      setErrorAuthorNameEmpty(true);
+      isValid = false;
+    }
+    if (newRecipe.nomCatRecette === "") {
+      setErrorCategoryEmpty(true);
+      isValid = false;
+    }
+    if (!/^(?!0\d)\d+$/.test(newRecipe.nbCouverts)) {
+      setErrorNbDiners(true);
+      isValid = false;
+    }
+
+    for (const stage of newRecipe.stages) {
+      if (!isValidStage(stage)) {
+        isValid = false;
+      }
+    }
+    return isValid;
+  };
+  // index
+
+  const isValidStage = (stage) => {
+    let isValid = true;
+    if (stage.titreEtape === "") {
+      setErrorStageNameEmpty([...errorStageNameEmpty, stage.idEtape]);
+      isValid = false;
+    }
+    if (stage.nomRecette !== undefined) {
+      if (stage.nomRecette === "") {
+        isValid = false;
+      }
+      if (!/^(?!0\d)\d+$/.test(stage.nbCouverts)) {
+        isValid = false;
+      }
+    } else {
+      if (stage.description === "") {
+        isValid = false;
+      }
+      if (!/^(?!0\d)\d+$/.test(stage.tempsEtape)) {
+        isValid = false;
+      }
+    }
+    return isValid;
+  };
+
+  // Add recipe
+
+  const navigate = useNavigate();
+
+  const addRecipe = async () => {
+    let response;
+    if (isValid()) {
+      response = await addDoc(recipesCollectionRef, newRecipe);
+
+      newRecipe.id = response.id;
+      navigate("/");
+    }
+  };
+
   return (
     <Fragment>
       <div className="row">
@@ -207,35 +368,61 @@ function AddRecipe() {
               value={newRecipe.nomRecette}
               onChange={handleRecipeChange}
             ></TextInput>
+            {errorRecipeNameEmpty && (
+              <p className={classes.errorMessage}>
+                Le nom ne peut pas être vide
+              </p>
+            )}
+            {errorRecipeNameExists && (
+              <p className={classes.errorMessage}>Ce nom existe déjà</p>
+            )}
           </div>
           <div>
             <TextInput
               label="Auteur(e) du plat"
               name="nomAuteur"
+              value={newRecipe.nomAuteur}
               onChange={handleRecipeChange}
             ></TextInput>
+            {errorAuthorNameEmpty && (
+              <p className={classes.errorMessage}>
+                L'auteur ne peut pas être vide
+              </p>
+            )}
           </div>
           <div className="row">
             <div className="col">
               <SelectInput
                 label="Type"
                 name="nomCatRecette"
+                value={newRecipe.nomCatRecette}
                 dropDownList={CATEGORIES}
                 optionIdentifier="nomCatRecipe"
                 onChange={handleRecipeChange}
               ></SelectInput>
+              {errorCategoryEmpty && (
+                <p className={classes.errorMessage}>
+                  La categorie ne peut pas être vide
+                </p>
+              )}
             </div>
             <div className="col">
               <NumberInput
                 label="Couverts"
                 name="nbCouverts"
+                value={newRecipe.nbCouverts}
                 onChange={handleRecipeChange}
               ></NumberInput>
+              {errorNbDiners && (
+                <p className={classes.errorMessage}>
+                  Le nombre de couverts doit être un nombre
+                </p>
+              )}
             </div>
           </div>
         </div>
         <div className="col-6">
-          <Button>Sauvegarder</Button>
+          <Button onClick={addRecipe}>Sauvegarder</Button>
           <Link to="/">
             <Button>Annuler</Button>
           </Link>
@@ -252,23 +439,25 @@ function AddRecipe() {
         <div className="col-4">
           <StagesPanel
             stages={stages}
+            idCurrentStage={idCurrentStage}
             onChangeCurrentStage={changeCurrentStage}
             onChangeStageTitle={handleCurrentStageChange}
             onAddStage={addStage}
             onDeleteStage={deleteStage}
             onUpdateListOrdering={updateStagesOrdering}
+            errorStageNameEmpty={errorStageNameEmpty}
           ></StagesPanel>
         </div>
         <div className="col-4">
           <DetailPanel
             currentStage={getStageById(idCurrentStage)}
             onUpdateCurrentStage={handleCurrentStageChange}
-            onRecipeMode={setCurrentStageToRecipeMode}
-            onInExtensoMode={setCurrentStageToInExtensoMode}
+            selectedRecipeType={selectedRecipeType}
+            recipeTypeChange={recipeTypeChange}
           ></DetailPanel>
         </div>
       </div>
-      <Summary></Summary>
+      <Summary stages={stages}></Summary>
     </Fragment>
   );
 }

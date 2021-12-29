@@ -9,8 +9,37 @@ import classes from "./Home.module.css";
 import RecipeFilter from "../components/recipes/RecipeFilter";
 import { HiPlus } from "react-icons/hi";
 import { Link } from "react-router-dom";
+import { db } from "../firebase-config";
+import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+
+const sortRecipes = (a, b) => {
+  const textA = a.nomRecette;
+  const textB = b.nomRecette;
+  return textA < textB ? -1 : textA > textB ? 1 : 0;
+};
 
 function Home() {
+  // fetch recipes
+  const [recipeList, setRecipeList] = useState([]);
+  const [filteredRecipeList, setFilteredRecipeList] = useState([]);
+  const recipesCollectionRef = collection(db, "recettes");
+  useEffect(() => {
+    const getRecipes = async () => {
+      const data = await getDocs(recipesCollectionRef);
+      const loadedRecipes = [];
+      data.docs.map((doc) => {
+        return loadedRecipes.push({
+          idRecette: doc.id,
+          nomRecette: doc.data().nomRecette,
+        });
+      });
+      loadedRecipes.sort(sortRecipes);
+      setRecipeList(loadedRecipes);
+      setFilteredRecipeList(loadedRecipes);
+    };
+    getRecipes();
+  }, []);
+
   let RECIPES = [
     {
       id: 1,
@@ -38,8 +67,8 @@ function Home() {
 
   const showEditRecipePanel = () => {};
 
-  const [recipeList, setRecipeList] = useState(RECIPES);
-  const [filteredRecipeList, setFilteredRecipeList] = useState(RECIPES);
+  //const [recipeList, setRecipeList] = useState(RECIPES);
+  //const [filteredRecipeList, setFilteredRecipeList] = useState(RECIPES);
   const [filteringOptions, setFilteringOptions] = useState({
     patternToMatch: "",
     categories: [],
@@ -95,30 +124,35 @@ function Home() {
   };
 
   //Delete Recipe
-  const [onDeleteRecipe, setOnDeleteRecipe] = useState(null);
+
+  const [indexRecipeBeingDeleted, setIndexRecipeBeingDeleted] = useState(null);
+  const [recipeBeingDeleted, setRecipeBeingDeleted] = useState(null);
 
   const hideDeleteRecipePanel = () => {
-    setOnDeleteRecipe(null);
+    setIndexRecipeBeingDeleted(null);
   };
 
-  const showDeleteRecipePanel = (indexRecipe) => {
-    setOnDeleteRecipe(indexRecipe);
+  const showDeleteRecipePanel = (indexRecipe, recipe) => {
+    setIndexRecipeBeingDeleted(indexRecipe);
+    setRecipeBeingDeleted(recipe);
   };
 
-  const deleteRecipe = (indexRecipe) => {
-    recipeList.splice(indexRecipe, 1);
-    setRecipeList((oldRecipeList) => {
-      const newRecipeList = oldRecipeList.splice(indexRecipe, 1);
-      return newRecipeList;
-    });
+  const deleteRecipe = async (indexRecipe, idRecette) => {
+    const recipeDoc = doc(db, "recettes", idRecette);
+    await deleteDoc(recipeDoc);
+
+    const updatedRecipes = [...recipeList];
+    updatedRecipes.splice(indexRecipe, 1);
+    setRecipeList([...updatedRecipes]);
   };
 
   return (
     <Fragment>
-      {onDeleteRecipe !== null && (
+      {indexRecipeBeingDeleted !== null && (
         <DeleteRecipe
           onClose={hideDeleteRecipePanel}
-          indexRecipe={onDeleteRecipe}
+          indexRecipe={indexRecipeBeingDeleted}
+          recipe={recipeBeingDeleted}
           onDeleteRecipe={deleteRecipe}
         />
       )}

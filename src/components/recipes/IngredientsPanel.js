@@ -1,22 +1,23 @@
 import Card from "../ui/Card";
-import AddIngredientItem from "./AddIngredientItem";
-import IngredientItem from "./IngredientItem";
+import InExtensoStageIngredient from "./InExtensoStageIngredient";
+
+import RecipeStageIngredient from "./RecipeStageIngredient";
 function IngredientsPanel(props) {
   return (
     <Card>
       <h1>Ingrédients</h1>
-      {props.currentStage.ingredients.length === 0 && <p>Aucun ingrédients</p>}
-      {props.currentStage.ingredients &&
-        props.currentStage.ingredients.map((ingredient, index) => (
-          <IngredientItem
-            ingredient={ingredient}
-            index={index}
-            onDeleteIngredientItem={props.onDeleteIngredientItem}
-          ></IngredientItem>
-        ))}
-      <AddIngredientItem
-        addIngredientItem={props.addIngredientItem}
-      ></AddIngredientItem>
+      {props.currentStage.nomRecette !== undefined && (
+        <RecipeStageIngredient
+          currentStage={props.currentStage}
+        ></RecipeStageIngredient>
+      )}
+      {props.currentStage.nomRecette === undefined && (
+        <InExtensoStageIngredient
+          currentStage={props.currentStage}
+          addIngredientItem={props.addIngredientItem}
+          onDeleteIngredientItem={props.onDeleteIngredientItem}
+        ></InExtensoStageIngredient>
+      )}
     </Card>
   );
 }

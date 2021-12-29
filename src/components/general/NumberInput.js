@@ -3,7 +3,7 @@ import classes from "./NumberInput.module.css";
 
 function NumberInput(props) {
   return (
-    <Fragment>
+    <div onClick={props.onClick}>
       <label for={props.label}>{props.label}</label>
       <input
         id={props.label}
@@ -14,7 +14,7 @@ function NumberInput(props) {
         className={classes.input}
       ></input>
       {props.labelUnite ? props.labelUnite : ""}
-    </Fragment>
+    </div>
   );
 }
 

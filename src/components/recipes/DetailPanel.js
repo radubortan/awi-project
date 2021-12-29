@@ -14,7 +14,7 @@ const sortRecipes = (a, b) => {
 };
 function DetailPanel(props) {
   const [recipes, setRecipes] = useState([]);
-  const recipesCollectionRef = collection(db, "recipes");
+  const recipesCollectionRef = collection(db, "recettes");
   useEffect(() => {
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
@@ -25,66 +25,55 @@ function DetailPanel(props) {
         });
       });
       loadedRecipes.sort(sortRecipes);
+
       setRecipes(loadedRecipes);
     };
     getRecipes();
   }, []);
-
-  const [selectedRecipeType, setSelectedRecipeType] = useState(
-    props.currentStage.nomRecette === undefined ? "recette" : "in extenso"
-  );
-  const recipeTypeChange = (e) => {
-    if (e.target.checked) {
-      setSelectedRecipeType(e.target.value);
-      if (e.target.value === "recette") {
-        props.onRecipeMode();
-      } else {
-        props.onInExtensoMode();
-      }
-    }
-  };
   return (
     <Card>
       <h1>En detail</h1>
       <div className="row">
         <div className="col">
           <RadioButton
-            label="recette"
+            label="in extenso"
             name="stageType"
-            selectedValue={selectedRecipeType}
-            value="recette"
-            onChange={recipeTypeChange}
+            value="in extenso"
+            selectedValue={props.selectedRecipeType}
+            onChange={props.recipeTypeChange}
           ></RadioButton>
         </div>
         <div className="col">
           <RadioButton
-            label="in extenso"
+            label="recette"
             name="stageType"
-            value="in extenso"
-            selectedValue={selectedRecipeType}
-            onChange={recipeTypeChange}
+            value="recette"
+            selectedValue={props.selectedRecipeType}
+            onChange={props.recipeTypeChange}
           ></RadioButton>
         </div>
       </div>
       <div className="row">
-        {selectedRecipeType === "recette" && (
+        {props.selectedRecipeType === "recette" && (
           <Fragment>
             <SelectInput
               dropDownList={recipes}
               optionIdentifier="nomRecette"
               name="nomRecette"
+              selected={props.currentStage.nomRecette}
               onChange={props.onUpdateCurrentStage}
             ></SelectInput>
             <NumberInput
               label="Couverts"
               name="nbCouverts"
+              value={props.currentStage.nbCouverts}
               onChange={props.onUpdateCurrentStage}
             ></NumberInput>
           </Fragment>
         )}
       </div>
       <div className="row">
-        {selectedRecipeType === "in extenso" && (
+        {props.selectedRecipeType === "in extenso" && (
           <Fragment>
             <NumberInput
               label="temps : "

@@ -3,7 +3,7 @@ import { Fragment } from "react";
 function DragHandle(props) {
   return (
     <Fragment>
-      <MdDragHandle></MdDragHandle>
+      <MdDragHandle className={props.className} size="24px"></MdDragHandle>
     </Fragment>
   );
 }
