@@ -7,10 +7,8 @@ import { useEffect, useState } from 'react';
 import { Fragment } from 'react/cjs/react.production.min';
 
 const ModifyStock = (props) => {
-  const [currentIngredient, setCurrentIngredient] = useState(
-    props.ingredientInfo.ingredient
-  );
-  const [initialValue, setInitialValue] = useState(
+  const [currentIngredient] = useState(props.ingredientInfo.ingredient);
+  const [initialValue] = useState(
     Number(props.ingredientInfo.ingredient.stock)
   );
   const [finalValue, setFinalValue] = useState(

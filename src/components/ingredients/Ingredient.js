@@ -1,6 +1,5 @@
 import { FaTrash } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
-import { CgDanger } from 'react-icons/cg';
 import classes from './Ingredient.module.css';
 import Button from '../general/Button';
 

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import Button from '../general/Button';
-import NumberInput from '../general/NumberInput';
 import TextInput from '../general/TextInput';
 import SelectInput from '../general/SelectInput';
 import Modal from '../ui/Modal';

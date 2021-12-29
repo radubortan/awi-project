@@ -31,7 +31,9 @@ function IngredientFilter(props) {
       const data = await getDocs(ingredientCategoriesCollectionRef);
       const loadedCategories = [];
       data.docs.map((doc) => {
-        return loadedCategories.push({ nomCatIng: doc.data().nomCatIng });
+        return loadedCategories.push({
+          nomCatIng: doc.data().nomCatIng,
+        });
       });
       loadedCategories.sort(sortIngredientCategories);
       setCategories(loadedCategories);
