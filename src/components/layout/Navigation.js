@@ -5,7 +5,6 @@ import AuthContext from '../../store/auth-context';
 import Modal from '../ui/Modal';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { AiOutlineClose } from 'react-icons/ai';
-import Button from '../general/Button';
 
 const Navigation = (props) => {
   const authCtx = useContext(AuthContext);

@@ -2,7 +2,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: start;
+  align-items: flex-start;
   max-height: 20vh;
   overflow-y: auto;
   overflow-x: auto;
@@ -10,12 +10,12 @@
 
 .listContainer {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .checkbox {
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 

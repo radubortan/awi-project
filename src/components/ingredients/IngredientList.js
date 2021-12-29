@@ -11,6 +11,7 @@ function IngredientList(props) {
       {props.ingredientList.length !== 0 &&
         props.ingredientList.map((ingredient) => (
           <Ingredient
+            key={ingredient.id}
             ingredient={ingredient}
             onEditIngredient={props.onEditIngredient}
             onDeleteIngredient={props.onDeleteIngredient}
