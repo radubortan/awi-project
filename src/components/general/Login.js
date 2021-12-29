@@ -1,9 +1,9 @@
-import classes from './Login.module.css';
-import Button from './Button';
-import Modal from '../ui/Modal';
-import { Fragment, useRef, useState, useContext } from 'react';
-import AuthContext from '../../store/auth-context';
-import { useNavigate } from 'react-router-dom';
+import classes from "./Login.module.css";
+import Button from "./Button";
+import Modal from "../ui/Modal";
+import { Fragment, useRef, useState, useContext } from "react";
+import AuthContext from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -37,20 +37,20 @@ const Login = (props) => {
     event.preventDefault();
     setHadError(false);
     const url =
-      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAtPfPbNmHoO_gZVV82-u-MxQM9phQl278';
+      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBs8lRnKg3r90pb-pGbndKFSrT74F0S2QY";
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     if (validateInput(enteredEmail, enteredPassword)) {
       setIsLoading(true);
       fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           email: enteredEmail,
           password: enteredPassword,
           returnSecureToken: true,
         }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
         .then((res) => {
@@ -63,7 +63,7 @@ const Login = (props) => {
         })
         .then((data) => {
           authCtx.login(data.idToken);
-          navigate('/');
+          navigate("/");
         })
         .catch(() => {
           setHadError(true);
@@ -79,13 +79,13 @@ const Login = (props) => {
       )}
       <form className={classes.form}>
         <div className={`row ${classes.information}`}>
-          <label className={classes.label} htmlFor='email'>
+          <label className={classes.label} htmlFor="email">
             Email
           </label>
           <input
             className={classes.input}
-            type='email'
-            id='email'
+            type="email"
+            id="email"
             ref={emailInputRef}
           />
           {!emailIsValid && (
@@ -93,13 +93,13 @@ const Login = (props) => {
           )}
         </div>
         <div className={`row ${classes.information}`}>
-          <label className={classes.label} htmlFor='password'>
+          <label className={classes.label} htmlFor="password">
             Mot de Passe
           </label>
           <input
             className={classes.input}
-            type='password'
-            id='password'
+            type="password"
+            id="password"
             ref={passwordInputRef}
           />
           {!passwordIsValid && (
@@ -112,10 +112,10 @@ const Login = (props) => {
       <div className={classes.buttonRow}>
         {!isLoading && (
           <Fragment>
-            <Button className='confirmButton big' onClick={submitHandler}>
+            <Button className="confirmButton big" onClick={submitHandler}>
               Connexion
             </Button>
-            <Button className='cancelButton big' onClick={props.onClose}>
+            <Button className="cancelButton big" onClick={props.onClose}>
               Annuler
             </Button>
           </Fragment>

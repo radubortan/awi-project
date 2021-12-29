@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
-import Button from '../general/Button';
-import NumberInput from '../general/NumberInput';
-import TextInput from '../general/TextInput';
-import SelectInput from '../general/SelectInput';
-import Modal from '../ui/Modal';
-import Checkbox from '../general/Checkbox';
-import classes from './EditIngredient.module.css';
-import { db } from '../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
+import { useState, useEffect } from "react";
+import Button from "../general/Button";
+import NumberInput from "../general/NumberInput";
+import TextInput from "../general/TextInput";
+import SelectInput from "../general/SelectInput";
+import Modal from "../ui/Modal";
+import Checkbox from "../general/Checkbox";
+import classes from "./EditIngredient.module.css";
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
 
 const EditIngredient = (props) => {
   const [categories, setCategories] = useState([]);
@@ -32,10 +32,10 @@ const EditIngredient = (props) => {
 
   const ingredientCategoriesCollectionRef = collection(
     db,
-    'ingredientCategories'
+    "ingredientCategories"
   );
-  const allergenCollectionRef = collection(db, 'allergens');
-  const unitsCollectionRef = collection(db, 'units');
+  const allergenCollectionRef = collection(db, "allergens");
+  const unitsCollectionRef = collection(db, "units");
 
   const getCategories = async () => {
     const data = await getDocs(ingredientCategoriesCollectionRef);
@@ -77,7 +77,7 @@ const EditIngredient = (props) => {
   const givenIngredient = props.ingredientInfo.ingredient;
   const [currentIngredient, setCurrentIngredient] = useState({
     id: givenIngredient.id,
-    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',
+    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : "",
     prixUnitaire:
       givenIngredient.prixUnitaire !== undefined
         ? givenIngredient.prixUnitaire
@@ -96,23 +96,17 @@ const EditIngredient = (props) => {
   // Allergene Checkbox
   const [isAllergen, setIsAllergen] = useState(
     currentIngredient.nomCatAllerg !== undefined &&
-      currentIngredient.nomCatAllerg !== ''
+      currentIngredient.nomCatAllerg !== ""
   );
 
   const checkboxHandler = (e) => {
     if (e.target.checked) {
       setIsAllergen(true);
-      setCurrentIngredient({
-        ...currentIngredient,
-
-        nomCatAllerg: allergenCategories[0].nomCatAllerg,
-      });
     } else {
       setIsAllergen(false);
       setCurrentIngredient({
         ...currentIngredient,
-
-        nomCatAllerg: undefined,
+        nomCatAllerg: "",
       });
     }
   };
@@ -150,7 +144,7 @@ const EditIngredient = (props) => {
 
     let isValid = true;
 
-    if (currentIngredient.nomIng === '') {
+    if (currentIngredient.nomIng === "") {
       setnomIngEmptyError(true);
       isValid = false;
     }
@@ -185,12 +179,12 @@ const EditIngredient = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <h1 className={classes.title}>Modification d'un ingrédient</h1>
-      <form className={classes.form} method='post'>
-        <div className='col-5'>
+      <form className={classes.form} method="post">
+        <div className="col-5">
           <div className={`row ${classes.input}`}>
             <TextInput
-              label='Nom'
-              name='nomIng'
+              label="Nom"
+              name="nomIng"
               value={currentIngredient.nomIng}
               onChange={handleChange}
             />
@@ -205,8 +199,8 @@ const EditIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <NumberInput
-              label='Prix'
-              name='prixUnitaire'
+              label="Prix"
+              name="prixUnitaire"
               value={currentIngredient.prixUnitaire}
               onChange={handleChange}
             />
@@ -218,11 +212,11 @@ const EditIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <SelectInput
-              label='Unité'
-              name='nomUnite'
+              label="Unité"
+              name="nomUnite"
               selected={currentIngredient.nomUnite}
               dropDownList={units}
-              optionIdentifier='nomUnite'
+              optionIdentifier="nomUnite"
               onChange={handleChange}
             />
             {unitEmptyError && (
@@ -230,15 +224,15 @@ const EditIngredient = (props) => {
             )}
           </div>
         </div>
-        <div className='col-2' />
-        <div className='col-5'>
+        <div className="col-2" />
+        <div className="col-5">
           <div className={`row ${classes.input}`}>
             <SelectInput
-              label='Catégorie'
-              name='nomCatIng'
+              label="Catégorie"
+              name="nomCatIng"
               selected={currentIngredient.nomCatIng}
               dropDownList={categories}
-              optionIdentifier='nomCatIng'
+              optionIdentifier="nomCatIng"
               onChange={handleChange}
             />
             {categoryEmptyError && (
@@ -247,7 +241,7 @@ const EditIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <Checkbox
-              label='Allergène'
+              label="Allergène"
               onChange={checkboxHandler}
               checked={isAllergen}
               className={classes.checkbox}
@@ -256,15 +250,11 @@ const EditIngredient = (props) => {
           <div className={`row ${classes.input}`}>
             {isAllergen && (
               <SelectInput
-                label='Catégorie allergène'
-                name='nomCatAllerg'
-                selected={
-                  currentIngredient.nomCatAllerg === undefined
-                    ? 'false'
-                    : 'true'
-                }
+                label="Catégorie allergène"
+                name="nomCatAllerg"
+                selected={currentIngredient.nomCatAllerg}
                 dropDownList={allergenCategories}
-                optionIdentifier='nomCatAllerg'
+                optionIdentifier="nomCatAllerg"
                 onChange={handleChange}
               />
             )}
@@ -272,18 +262,18 @@ const EditIngredient = (props) => {
         </div>
       </form>
       <div className={`row ${classes.buttons}`}>
-        <div className='col-4' />
+        <div className="col-4" />
         <div className={`col-2`}>
-          <Button className='confirmButton' onClick={saveIngredient}>
+          <Button className="confirmButton" onClick={saveIngredient}>
             Modifier
           </Button>
         </div>
         <div className={`col-2`}>
-          <Button className='cancelButton' onClick={props.onClose}>
+          <Button className="cancelButton" onClick={props.onClose}>
             Annuler
           </Button>
         </div>
-        <div className='col-4' />
+        <div className="col-4" />
       </div>
     </Modal>
   );

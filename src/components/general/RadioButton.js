@@ -1,16 +1,20 @@
-import classes from './RadioButton.module.css';
+import classes from "./RadioButton.module.css";
 
 const RadioButton = (props) => {
   return (
     <li className={classes.element}>
       <input
-        type='radio'
-        id={props.forInput}
-        name={props.inputName}
-        defaultChecked={props.isChecked === 'true' ? true : false}
+        type="radio"
+        id={props.label}
+        name={props.name}
+        value={props.value}
+        checked={props.selectedValue === props.value}
         className={classes.input}
-      />
-      <label for={props.forInput}>{props.label}</label>
+        onChange={props.onChange}
+      ></input>
+      <label for={props.label}>
+        {props.label} {props.children}
+      </label>
     </li>
   );
 };
