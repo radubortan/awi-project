@@ -1,8 +1,7 @@
-import Stage from "./Stage";
-import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import DragHandle from "./DragHandle";
-import { Fragment } from "react";
-import classes from "./StagesList.module.css";
+import Stage from './Stage';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import DragHandle from './DragHandle';
+import classes from './StagesList.module.css';
 
 function StagesList(props) {
   const updateListOrdering = (param) => {
@@ -12,13 +11,13 @@ function StagesList(props) {
   };
   return (
     <DragDropContext onDragEnd={updateListOrdering}>
-      <Droppable droppableId="droppable-1">
+      <Droppable droppableId='droppable-1'>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {props.stages.map((stage, index) => (
               <Draggable
                 key={stage.idEtape}
-                draggableId={"draggable-" + stage.idEtape}
+                draggableId={'draggable-' + stage.idEtape}
                 index={index}
               >
                 {(provided, snapshot) => (
@@ -26,12 +25,12 @@ function StagesList(props) {
                     className={`row ${
                       stage.idEtape === props.idCurrentStage
                         ? classes.active
-                        : ""
+                        : ''
                     } ${classes.box}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                   >
-                    <div className="col-10">
+                    <div className='col-10'>
                       <Stage
                         stage={stage}
                         index={index}
@@ -45,14 +44,14 @@ function StagesList(props) {
                       ></Stage>
                     </div>
                     <div
-                      className="col-2 d-flex align-items-center justify-content-center"
+                      className='col-2 d-flex align-items-center justify-content-center'
                       {...provided.dragHandleProps}
                     >
                       <DragHandle
                         className={
                           stage.idEtape === props.idCurrentStage
                             ? classes.white
-                            : ""
+                            : ''
                         }
                       ></DragHandle>
                     </div>

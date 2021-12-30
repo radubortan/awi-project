@@ -7,6 +7,7 @@
   align-items: center;
   background-color: #0c548f;
   overflow-x: auto;
+  position: fixed;
 }
 
 .logo {
@@ -127,6 +128,9 @@
   .nav li {
     margin-left: 0.8rem;
     font-size: 1.2rem;
+  }
+  .logo {
+    margin-left: 10px;
   }
 }
 

@@ -1,5 +1,6 @@
 .title {
   text-align: center;
+  word-wrap: break-word;
 }
 
 .buttons {

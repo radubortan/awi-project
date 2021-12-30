@@ -2,6 +2,7 @@ import { FaTrash } from 'react-icons/fa';
 import { MdModeEdit } from 'react-icons/md';
 import classes from './Ingredient.module.css';
 import Button from '../general/Button';
+import { CgDanger } from 'react-icons/cg';
 
 function Ingredient(props) {
   return (
@@ -18,6 +19,11 @@ function Ingredient(props) {
         {props.ingredient.nomCatAllerg && (
           <div className={classes.allergeneMessage}>
             <p>Allergène</p>
+          </div>
+        )}
+        {props.ingredient.nomCatAllerg && (
+          <div className={classes.allergeneMessageSmall}>
+            <CgDanger size={25} />
           </div>
         )}
         <div className={classes.buttons}>
