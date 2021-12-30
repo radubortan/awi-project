@@ -3,6 +3,7 @@ import CategoriesCheckBox from '../general/CategoriesCheckBox';
 import { useEffect, useState } from 'react';
 import { db } from '../../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
+import classes from './IngredientFilter.module.css';
 
 const sortAllergens = (a, b) => {
   const textA = a.nomCatAllerg;
@@ -56,7 +57,7 @@ function IngredientFilter(props) {
 
   return (
     <Card>
-      <div className='row'>
+      <div className={`row ${classes.filters}`}>
         <div className='col-6 col-sm-6 col-md-12'>
           <CategoriesCheckBox
             name='Catégorie'

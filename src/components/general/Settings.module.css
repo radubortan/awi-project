@@ -7,10 +7,29 @@
 .form {
   padding: 20px;
   padding-top: 0;
+  display: flex;
+}
+
+.form.left {
+  justify-content: center;
+}
+.form.right {
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  align-items: flex-end;
 }
 
 .input {
   margin-top: 10px;
+}
+
+.input div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .errorMessage {

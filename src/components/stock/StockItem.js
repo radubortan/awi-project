@@ -1,6 +1,7 @@
 import classes from './StockItem.module.css';
 import Button from '../general/Button';
 import { HiPlus, HiMinus } from 'react-icons/hi';
+import { CgDanger } from 'react-icons/cg';
 
 function StockItem(props) {
   return (
@@ -17,6 +18,11 @@ function StockItem(props) {
         {props.ingredient.nomCatAllerg && (
           <div className={classes.allergeneMessage}>
             <p>Allergène</p>
+          </div>
+        )}
+        {props.ingredient.nomCatAllerg && (
+          <div className={classes.allergeneMessageSmall}>
+            <CgDanger size={25} />
           </div>
         )}
         <div className={classes.buttons}>

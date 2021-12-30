@@ -7,11 +7,11 @@
 }
 
 .nameColumn {
-  width: 50%;
+  width: 40%;
 }
 
 .buttonsColumn {
-  width: 50%;
+  width: 60%;
   display: flex;
   justify-content: flex-end;
 }
@@ -21,7 +21,7 @@
 }
 
 .ingredientName {
-  max-width: 300px;
+  width: 100%;
   word-wrap: break-word;
   text-align: left;
 }
@@ -65,11 +65,31 @@ li {
   display: inline;
 }
 
+.allergeneMessageSmall {
+  display: none;
+}
+
 @media (max-width: 600px) {
-  .btnSpacing {
+  .allergeneMessage {
+    display: none;
+  }
+  .allergeneMessageSmall {
+    display: flex;
+    align-items: center;
     margin-right: 5px;
+    color: red;
   }
   .ingredient {
-    margin-right: 1rem;
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+  .stockAmount {
+    margin: 0 1px;
+  }
+}
+
+@media (max-width: 400px) {
+  .ingredientName {
+    font-size: 1.3rem;
   }
 }

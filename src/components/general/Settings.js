@@ -83,18 +83,12 @@ const EditIngredient = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <h1 className={classes.title}>Modification paramètres coûts</h1>
-      <div className={`row ${classes.titles}`}>
-        <div className='col-5'>
-          <h2 className={classes.columnTitle}>Coût Charges</h2>
-        </div>
-        <div className='col-2'></div>
-        <div className='col-5'>
-          <h2 className={classes.columnTitle}>Coefficient Multiplicateur</h2>
-        </div>
-      </div>
-      <form className={classes.form} method='post'>
-        <div className='row'>
-          <div className='col-5'>
+      <div className={`row ${classes.container}`}>
+        <div className='col-12 col-md-6'>
+          <div className={`row ${classes.titles}`}>
+            <h2 className={classes.columnTitle}>Coût Charges</h2>
+          </div>
+          <form className={`row ${classes.form} ${classes.left}`}>
             <div className={`row ${classes.input}`}>
               <NumberInput
                 label='Cout horaire moyen'
@@ -117,9 +111,14 @@ const EditIngredient = (props) => {
                 <p className={classes.errorMessage}>Ça doit être un nombre</p>
               )}
             </div>
+          </form>
+        </div>
+        {/* <div className='d-none d-md-inline col-md-2'></div> */}
+        <div className='col-12 col-md-6'>
+          <div className={`row ${classes.titles}`}>
+            <h2 className={classes.columnTitle}>Coefficient Multiplicateur</h2>
           </div>
-          <div className='col-2' />
-          <div className='col-5'>
+          <form className={`row ${classes.form} ${classes.right}`}>
             <div className={`row ${classes.input}`}>
               <NumberInput
                 label='Sans évaluation'
@@ -142,9 +141,9 @@ const EditIngredient = (props) => {
                 <p className={classes.errorMessage}>Ça doit être un nombre</p>
               )}
             </div>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
       <div className={`${classes.buttons}`}>
         <Button className='confirmButton' onClick={saveSettingsHandler}>
           Confirmer

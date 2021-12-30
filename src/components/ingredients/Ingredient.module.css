@@ -21,7 +21,7 @@
 }
 
 .ingredientName {
-  max-width: 300px;
+  width: 100%;
   word-wrap: break-word;
   text-align: left;
 }
@@ -59,11 +59,31 @@ li {
   display: inline;
 }
 
+.allergeneMessageSmall {
+  display: none;
+}
+
 @media (max-width: 600px) {
   .btnSpacing {
     margin-right: 5px;
   }
   .allergeneMessage {
-    margin-right: 1rem;
+    display: none;
+  }
+  .allergeneMessageSmall {
+    display: flex;
+    align-items: center;
+    margin-right: 5px;
+    color: red;
+  }
+  .ingredient {
+    margin-left: 0.2rem;
+    margin-right: 0.2rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .ingredientName {
+    font-size: 1.3rem;
   }
 }

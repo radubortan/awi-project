@@ -121,42 +121,39 @@ const ModifyStock = (props) => {
           </div>
           <div className='col col-sm-2'></div>
         </div>
-        <div className='row'>
-          <form className={classes.form}>
-            <div className={classes.inputSpacing}>
-              <NumberInput
-                label={`${props.type} (${props.ingredientInfo.ingredient.nomUnite})`}
-                onChange={handleStockChange}
-                name='enteredAmount'
-              />
-              {isInvalidStockValue && (
-                <p className={classes.errorMessage}>{errorMessageStock}</p>
-              )}
-            </div>
-
-            {props.type === 'Augmentation' && (
-              <Fragment>
-                <NumberInput
-                  label={`Coût d'achat total (€)`}
-                  onChange={handleCostChange}
-                  name='enteredCost'
-                />
-                {isInvalidCostValue && (
-                  <p className={classes.errorMessage}>{errorMessageCost}</p>
-                )}
-              </Fragment>
+        <form className={`row ${classes.form}`}>
+          <div className={classes.inputSpacing}>
+            <NumberInput
+              label={`${props.type} (${props.ingredientInfo.ingredient.nomUnite})`}
+              onChange={handleStockChange}
+              name='enteredAmount'
+            />
+            {isInvalidStockValue && (
+              <p className={classes.errorMessage}>{errorMessageStock}</p>
             )}
-          </form>
-        </div>
-      </div>
+          </div>
 
-      <div className={`${classes.buttons}`}>
-        <Button className='confirmButton' onClick={submitHandler}>
-          Confirmer
-        </Button>
-        <Button className='cancelButton' onClick={props.onClose}>
-          Annuler
-        </Button>
+          {props.type === 'Augmentation' && (
+            <Fragment>
+              <NumberInput
+                label={`Coût d'achat total (€)`}
+                onChange={handleCostChange}
+                name='enteredCost'
+              />
+              {isInvalidCostValue && (
+                <p className={classes.errorMessage}>{errorMessageCost}</p>
+              )}
+            </Fragment>
+          )}
+        </form>
+        <div className={`${classes.buttons}`}>
+          <Button className='confirmButton' onClick={submitHandler}>
+            Confirmer
+          </Button>
+          <Button className='cancelButton' onClick={props.onClose}>
+            Annuler
+          </Button>
+        </div>
       </div>
     </Modal>
   );

@@ -35,6 +35,13 @@
   }
 }
 
+@media (max-height: 500px) {
+  .modal {
+    top: 2vh;
+    max-height: 96vh;
+  }
+}
+
 @keyframes slide-down {
   from {
     opacity: 0;

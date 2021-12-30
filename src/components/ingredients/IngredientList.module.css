@@ -3,13 +3,15 @@ ul {
   padding: 0;
 }
 
-.list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-
 .nothingFound {
   font-size: 1.4rem;
   font-weight: 600;
   margin-top: 10px;
+}
+
+@media (min-width: 800px) {
+  .list {
+    max-height: 50vh;
+    overflow-y: auto;
+  }
 }
