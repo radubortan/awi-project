@@ -31,10 +31,10 @@ const EditIngredient = (props) => {
 
   const ingredientCategoriesCollectionRef = collection(
     db,
-    'ingredientCategories'
+    "ingredientCategories"
   );
-  const allergenCollectionRef = collection(db, 'allergens');
-  const unitsCollectionRef = collection(db, 'units');
+  const allergenCollectionRef = collection(db, "allergens");
+  const unitsCollectionRef = collection(db, "units");
 
   const getCategories = async () => {
     const data = await getDocs(ingredientCategoriesCollectionRef);
@@ -91,23 +91,17 @@ const EditIngredient = (props) => {
   // Allergene Checkbox
   const [isAllergen, setIsAllergen] = useState(
     currentIngredient.nomCatAllerg !== undefined &&
-      currentIngredient.nomCatAllerg !== ''
+      currentIngredient.nomCatAllerg !== ""
   );
 
   const checkboxHandler = (e) => {
     if (e.target.checked) {
       setIsAllergen(true);
-      setCurrentIngredient({
-        ...currentIngredient,
-
-        nomCatAllerg: allergenCategories[0].nomCatAllerg,
-      });
     } else {
       setIsAllergen(false);
       setCurrentIngredient({
         ...currentIngredient,
-
-        nomCatAllerg: undefined,
+        nomCatAllerg: "",
       });
     }
   };
@@ -143,7 +137,7 @@ const EditIngredient = (props) => {
 
     let isValid = true;
 
-    if (currentIngredient.nomIng === '') {
+    if (currentIngredient.nomIng === "") {
       setnomIngEmptyError(true);
       isValid = false;
     }
@@ -171,12 +165,12 @@ const EditIngredient = (props) => {
   return (
     <Modal onClose={props.onClose}>
       <h1 className={classes.title}>Modification d'un ingrédient</h1>
-      <form className={classes.form} method='post'>
-        <div className='col-5'>
+      <form className={classes.form} method="post">
+        <div className="col-5">
           <div className={`row ${classes.input}`}>
             <TextInput
-              label='Nom'
-              name='nomIng'
+              label="Nom"
+              name="nomIng"
               value={currentIngredient.nomIng}
               onChange={handleChange}
             />
@@ -191,11 +185,11 @@ const EditIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <SelectInput
-              label='Unité'
-              name='nomUnite'
+              label="Unité"
+              name="nomUnite"
               selected={currentIngredient.nomUnite}
               dropDownList={units}
-              optionIdentifier='nomUnite'
+              optionIdentifier="nomUnite"
               onChange={handleChange}
             />
             {unitEmptyError && (
@@ -203,15 +197,15 @@ const EditIngredient = (props) => {
             )}
           </div>
         </div>
-        <div className='col-2' />
-        <div className='col-5'>
+        <div className="col-2" />
+        <div className="col-5">
           <div className={`row ${classes.input}`}>
             <SelectInput
-              label='Catégorie'
-              name='nomCatIng'
+              label="Catégorie"
+              name="nomCatIng"
               selected={currentIngredient.nomCatIng}
               dropDownList={categories}
-              optionIdentifier='nomCatIng'
+              optionIdentifier="nomCatIng"
               onChange={handleChange}
             />
             {categoryEmptyError && (
@@ -220,7 +214,7 @@ const EditIngredient = (props) => {
           </div>
           <div className={`row ${classes.input}`}>
             <Checkbox
-              label='Allergène'
+              label="Allergène"
               onChange={checkboxHandler}
               checked={isAllergen}
               className={classes.checkbox}
@@ -237,7 +231,7 @@ const EditIngredient = (props) => {
                     : currentIngredient.nomCatAllerg
                 }
                 dropDownList={allergenCategories}
-                optionIdentifier='nomCatAllerg'
+                optionIdentifier="nomCatAllerg"
                 onChange={handleChange}
               />
             )}

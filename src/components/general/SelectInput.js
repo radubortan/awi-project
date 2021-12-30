@@ -1,5 +1,5 @@
-import { Fragment } from 'react';
-import classes from './SelectInput.module.css';
+import { Fragment } from "react";
+import classes from "./SelectInput.module.css";
 
 function SelectInput(props) {
   return (

@@ -1,9 +1,9 @@
-import classes from './Login.module.css';
-import Button from './Button';
-import Modal from '../ui/Modal';
-import { Fragment, useRef, useState, useContext } from 'react';
-import AuthContext from '../../store/auth-context';
-import { useNavigate } from 'react-router-dom';
+import classes from "./Login.module.css";
+import Button from "./Button";
+import Modal from "../ui/Modal";
+import { Fragment, useRef, useState, useContext } from "react";
+import AuthContext from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
 const Login = (props) => {
   const navigate = useNavigate();
@@ -43,14 +43,14 @@ const Login = (props) => {
     if (validateInput(enteredEmail, enteredPassword)) {
       setIsLoading(true);
       fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: JSON.stringify({
           email: enteredEmail,
           password: enteredPassword,
           returnSecureToken: true,
         }),
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
       })
         .then((res) => {
@@ -63,7 +63,7 @@ const Login = (props) => {
         })
         .then((data) => {
           authCtx.login(data.idToken);
-          navigate('/');
+          navigate("/");
         })
         .catch(() => {
           setHadError(true);
@@ -79,13 +79,13 @@ const Login = (props) => {
       )}
       <form className={classes.form}>
         <div className={`row ${classes.information}`}>
-          <label className={classes.label} htmlFor='email'>
+          <label className={classes.label} htmlFor="email">
             Email
           </label>
           <input
             className={classes.input}
-            type='email'
-            id='email'
+            type="email"
+            id="email"
             ref={emailInputRef}
           />
           {!emailIsValid && (
@@ -93,13 +93,13 @@ const Login = (props) => {
           )}
         </div>
         <div className={`row ${classes.information}`}>
-          <label className={classes.label} htmlFor='password'>
+          <label className={classes.label} htmlFor="password">
             Mot de Passe
           </label>
           <input
             className={classes.input}
-            type='password'
-            id='password'
+            type="password"
+            id="password"
             ref={passwordInputRef}
           />
           {!passwordIsValid && (

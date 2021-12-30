@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import IngredientFilter from '../components/ingredients/IngredientFilter';
-import Button from '../components/general/Button';
-import IngredientList from '../components/ingredients/IngredientList';
-import AddIngredient from '../components/ingredients/AddIngredient';
-import EditIngredient from '../components/ingredients/EditIngredient';
-import SearchBar from '../components/general/SearchBar';
-import Card from '../components/ui/Card';
-import { Fragment } from 'react/cjs/react.production.min';
-import DeleteIngredient from '../components/ingredients/DeleteIngredient';
-import ViewIngredient from '../components/ingredients/ViewIngredient';
-import classes from './Ingredients.module.css';
-import { HiPlus } from 'react-icons/hi';
-import { db } from '../firebase-config';
+import React, { useEffect, useState } from "react";
+import IngredientFilter from "../components/ingredients/IngredientFilter";
+import Button from "../components/general/Button";
+import IngredientList from "../components/ingredients/IngredientList";
+import AddIngredient from "../components/ingredients/AddIngredient";
+import EditIngredient from "../components/ingredients/EditIngredient";
+import SearchBar from "../components/general/SearchBar";
+import Card from "../components/ui/Card";
+import { Fragment } from "react/cjs/react.production.min";
+import DeleteIngredient from "../components/ingredients/DeleteIngredient";
+import ViewIngredient from "../components/ingredients/ViewIngredient";
+import classes from "./Ingredients.module.css";
+import { HiPlus } from "react-icons/hi";
+import { db } from "../firebase-config";
 import {
   collection,
   getDocs,
@@ -19,18 +19,18 @@ import {
   updateDoc,
   doc,
   deleteDoc,
-} from 'firebase/firestore';
+} from "firebase/firestore";
 
 function Ingredients() {
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
-    patternToMatch: '',
+    patternToMatch: "",
     categories: [],
     allergenCategories: [],
   });
 
-  const ingredientsCollectionRef = collection(db, 'ingredients');
+  const ingredientsCollectionRef = collection(db, "ingredients");
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -57,7 +57,7 @@ function Ingredients() {
   const filterIngredient = (ingredient) => {
     const { patternToMatch, categories, allergenCategories } = filteringOptions;
     if (
-      patternToMatch !== '' &&
+      patternToMatch !== "" &&
       !ingredient.nomIng.toLowerCase().startsWith(patternToMatch.toLowerCase())
     ) {
       return false;
@@ -120,7 +120,7 @@ function Ingredients() {
     else {
       response = await addDoc(ingredientsCollectionRef, {
         ...newIngredient,
-        nomCatAllerg: '',
+        nomCatAllerg: "",
       });
     }
     newIngredient.id = response.id;
@@ -148,14 +148,14 @@ function Ingredients() {
   };
 
   const editIngredient = async (editedIngredient, indexIngredient) => {
-    const ingredientDoc = doc(db, 'ingredients', editedIngredient.id);
+    const ingredientDoc = doc(db, "ingredients", editedIngredient.id);
     const newIngredient = { ...editedIngredient };
     delete newIngredient.id;
     if (newIngredient.nomCatAllerg) {
       await updateDoc(ingredientDoc, newIngredient);
     } else {
       const noAllergIngredient = { ...newIngredient };
-      noAllergIngredient.nomCatAllerg = '';
+      noAllergIngredient.nomCatAllerg = "";
       await updateDoc(ingredientDoc, noAllergIngredient);
     }
 
@@ -180,7 +180,7 @@ function Ingredients() {
   };
 
   const deleteIngredient = async (indexIngredient, idIngredient) => {
-    const ingredientDoc = doc(db, 'ingredients', idIngredient);
+    const ingredientDoc = doc(db, "ingredients", idIngredient);
     await deleteDoc(ingredientDoc);
 
     const updatedIngredients = [...ingredientList];
@@ -231,9 +231,9 @@ function Ingredients() {
           ingredient={onViewIngredient}
         />
       )}
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col'>
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col">
             <h1 className={classes.title}>Ingrédients</h1>
           </div>
         </div>
@@ -256,7 +256,6 @@ function Ingredients() {
               allergenCategoriesFiltering={filterAllergenCategoryHandler}
             />
           </div>
-
           <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
             <Card>
               <IngredientList
