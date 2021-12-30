@@ -1,0 +1,85 @@
+.title {
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+.titleIngredient {
+  text-align: center;
+  margin-top: -10px;
+  border-bottom: 1px solid rgb(179, 179, 179);
+  padding-bottom: 10px;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.form {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form input {
+  padding-left: 10px;
+}
+
+.errorMessage {
+  color: red;
+  text-align: center;
+  margin: 0;
+}
+
+.sectionTitle {
+  text-align: center;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.sectionValue {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+  margin-top: 10px;
+}
+
+.inputSpacing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.mainContainer {
+  padding: 5px;
+  max-height: 55vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons div:nth-of-type(odd) {
+  margin-right: 20px;
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons div:nth-of-type(even) {
+  margin-left: 20px;
+  display: flex;
+  justify-content: flex-start;
+  width: 50%;
+}
+
+.buttons button {
+  width: 100px;
+}

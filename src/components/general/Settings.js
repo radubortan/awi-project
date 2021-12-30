@@ -82,7 +82,7 @@ const EditIngredient = (props) => {
 
   return (
     <Modal onClose={props.onClose}>
-      <h1 className={classes.title}>Modification d'un ingrédient</h1>
+      <h1 className={classes.title}>Modification paramètres coûts</h1>
       <div className={`row ${classes.titles}`}>
         <div className='col-5'>
           <h2 className={classes.columnTitle}>Coût Charges</h2>
@@ -145,19 +145,13 @@ const EditIngredient = (props) => {
           </div>
         </div>
       </form>
-      <div className={`row ${classes.buttons}`}>
-        <div className='col-4' />
-        <div className={`col-2`}>
-          <Button className='confirmButton' onClick={saveSettingsHandler}>
-            Confirmer
-          </Button>
-        </div>
-        <div className={`col-2`}>
-          <Button className='cancelButton' onClick={props.onClose}>
-            Annuler
-          </Button>
-        </div>
-        <div className='col-4' />
+      <div className={`${classes.buttons}`}>
+        <Button className='confirmButton' onClick={saveSettingsHandler}>
+          Confirmer
+        </Button>
+        <Button className='cancelButton' onClick={props.onClose}>
+          Annuler
+        </Button>
       </div>
     </Modal>
   );

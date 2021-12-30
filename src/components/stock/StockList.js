@@ -1,8 +1,8 @@
 import React from 'react';
-import Ingredient from './Ingredient';
-import classes from './IngredientList.module.css';
+import classes from './StockList.module.css';
+import StockItem from './StockItem';
 
-function IngredientList(props) {
+function StockList(props) {
   return (
     <ul className={classes.list}>
       {props.ingredientList.length === 0 && (
@@ -10,11 +10,10 @@ function IngredientList(props) {
       )}
       {props.ingredientList.length !== 0 &&
         props.ingredientList.map((ingredient) => (
-          <Ingredient
-            key={ingredient.id}
+          <StockItem
             ingredient={ingredient}
-            onEditIngredient={props.onEditIngredient}
-            onDeleteIngredient={props.onDeleteIngredient}
+            onIncreaseStock={props.onIncreaseStock}
+            onDecreaseStock={props.onDecreaseStock}
             onViewIngredient={props.onViewIngredient}
             index={props.wholeIngredientList.indexOf(ingredient)}
           />
@@ -23,4 +22,4 @@ function IngredientList(props) {
   );
 }
 
-export default IngredientList;
+export default StockList;

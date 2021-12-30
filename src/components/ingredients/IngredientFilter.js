@@ -31,7 +31,9 @@ function IngredientFilter(props) {
       const data = await getDocs(ingredientCategoriesCollectionRef);
       const loadedCategories = [];
       data.docs.map((doc) => {
-        return loadedCategories.push({ nomCatIng: doc.data().nomCatIng });
+        return loadedCategories.push({
+          nomCatIng: doc.data().nomCatIng,
+        });
       });
       loadedCategories.sort(sortIngredientCategories);
       setCategories(loadedCategories);
@@ -54,18 +56,24 @@ function IngredientFilter(props) {
 
   return (
     <Card>
-      <CategoriesCheckBox
-        name='Catégorie'
-        onChange={props.categoriesFiltering}
-        categories={categories}
-        labelIdentifier='nomCatIng'
-      />
-      <CategoriesCheckBox
-        name="Catégorie d'allergène"
-        onChange={props.allergenCategoriesFiltering}
-        categories={allergenCategories}
-        labelIdentifier='nomCatAllerg'
-      />
+      <div className='row'>
+        <div className='col-6 col-sm-6 col-md-12'>
+          <CategoriesCheckBox
+            name='Catégorie'
+            onChange={props.categoriesFiltering}
+            categories={categories}
+            labelIdentifier='nomCatIng'
+          />
+        </div>
+        <div className='col-6 col-sm-6 col-md-12'>
+          <CategoriesCheckBox
+            name="Catégorie d'allergène"
+            onChange={props.allergenCategoriesFiltering}
+            categories={allergenCategories}
+            labelIdentifier='nomCatAllerg'
+          />
+        </div>
+      </div>
     </Card>
   );
 }

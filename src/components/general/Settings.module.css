@@ -13,10 +13,6 @@
   margin-top: 10px;
 }
 
-.buttons {
-  margin-top: 20px;
-}
-
 .errorMessage {
   color: red;
 }
@@ -30,4 +26,28 @@
 .columnTitle {
   text-align: center;
   font-size: 1.8rem;
+}
+
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons div:nth-of-type(odd) {
+  margin-right: 20px;
+  width: 50%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons div:nth-of-type(even) {
+  margin-left: 20px;
+  display: flex;
+  justify-content: flex-start;
+  width: 50%;
+}
+
+.buttons button {
+  width: 100px;
 }

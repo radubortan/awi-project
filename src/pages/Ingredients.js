@@ -44,6 +44,7 @@ function Ingredients() {
           nomIng: doc.data().nomIng,
           nomUnite: doc.data().nomUnite,
           prixUnitaire: doc.data().prixUnitaire,
+          stock: doc.data().stock,
         });
       });
       setIngredientList(loadedIngredients);
@@ -107,8 +108,10 @@ function Ingredients() {
     setOnAddIngredient(true);
   };
 
-  const addIngredient = async (newIngredient) => {
+  const addIngredient = async (ingredient) => {
     let response;
+    const newIngredient = { ...ingredient, stock: 0, prixUnitaire: 0 };
+
     //if ingredient has an allergen set
     if (newIngredient.nomCatAllerg) {
       response = await addDoc(ingredientsCollectionRef, newIngredient);
@@ -234,21 +237,26 @@ function Ingredients() {
             <h1 className={classes.title}>Ingrédients</h1>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-3" />
-          <div className="col-md-6 col-sm-12">
+        <div className='row'>
+          <div className='col-md-2 col-lg-3' />
+          <div className=' col-sm-12 col-md-8 col-lg-6'>
             <SearchBar onChange={searchBarFiltering} />
           </div>
-          <div className="col-md-3" />
+          <div className='col-md-2 col-lg-3' />
         </div>
-        <div className="row">
-          <div className="col-3">
+        <div className='row'>
+          <div className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}>
+            <Button className='addButton' onClick={showAddIngredientPanel}>
+              <HiPlus /> Ajouter ingrédient
+            </Button>
+          </div>
+          <div className='col-xs-12 col-md-3 order-lg-1'>
             <IngredientFilter
               categoriesFiltering={filterCategoryHandler}
               allergenCategoriesFiltering={filterAllergenCategoryHandler}
             />
           </div>
-          <div className="col-6">
+          <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
             <Card>
               <IngredientList
                 ingredientList={filteredIngredientList}
@@ -258,11 +266,6 @@ function Ingredients() {
                 onViewIngredient={showViewIngredientPanel}
               />
             </Card>
-          </div>
-          <div className="col-3 d-flex justify-content-start">
-            <Button className="addButton" onClick={showAddIngredientPanel}>
-              <HiPlus /> Ajouter ingrédient
-            </Button>
           </div>
         </div>
       </div>

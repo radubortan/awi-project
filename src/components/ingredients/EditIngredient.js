@@ -1,13 +1,12 @@
-import { useState, useEffect } from "react";
-import Button from "../general/Button";
-import NumberInput from "../general/NumberInput";
-import TextInput from "../general/TextInput";
-import SelectInput from "../general/SelectInput";
-import Modal from "../ui/Modal";
-import Checkbox from "../general/Checkbox";
-import classes from "./EditIngredient.module.css";
-import { db } from "../../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
+import { useState, useEffect } from 'react';
+import Button from '../general/Button';
+import TextInput from '../general/TextInput';
+import SelectInput from '../general/SelectInput';
+import Modal from '../ui/Modal';
+import Checkbox from '../general/Checkbox';
+import classes from './EditIngredient.module.css';
+import { db } from '../../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
 
 const EditIngredient = (props) => {
   const [categories, setCategories] = useState([]);
@@ -77,11 +76,7 @@ const EditIngredient = (props) => {
   const givenIngredient = props.ingredientInfo.ingredient;
   const [currentIngredient, setCurrentIngredient] = useState({
     id: givenIngredient.id,
-    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : "",
-    prixUnitaire:
-      givenIngredient.prixUnitaire !== undefined
-        ? givenIngredient.prixUnitaire
-        : 0,
+    nomIng: givenIngredient.nomIng !== undefined ? givenIngredient.nomIng : '',
     nomUnite:
       givenIngredient.nomUnite !== undefined
         ? givenIngredient.nomUnite
@@ -133,14 +128,12 @@ const EditIngredient = (props) => {
 
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
-  const [prixUnitaireError, setPrixUnitaireError] = useState(false);
   const [unitEmptyError, setUnitEmptyError] = useState(false);
   const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
     setnomIngEmptyError(false);
     setNomIngUnvailableError(false);
-    setPrixUnitaireError(false);
 
     let isValid = true;
 
@@ -166,13 +159,6 @@ const EditIngredient = (props) => {
       setUnitEmptyError(true);
       isValid = false;
     }
-
-    if (
-      !/^(?!0\d)\d+(\.\d+)?$/.test(currentIngredient.prixUnitaire.toString())
-    ) {
-      setPrixUnitaireError(true);
-      isValid = false;
-    }
     return isValid;
   };
 
@@ -195,19 +181,6 @@ const EditIngredient = (props) => {
             )}
             {nomIngUnvailableError && (
               <p className={classes.errorMessage}>Ce nom existe déjà</p>
-            )}
-          </div>
-          <div className={`row ${classes.input}`}>
-            <NumberInput
-              label="Prix"
-              name="prixUnitaire"
-              value={currentIngredient.prixUnitaire}
-              onChange={handleChange}
-            />
-            {prixUnitaireError && (
-              <p className={classes.errorMessage}>
-                Le prix doit être un nombre
-              </p>
             )}
           </div>
           <div className={`row ${classes.input}`}>
@@ -250,9 +223,13 @@ const EditIngredient = (props) => {
           <div className={`row ${classes.input}`}>
             {isAllergen && (
               <SelectInput
-                label="Catégorie allergène"
-                name="nomCatAllerg"
-                selected={currentIngredient.nomCatAllerg}
+                label='Catégorie allergène'
+                name='nomCatAllerg'
+                selected={
+                  currentIngredient.nomCatAllerg === undefined
+                    ? 'false'
+                    : currentIngredient.nomCatAllerg
+                }
                 dropDownList={allergenCategories}
                 optionIdentifier="nomCatAllerg"
                 onChange={handleChange}
@@ -261,19 +238,13 @@ const EditIngredient = (props) => {
           </div>
         </div>
       </form>
-      <div className={`row ${classes.buttons}`}>
-        <div className="col-4" />
-        <div className={`col-2`}>
-          <Button className="confirmButton" onClick={saveIngredient}>
-            Modifier
-          </Button>
-        </div>
-        <div className={`col-2`}>
-          <Button className="cancelButton" onClick={props.onClose}>
-            Annuler
-          </Button>
-        </div>
-        <div className="col-4" />
+      <div className={`${classes.buttons}`}>
+        <Button className='confirmButton' onClick={saveIngredient}>
+          Modifier
+        </Button>
+        <Button className='cancelButton' onClick={props.onClose}>
+          Annuler
+        </Button>
       </div>
     </Modal>
   );

@@ -41,10 +41,16 @@ li {
 
 .buttons {
   display: flex;
+  align-items: center;
 }
 
-.btnSpacing {
-  margin-right: 20px;
+.stockAmount {
+  text-align: center;
+  margin: 0 5px;
+  border: 1px solid black;
+  padding: 6px 0px;
+  width: 70px;
+  border-radius: 5px;
 }
 
 .allergeneMessage {
@@ -63,7 +69,7 @@ li {
   .btnSpacing {
     margin-right: 5px;
   }
-  .allergeneMessage {
+  .ingredient {
     margin-right: 1rem;
   }
 }

@@ -37,7 +37,7 @@ const Login = (props) => {
     event.preventDefault();
     setHadError(false);
     const url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBs8lRnKg3r90pb-pGbndKFSrT74F0S2QY";
+      'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBs8lRnKg3r90pb-pGbndKFSrT74F0S2QY';
     const enteredEmail = emailInputRef.current.value;
     const enteredPassword = passwordInputRef.current.value;
     if (validateInput(enteredEmail, enteredPassword)) {
@@ -109,13 +109,13 @@ const Login = (props) => {
           )}
         </div>
       </form>
-      <div className={classes.buttonRow}>
+      <div className={classes.buttons}>
         {!isLoading && (
           <Fragment>
-            <Button className="confirmButton big" onClick={submitHandler}>
+            <Button className='confirmButton' onClick={submitHandler}>
               Connexion
             </Button>
-            <Button className="cancelButton big" onClick={props.onClose}>
+            <Button className='cancelButton' onClick={props.onClose}>
               Annuler
             </Button>
           </Fragment>
