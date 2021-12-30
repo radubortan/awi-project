@@ -97,6 +97,7 @@ const CostsSummary = (props) => {
 
   useEffect(() => {
     const getTotalDurationBis = () => {
+      console.log(props.stages);
       const totalDuration = getTotalDuration(props.stages);
       setTotalDuration(totalDuration);
     };
@@ -126,12 +127,12 @@ const CostsSummary = (props) => {
       if (stage.nomRecette !== undefined) {
         getRecipeByName(stage.nomRecette);
       } else {
-        total += stage.tempsEtape;
+        total += +stage.tempsEtape;
       }
     }
     return total;
   };
-
+  console.log(totalDuration);
   const personnalCost = +((totalDuration * props.avgHourlyCost) / 60).toFixed(
     2
   );
