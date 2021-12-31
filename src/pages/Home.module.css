@@ -1,5 +1,6 @@
-.card {
-  width: 20vw;
+.addBtn {
+  display: flex;
+  justify-content: flex-start;
 }
 
 .title {
@@ -9,7 +10,15 @@
   color: #0c548f;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 992px) {
+  .addBtn {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+  }
+}
+
+@media (max-width: 992px) {
   .title {
     font-size: 2.5rem;
     margin: 10px 0;

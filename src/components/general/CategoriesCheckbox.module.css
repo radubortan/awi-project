@@ -6,6 +6,7 @@
   height: 15vh;
   overflow-y: auto;
   overflow-x: auto;
+  padding-left: 2px;
 }
 
 .listContainer {

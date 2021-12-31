@@ -1,16 +1,17 @@
-import { Fragment } from "react/cjs/react.production.min";
-import SearchBar from "../components/general/SearchBar";
-import Card from "../components/ui/Card";
-import Button from "../components/general/Button";
-import RecipeList from "../components/recipes/RecipeList";
-import { useState, useEffect } from "react";
-import DeleteRecipe from "../components/recipes/DeleteRecipe";
-import classes from "./Home.module.css";
-import RecipeFilter from "../components/recipes/RecipeFilter";
-import { HiPlus } from "react-icons/hi";
-import { Link } from "react-router-dom";
-import { db } from "../firebase-config";
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore";
+import { Fragment } from 'react/cjs/react.production.min';
+import SearchBar from '../components/general/SearchBar';
+import Card from '../components/ui/Card';
+import Button from '../components/general/Button';
+import RecipeList from '../components/recipes/RecipeList';
+import { useState, useEffect, useContext } from 'react';
+import DeleteRecipe from '../components/recipes/DeleteRecipe';
+import classes from './Home.module.css';
+import RecipeFilter from '../components/recipes/RecipeFilter';
+import { HiPlus } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
+import { db } from '../firebase-config';
+import { collection, getDocs, doc, deleteDoc } from 'firebase/firestore';
+import AuthContext from '../store/auth-context';
 
 const sortRecipes = (a, b) => {
   const textA = a.nomRecette;
@@ -19,18 +20,28 @@ const sortRecipes = (a, b) => {
 };
 
 function Home() {
+  const authCtx = useContext(AuthContext);
+
   // fetch recipes
   const [recipeList, setRecipeList] = useState([]);
   const [filteredRecipeList, setFilteredRecipeList] = useState([]);
-  const recipesCollectionRef = collection(db, "recettes");
+  const recipesCollectionRef = collection(db, 'recettes');
   useEffect(() => {
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
       const loadedRecipes = [];
       data.docs.map((doc) => {
+        const ingredients = [];
+        doc.data().stages.map((stage) => {
+          stage.ingredients.map((ingredient) => {
+            ingredients.push({ nomIng: ingredient.nomIng });
+          });
+        });
         return loadedRecipes.push({
           idRecette: doc.id,
           nomRecette: doc.data().nomRecette,
+          nomCatRecette: doc.data().nomCatRecette,
+          ingredients: ingredients,
         });
       });
       loadedRecipes.sort(sortRecipes);
@@ -40,37 +51,12 @@ function Home() {
     getRecipes();
   }, []);
 
-  let RECIPES = [
-    {
-      id: 1,
-      nomRecipe: "Steak",
-      nomCatRecipe: "Principal",
-      ingredients: [
-        {
-          nomIng: "Carotte",
-        },
-      ],
-    },
-    {
-      id: 2,
-      nomRecipe: "Frites",
-      nomCatRecipe: "Entrée",
-      ingredients: [
-        {
-          nomIng: "Tomate",
-        },
-      ],
-    },
-  ];
-
   const showViewRecipePanel = () => {};
 
   const showEditRecipePanel = () => {};
 
-  //const [recipeList, setRecipeList] = useState(RECIPES);
-  //const [filteredRecipeList, setFilteredRecipeList] = useState(RECIPES);
   const [filteringOptions, setFilteringOptions] = useState({
-    patternToMatch: "",
+    patternToMatch: '',
     categories: [],
     ingredients: [],
   });
@@ -78,22 +64,40 @@ function Home() {
   //Filtering method
   const filterRecipe = (recipe) => {
     const { patternToMatch, categories, ingredients } = filteringOptions;
+    //for search bar
     if (
-      patternToMatch !== "" &&
-      !recipe.nomRecipe.toLowerCase().startsWith(patternToMatch.toLowerCase())
+      patternToMatch !== '' &&
+      !recipe.nomRecette.toLowerCase().startsWith(patternToMatch.toLowerCase())
     ) {
       return false;
     }
-    if (categories.length !== 0 && !categories.includes(recipe.nomCatRecipe)) {
+    //for dish category
+    if (categories.length !== 0 && !categories.includes(recipe.nomCatRecette)) {
       return false;
     }
+    //if no ingredient has been checked
+    if (ingredients.length === 0) {
+      return true;
+    }
+
+    //Shows recipe if all the ingredients match
     if (
-      ingredients.length !== 0 &&
-      !recipe.ingredients.some((ing) => ingredients.includes(ing.nomIng))
+      recipe.ingredients.every((ing) => ingredients.includes(ing.nomIng)) &&
+      recipe.ingredients.length === ingredients.length
     ) {
-      return false;
+      return true;
     }
-    return true;
+
+    return false;
+
+    //Shows recipe if any ingredient matches
+    // if (
+    //   ingredients.length !== 0 &&
+    //   !recipe.ingredients.some((ing) => ingredients.includes(ing.nomIng))
+    // ) {
+    //   return false;
+    // }
+    // return true;
   };
 
   useEffect(() => {
@@ -138,7 +142,7 @@ function Home() {
   };
 
   const deleteRecipe = async (indexRecipe, idRecette) => {
-    const recipeDoc = doc(db, "recettes", idRecette);
+    const recipeDoc = doc(db, 'recettes', idRecette);
     await deleteDoc(recipeDoc);
 
     const updatedRecipes = [...recipeList];
@@ -156,27 +160,36 @@ function Home() {
           onDeleteRecipe={deleteRecipe}
         />
       )}
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col">
+      <div className='container-fluid'>
+        <div className='row'>
+          <div className='col'>
             <h1 className={classes.title}>Recettes</h1>
           </div>
         </div>
-        <div className="row">
-          <div className="col-md-3"></div>
-          <div className="col-md-6 col-sm-12">
+        <div className='row'>
+          <div className='col-md-2 col-lg-3'></div>
+          <div className='col-sm-12 col-md-8 col-lg-6'>
             <SearchBar onChange={searchBarFiltering} />
           </div>
-          <div className="col-md-3"></div>
+          <div className='col-md-2 col-lg-3'></div>
         </div>
-        <div class="row">
-          <div class="col-3">
+        <div className='row'>
+          {authCtx.isLoggedIn && (
+            <div className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}>
+              <Link to='/ajouter-recette'>
+                <Button className='addButton'>
+                  <HiPlus /> Ajouter Recette
+                </Button>
+              </Link>
+            </div>
+          )}
+          <div className='col-xs-12 col-md-3 order-lg-1'>
             <RecipeFilter
               categoriesFiltering={filterCategoryHandler}
               ingredientsFiltering={filterIngredientHandler}
             />
           </div>
-          <div class="col-6">
+          <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
             <Card>
               <RecipeList
                 recipeList={filteredRecipeList}
@@ -186,13 +199,6 @@ function Home() {
                 onViewRecipe={showViewRecipePanel}
               />
             </Card>
-          </div>
-          <div class="col-3 d-flex justify-content-start">
-            <Link to="/ajouter-recette">
-              <Button className="addButton">
-                <HiPlus /> Ajouter Recette
-              </Button>
-            </Link>
           </div>
         </div>
       </div>
