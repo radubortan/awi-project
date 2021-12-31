@@ -4,7 +4,7 @@ import classes from './RecipeList.module.css';
 
 function RecipeList(props) {
   return (
-    <ul>
+    <ul className={classes.list}>
       {props.recipeList.length === 0 && (
         <p className={classes.nothingFound}>Aucun résultat</p>
       )}
