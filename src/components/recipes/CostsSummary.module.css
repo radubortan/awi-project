@@ -1,0 +1,89 @@
+.costsCard {
+  margin-bottom: 0;
+  padding-bottom: 20px;
+}
+
+.title {
+  margin: 15px 0;
+}
+
+.assaisonnementCard {
+  padding-bottom: 20px;
+}
+
+.assaisonnementContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.assaisonnementContainer > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.assaisonnementInput {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.assaisonnementInput p {
+  padding: 0;
+  margin: 0;
+  margin-left: 10px;
+  font-weight: 700;
+}
+
+.errorMessage {
+  color: red;
+  padding: 0;
+  margin: 0;
+}
+
+.chargesCheckbox label {
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin-left: 5px;
+}
+
+.charges {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.charges p {
+  margin: 0;
+}
+
+.charges p:nth-of-type(even) {
+  font-weight: 700;
+}
+
+.charges p:nth-of-type(3n) {
+  margin-top: 15px;
+}
+
+.finalCosts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.finalCosts li:nth-of-type(even) {
+  font-weight: 700;
+}
+
+.finalCosts li:nth-of-type(2n + 3) {
+  margin-top: 15px;
+}
+
+@media (max-width: 767px) {
+  .costsCard {
+    margin-bottom: 15px;
+  }
+}

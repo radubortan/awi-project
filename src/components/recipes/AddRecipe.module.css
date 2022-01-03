@@ -1,3 +1,157 @@
+.topContainer {
+  margin: 0;
+}
+
 .errorMessage {
   color: red;
+  margin: 0;
+}
+
+.infoInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 80vw;
+  margin: auto;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+.recipeNameInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.recipeNameInput label {
+  font-size: 2rem;
+  font-weight: 500;
+}
+
+.recipeNameInput input {
+  width: 100%;
+  height: 40px;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.authorInputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.authorInputContainer label {
+  font-weight: 500;
+}
+
+.authorInputContainer input {
+  width: 100%;
+  text-align: center;
+}
+
+.bottomInfoContainer {
+  margin-top: 20px;
+  display: flex;
+}
+
+.typeInputContainer {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.typeInputContainer label {
+  font-weight: 500;
+}
+
+.typeInputContainer select {
+  width: 100%;
+  text-align: center;
+}
+
+.couvertsInputContainer {
+  width: 50%;
+}
+
+.couvertsInputContainer label {
+  font-weight: 500;
+}
+
+.couvertsInputContainer input {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: center;
+  padding-top: 50px;
+}
+
+.button {
+  height: 50px;
+  font-size: 1.2rem;
+  border: none;
+  padding: 10px;
+  color: white;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s;
+}
+
+.addButton {
+  background-color: #0c548f;
+  width: 100px;
+  margin-right: 20px;
+  font-weight: 700;
+}
+
+.addButton:hover {
+  background-color: #0c4472;
+  transition: background-color 0.2s;
+}
+
+.cancelButton {
+  background-color: #ba2525;
+  width: 100px;
+  font-weight: 700;
+}
+
+.cancelButton:hover {
+  background-color: #9e1212 !important;
+  transition: background-color 0.2s;
+}
+
+.cancelButton a {
+  text-decoration: none;
+  color: white;
+}
+
+.main {
+  background-color: #8bb2ec;
+  padding: 20px 0px 10px 0px;
+  margin: 0;
+}
+
+.main > div {
+  padding: 0 10px;
+}
+
+@media (max-width: 767px) {
+  .infoInputContainer {
+    max-width: 50vh;
+  }
+  .buttons {
+    padding-top: 20px;
+    padding-bottom: 10px;
+  }
+}
+
+@media (max-width: 400px) {
+  .infoInputContainer {
+    max-width: 100vh;
+  }
 }

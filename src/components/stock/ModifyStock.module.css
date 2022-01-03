@@ -3,7 +3,7 @@
   padding: 0;
   margin: 0;
   font-size: 2.5rem;
-  font-weight: 600;
+  font-weight: 500;
 }
 .titleIngredient {
   text-align: center;
@@ -11,7 +11,7 @@
   border-bottom: 1px solid rgb(179, 179, 179);
   padding-bottom: 10px;
   font-size: 2.5rem;
-  font-weight: 600;
+  font-weight: 500;
   word-wrap: break-word;
   line-height: 20px;
 }
@@ -36,7 +36,7 @@
 .sectionTitle {
   text-align: center;
   font-size: 1.4rem;
-  font-weight: 600;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -57,7 +57,7 @@
 
 .mainContainer {
   padding: 5px;
-  max-height: 55vh;
+  max-height: 65vh;
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -89,21 +89,21 @@
 @media (max-width: 600px) {
   .title {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
   }
   .titleIngredient {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 }
 
 @media (max-height: 600px) {
   .title {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
   }
   .titleIngredient {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
   }
 }

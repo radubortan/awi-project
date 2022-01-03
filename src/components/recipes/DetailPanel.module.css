@@ -1,0 +1,75 @@
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  margin: 10px 0 10px 0;
+  border-bottom: 1px solid rgb(201, 201, 201);
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.radioButtons {
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+
+.radioButtons label {
+  font-weight: 500;
+}
+
+.recipeName {
+  display: flex;
+  flex-direction: column;
+}
+
+.recipeName label {
+  font-weight: 500;
+}
+
+.couvertsInput {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.couvertsInput label {
+  font-weight: 500;
+}
+
+.inextenso {
+  width: 100%;
+}
+
+.timeInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.timeInput label {
+  font-weight: 500;
+}
+
+.timeInput input {
+  width: 120px;
+}
+
+.descriptionInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.descriptionInput label {
+  font-weight: 500;
+}
+
+.descriptionInput textarea {
+  width: 100%;
+  min-height: 100px;
+  border-radius: 10px;
+  padding: 5px 10px;
+}

@@ -1,0 +1,33 @@
+.noIngredient {
+  margin-top: 20px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.ingredientList {
+  display: flex;
+  justify-content: center;
+}
+
+.ingredientList p {
+  font-weight: 500;
+}
+
+.pill {
+  display: inline-block;
+  width: 80px;
+  padding: 0 2px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-right: 7px;
+  word-wrap: break-word;
+}
+
+.ingredientInfo {
+  display: flex;
+  align-items: center;
+}
+
+.ingredientName {
+  font-size: 1.2rem;
+}

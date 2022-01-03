@@ -1,20 +1,27 @@
-import { FaTrash } from "react-icons/fa";
-import Button from "../general/Button";
-import classes from "./IngredientItem.module.css";
+import { FaTrash } from 'react-icons/fa';
+import classes from './IngredientItem.module.css';
+
 function IngredientItem(props) {
   return (
-    <div>
-      - {props.ingredient.nomIng} {props.ingredient.qte}
-      {props.ingredient.nomUnite}
-      <Button
-        className={`cancelButton `}
+    <div className={classes.ingredient}>
+      <p className={classes.ingredientInfo}>
+        <span className={classes.pill}>
+          {props.ingredient.qte}
+          {props.ingredient.nomUnite.toLowerCase()}
+        </span>
+        <span className={classes.ingredientName}>
+          {props.ingredient.nomIng}
+        </span>
+      </p>
+      <button
+        className={classes.deleteButton}
         onClick={(e) => {
           e.stopPropagation();
           props.onDeleteIngredientItem(props.index);
         }}
       >
-        <FaTrash />
-      </Button>
+        <FaTrash size={20} />
+      </button>
     </div>
   );
 }

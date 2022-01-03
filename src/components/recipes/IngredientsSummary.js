@@ -1,4 +1,5 @@
-import Card from "./../ui/Card";
+import Card from './../ui/Card';
+import classes from './IngredientsSummary.module.css';
 
 function IngredientsSummary(props) {
   const allNonAllergenIngredientsRecipe = [];
@@ -11,37 +12,37 @@ function IngredientsSummary(props) {
     }
   }
   return (
-    <Card>
-      <h1>Tous les ingrédients</h1>
-      <div className="row">
-        <div className="col">
-          {allNonAllergenIngredientsRecipe.length === 0 && (
-            <p>Aucun ingredients</p>
-          )}
-          {allNonAllergenIngredientsRecipe.map((ingredient) => (
-            <p>
-              {" "}
-              - {ingredient.qte}
-              {ingredient.nomUnite} {ingredient.nomIng}
-            </p>
-          ))}
-        </div>
-        <div className="col">
-          <Card>
-            <h2>Allèrgenes</h2>
-            {allAllergenIngredientsRecipe.length === 0 && (
-              <p>Aucun ingredients</p>
-            )}
-            {allAllergenIngredientsRecipe.map((ingredient) => (
-              <p>
-                {" "}
-                - {ingredient.qte}
-                {ingredient.nomUnite} {ingredient.nomIng}
-              </p>
-            ))}
-          </Card>
-        </div>
+    <Card className={classes.ingredientsCard}>
+      <h1 className={classes.title}>Tous les ingrédients</h1>
+      <div className={classes.normalIngredients}>
+        {allNonAllergenIngredientsRecipe.length === 0 && (
+          <p className={classes.nothing}>Aucun ingrédient</p>
+        )}
+        {allNonAllergenIngredientsRecipe.map((ingredient) => (
+          <p className={classes.ingredient}>
+            <span className={classes.pill}>
+              {ingredient.qte}
+              {ingredient.nomUnite.toLowerCase()}
+            </span>
+            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
+          </p>
+        ))}
       </div>
+      <Card className={classes.allergenCard}>
+        <h2>Allèrgenes</h2>
+        {allAllergenIngredientsRecipe.length === 0 && (
+          <p className={classes.nothing}>Aucun ingrédient</p>
+        )}
+        {allAllergenIngredientsRecipe.map((ingredient) => (
+          <p className={classes.ingredient}>
+            <span className={classes.pill}>
+              {ingredient.qte}
+              {ingredient.nomUnite.toLowerCase()}
+            </span>
+            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
+          </p>
+        ))}
+      </Card>
     </Card>
   );
 }

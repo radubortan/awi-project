@@ -1,9 +1,10 @@
-import { Fragment } from "react";
-import classes from "./SelectInput.module.css";
+import { Fragment } from 'react';
+import classes from './SelectInput.module.css';
 
 function SelectInput(props) {
+  const style = props.className;
   return (
-    <Fragment>
+    <div className={style}>
       <label for={props.label}>{props.label}</label>
       <select
         name={props.name}
@@ -27,7 +28,7 @@ function SelectInput(props) {
           </option>
         ))}
       </select>
-    </Fragment>
+    </div>
   );
 }
 
