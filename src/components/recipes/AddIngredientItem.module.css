@@ -1,0 +1,62 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.nameInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameInput select {
+  width: 200px;
+  text-align: center;
+}
+
+.nameInput label {
+  font-weight: 500;
+}
+
+.numberInput {
+  margin-top: 20px;
+}
+
+.numberInput label {
+  font-weight: 500;
+}
+
+.numberInput input {
+  width: 120px;
+}
+
+.errorMessage {
+  color: red;
+  margin: 0;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  /* width: 220px; */
+  padding-left: 10px;
+  padding-right: 10px;
+  max-width: 100%;
+  height: 40px;
+  color: white;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  background-color: #0c548f;
+  transition: background-color 0.2s;
+}
+
+.button:hover {
+  transition: background-color 0.2s;
+  background-color: #0c4472;
+}

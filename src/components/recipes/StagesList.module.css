@@ -2,15 +2,27 @@
   background-color: #0c548f;
 }
 
+.inactive {
+  background-color: #8bb2ec;
+}
+
 .white {
   color: whitesmoke;
 }
 
 .box {
-  padding: 1rem 0rem 1rem 0rem;
+  padding: 10px 10px;
   border-radius: 1em;
+}
+
+.box:nth-of-type(n + 2) {
+  margin-top: 5px;
 }
 
 .iconSize {
   size: 50px;
+}
+
+.stagesList {
+  padding: 0 10px;
 }

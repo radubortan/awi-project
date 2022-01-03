@@ -1,9 +1,10 @@
-import { Fragment, useState, useEffect } from "react";
-import NumberInput from "../general/NumberInput";
-import SelectInput from "../general/SelectInput";
-import Button from "../general/Button";
-import { db } from "../../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
+import { useState, useEffect } from 'react';
+import NumberInput from '../general/NumberInput';
+import SelectInput from '../general/SelectInput';
+import { db } from '../../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
+import classes from './AddIngredientItem.module.css';
+import { HiPlus } from 'react-icons/hi';
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -15,7 +16,7 @@ function AddIngredientItem(props) {
   const [currentIngredient, setCurrentIngredient] = useState(null);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [ingredients, setIngredients] = useState([]);
-  const ingredientsCollectionRef = collection(db, "ingredients");
+  const ingredientsCollectionRef = collection(db, 'ingredients');
   useEffect(() => {
     const getIngredients = async () => {
       const data = await getDocs(ingredientsCollectionRef);
@@ -89,32 +90,40 @@ function AddIngredientItem(props) {
   };
 
   return (
-    <Fragment>
+    <div className={classes.container}>
       <SelectInput
-        label="Nom"
+        className={classes.nameInput}
+        label='Nom'
         dropDownList={ingredients}
-        optionIdentifier="nomIng"
+        optionIdentifier='nomIng'
         onChange={handleChangeIngredient}
         selected={selectedIngredient}
-      ></SelectInput>
-      {nomIngEmptyError && <p>Sélectionnez un ingrédient</p>}
+      />
+      {nomIngEmptyError && (
+        <p className={classes.errorMessage}>Sélectionnez un ingrédient</p>
+      )}
       <NumberInput
         label={`Quantité ${
           currentIngredient && currentIngredient.nomIng
-            ? "(" + currentIngredient.nomUnite + ")"
-            : ""
+            ? '(' + currentIngredient.nomUnite + ')'
+            : ''
         }`}
-        name="qte"
+        name='qte'
         value={
           currentIngredient && currentIngredient.qte
             ? currentIngredient.qte
-            : ""
+            : ''
         }
         onChange={handleChangeQuantity}
-      ></NumberInput>
-      {qteEmptyError && <p>Veuillez entrer une quantité</p>}
-      <Button onClick={addIngredientItem}>Ajouter</Button>
-    </Fragment>
+        className={classes.numberInput}
+      />
+      {qteEmptyError && (
+        <p className={classes.errorMessage}>Veuillez entrer une quantité</p>
+      )}
+      <button className={classes.button} onClick={addIngredientItem}>
+        <HiPlus size={20} /> Ajouter l'ingrédient
+      </button>
+    </div>
   );
 }
 

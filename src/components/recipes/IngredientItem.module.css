@@ -1,3 +1,88 @@
-.buttons {
+.ingredient {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background-color: #0c548f;
+  padding: 0 15px;
+  height: 60px;
+  border-radius: 10px;
+  margin: auto;
+  margin-bottom: 5px;
+  color: white;
+}
+
+.pill {
+  display: inline-block;
+  width: 80px;
+  padding: 0 2px;
+  border-radius: 5px;
+  border: 1px solid white;
+  margin-right: 7px;
+  word-wrap: break-word;
+}
+
+.ingredientInfo {
+}
+
+p.ingredientInfo {
+  margin: 0;
+  font-weight: 500;
+}
+
+.ingredientName {
+  font-size: 1.2rem;
+}
+
+.deleteButton {
+  color: white;
+  background-color: #ba2525;
+  border-radius: 5px;
+  border: none;
+  margin-left: 20px;
+  transition: background-color 0.2s;
+  justify-self: start;
+  width: 40px;
+  height: 40px;
+}
+
+.deleteButton:hover {
+  background-color: #9e1212;
+  transition: background-color 0.2s;
+}
+
+@media (max-width: 991px) {
+  .ingredient {
+    width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .ingredient {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .ingredient {
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .ingredient {
+    width: 80%;
+  }
+}
+
+@media (max-width: 500px) {
+  .ingredient {
+    width: 90%;
+  }
+}
+
+@media (max-width: 420px) {
+  .ingredient {
+    width: 100%;
+  }
 }

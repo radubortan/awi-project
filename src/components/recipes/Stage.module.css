@@ -1,7 +1,34 @@
+.element {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .errorMessage {
   color: red;
+  margin: 0;
 }
 
 .active {
   background-color: #0c548f;
+}
+
+.stageNumber {
+  color: white;
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.input {
+  border-radius: 10px;
+  border: 1px solid rgb(201, 201, 201);
+  height: 50px;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.icon {
+  padding: 0;
+  padding-left: 5px;
 }

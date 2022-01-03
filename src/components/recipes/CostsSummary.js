@@ -1,10 +1,11 @@
-import Card from "../ui/Card";
-import RadioButton from "../general/RadioButton";
-import Checkbox from "../general/Checkbox";
-import NumberInput from "../general/NumberInput";
-import { Fragment, useState, useEffect } from "react";
-import { db } from "../../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import Card from '../ui/Card';
+import RadioButton from '../general/RadioButton';
+import Checkbox from '../general/Checkbox';
+import NumberInput from '../general/NumberInput';
+import { Fragment, useState, useEffect } from 'react';
+import { db } from '../../firebase-config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import classes from './CostsSummary.module.css';
 
 const sortStages = (a, b) => {
   const textA = a.idRecette;
@@ -15,7 +16,7 @@ const sortStages = (a, b) => {
 const CostsSummary = (props) => {
   //fetch recipe for duration
   const [allStages, setAllStages] = useState([]);
-  const etapesCollectionRef = collection(db, "etapes");
+  const etapesCollectionRef = collection(db, 'etapes');
   useEffect(() => {
     const getStages = async () => {
       const data = await getDocs(etapesCollectionRef);
@@ -40,11 +41,11 @@ const CostsSummary = (props) => {
 
   //seasoning
 
-  const [seasoningPrice, setSeasoningPrice] = useState("");
+  const [seasoningPrice, setSeasoningPrice] = useState('');
 
   const [errorSeasoningPrice, setErrorSeasoningPrice] = useState(false);
 
-  const [seasoningType, setSeasoningType] = useState("5%");
+  const [seasoningType, setSeasoningType] = useState('5%');
 
   const updateSeasoningType = (e) => {
     console.log(e.target.value);
@@ -61,7 +62,7 @@ const CostsSummary = (props) => {
   };
 
   const updateSeasoningTypeByPriceInput = () => {
-    setSeasoningType("seasoningPrice");
+    setSeasoningType('seasoningPrice');
   };
 
   // Calculate Cost
@@ -80,7 +81,7 @@ const CostsSummary = (props) => {
   const totalCostIngredient = +getTotalCostIngredient().toFixed(2);
 
   let materialCost = 0;
-  if (seasoningType === "5%") {
+  if (seasoningType === '5%') {
     materialCost = +(totalCostIngredient + 0.05 * totalCostIngredient).toFixed(
       2
     );
@@ -106,13 +107,13 @@ const CostsSummary = (props) => {
 
   const getRecipeByName = async (nomRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("nomRecette", "==", nomRecette)
+      collection(db, 'recettes'),
+      where('nomRecette', '==', nomRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
+      console.log(doc.id, ' => ', doc.data());
       const recipe = doc.data();
       const totalDuration = getTotalDuration(recipe.stages);
       setTotalDuration((prevState) => {
@@ -151,86 +152,79 @@ const CostsSummary = (props) => {
     );
   }
   return (
-    <Card>
-      <h1>Coûts</h1>
-      <div className="row">
-        <div className="col">
-          <Card>
-            <h2>Assaisonnement</h2>
-            <RadioButton
-              name="prixAssaisonnement"
-              label="5%"
-              value="5%"
-              selectedValue={seasoningType}
-              onChange={updateSeasoningType}
-            ></RadioButton>
-            <RadioButton
-              name="prixAssaisonnement"
-              value="seasoningPrice"
-              selectedValue={seasoningType}
-              onChange={updateSeasoningType}
-            >
-              <NumberInput
-                labelUnite="€"
-                onChange={updateSeasoningPrice}
-                value={seasoningPrice}
-                onClick={updateSeasoningTypeByPriceInput}
-              ></NumberInput>
-              {errorSeasoningPrice && seasoningType === "seasoningPrice" && (
-                <p>Veuillez entrer un nombre decimal</p>
-              )}
-            </RadioButton>
-          </Card>
-        </div>
-        <div className="col">
-          <Card>
-            <Checkbox
-              label="Charges"
-              onChange={changeAdditionalCost}
-              checked={useAdditionalCost}
-            ></Checkbox>
-            {useAdditionalCost && (
-              <Fragment>
-                <p>Cout horaire moyen {props.avgHourlyCost}€</p>
-                <p>Cout horaire forfaitaire {props.flatHourlyCost}€</p>
-              </Fragment>
-            )}
-          </Card>
-        </div>
+    <Card className={classes.costsCard}>
+      <h1 className={classes.title}>Coûts</h1>
+      <div>
+        <Card className={classes.assaisonnementCard}>
+          <h2>Assaisonnement</h2>
+          <div className={classes.assaisonnementContainer}>
+            <div>
+              <RadioButton
+                name='prixAssaisonnement'
+                label='5%'
+                value='5%'
+                selectedValue={seasoningType}
+                onChange={updateSeasoningType}
+              ></RadioButton>
+              <RadioButton
+                name='prixAssaisonnement'
+                value='seasoningPrice'
+                selectedValue={seasoningType}
+                onChange={updateSeasoningType}
+              >
+                <NumberInput
+                  labelUnite='€'
+                  onChange={updateSeasoningPrice}
+                  value={seasoningPrice}
+                  onClick={updateSeasoningTypeByPriceInput}
+                  className={classes.assaisonnementInput}
+                ></NumberInput>
+              </RadioButton>
+            </div>
+          </div>
+          {errorSeasoningPrice && seasoningType === 'seasoningPrice' && (
+            <p className={classes.errorMessage}>
+              Veuillez entrer un nombre decimal
+            </p>
+          )}
+        </Card>
       </div>
-      <Card>
-        <div className="row">
-          <div className="col">
-            <ul>
-              <li>Coût matiere</li>
-              {useAdditionalCost && (
-                <div>
-                  <li>cout des charges</li>
-                  <li>cout du personnel</li>
-                  <li>cout des fluides</li>
-                </div>
-              )}
-              <li>Coût de production</li>
-              <li>Prix de vente total</li>
-            </ul>
-          </div>
-          <div className="col">
-            <ul>
-              <li>{materialCost}€</li>
-              {useAdditionalCost && (
-                <div>
-                  {" "}
-                  <li>{additionalCost}€</li>
-                  <li>{personnalCost}€</li>
-                  <li>{fluidCost}€</li>
-                </div>
-              )}
-              <li>{productionCost}€</li>
-              <li>{salesPrice}€</li>
-            </ul>
-          </div>
-        </div>
-      </Card>
+      <div className={`${classes.chargesContainer}`}>
+        <Card>
+          <Checkbox
+            label='Charges'
+            onChange={changeAdditionalCost}
+            checked={useAdditionalCost}
+            className={classes.chargesCheckbox}
+          ></Checkbox>
+          {useAdditionalCost && (
+            <div className={classes.charges}>
+              <p>Cout horaire moyen:</p>
+              <p>{props.avgHourlyCost}€</p>
+              <p>Cout horaire forfaitaire:</p>
+              <p>{props.flatHourlyCost}€</p>
+            </div>
+          )}
+        </Card>
+      </div>
+      <ul className={classes.finalCosts}>
+        <li>Coût matiere</li>
+        <li>{materialCost}€</li>
+        {useAdditionalCost && (
+          <Fragment>
+            <li>Coût des charges</li>
+            <li>{additionalCost}€</li>
+            <li>Coût du personnel</li>
+            <li>{personnalCost}€</li>
+            <li>Coût des fluides</li>
+            <li>{fluidCost}€</li>
+          </Fragment>
+        )}
+        <li>Coût de production</li>
+        <li>{productionCost}€</li>
+        <li>Prix de vente total</li>
+        <li>{salesPrice}€</li>
+      </ul>
     </Card>
   );
 };

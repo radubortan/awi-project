@@ -1,12 +1,13 @@
-import { useState, useEffect } from "react";
-import NumberInput from "../general/NumberInput";
-import RadioButton from "../general/RadioButton";
-import SelectInput from "../general/SelectInput";
-import { db } from "../../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
-import Card from "../ui/Card";
-import TextAreaInput from "../general/TexteAreaInput";
-import { Fragment } from "react/cjs/react.production.min";
+import { useState, useEffect } from 'react';
+import NumberInput from '../general/NumberInput';
+import RadioButton from '../general/RadioButton';
+import SelectInput from '../general/SelectInput';
+import { db } from '../../firebase-config';
+import { collection, getDocs } from 'firebase/firestore';
+import Card from '../ui/Card';
+import TextAreaInput from '../general/TexteAreaInput';
+import classes from './DetailPanel.module.css';
+
 const sortRecipes = (a, b) => {
   const textA = a.nomRecette;
   const textB = b.nomRecette;
@@ -14,7 +15,7 @@ const sortRecipes = (a, b) => {
 };
 function DetailPanel(props) {
   const [recipes, setRecipes] = useState([]);
-  const recipesCollectionRef = collection(db, "recettes");
+  const recipesCollectionRef = collection(db, 'recettes');
   useEffect(() => {
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
@@ -31,66 +32,62 @@ function DetailPanel(props) {
     getRecipes();
   }, []);
   return (
-    <Card>
-      <h1>En detail</h1>
-      <div className="row">
-        <div className="col">
-          <RadioButton
-            label="in extenso"
-            name="stageType"
-            value="in extenso"
-            selectedValue={props.selectedRecipeType}
-            onChange={props.recipeTypeChange}
-          ></RadioButton>
+    <Card className={classes.mainContainer}>
+      <h1 className={classes.title}>En détail</h1>
+      <div className={`${classes.radioButtons}`}>
+        <RadioButton
+          label='in extenso'
+          name='stageType'
+          value='in extenso'
+          selectedValue={props.selectedRecipeType}
+          onChange={props.recipeTypeChange}
+        />
+        <RadioButton
+          label='recette'
+          name='stageType'
+          value='recette'
+          selectedValue={props.selectedRecipeType}
+          onChange={props.recipeTypeChange}
+        />
+      </div>
+      {props.selectedRecipeType === 'recette' && (
+        <div>
+          <SelectInput
+            className={classes.recipeName}
+            label='Nom recette'
+            dropDownList={recipes}
+            optionIdentifier='nomRecette'
+            name='nomRecette'
+            selected={props.currentStage.nomRecette}
+            onChange={props.onUpdateCurrentStage}
+          />
+          <NumberInput
+            label='Couverts'
+            name='nbCouverts'
+            value={props.currentStage.nbCouverts}
+            onChange={props.onUpdateCurrentStage}
+            className={classes.couvertsInput}
+          />
         </div>
-        <div className="col">
-          <RadioButton
-            label="recette"
-            name="stageType"
-            value="recette"
-            selectedValue={props.selectedRecipeType}
-            onChange={props.recipeTypeChange}
-          ></RadioButton>
+      )}
+      {props.selectedRecipeType === 'in extenso' && (
+        <div className={classes.inextenso}>
+          <NumberInput
+            className={classes.timeInput}
+            label='Temps (min) '
+            name='tempsEtape'
+            value={props.currentStage.tempsEtape}
+            onChange={props.onUpdateCurrentStage}
+          />
+          <TextAreaInput
+            className={classes.descriptionInput}
+            label='Description'
+            name='description'
+            value={props.currentStage.description}
+            onChange={props.onUpdateCurrentStage}
+          />
         </div>
-      </div>
-      <div className="row">
-        {props.selectedRecipeType === "recette" && (
-          <Fragment>
-            <SelectInput
-              dropDownList={recipes}
-              optionIdentifier="nomRecette"
-              name="nomRecette"
-              selected={props.currentStage.nomRecette}
-              onChange={props.onUpdateCurrentStage}
-            ></SelectInput>
-            <NumberInput
-              label="Couverts"
-              name="nbCouverts"
-              value={props.currentStage.nbCouverts}
-              onChange={props.onUpdateCurrentStage}
-            ></NumberInput>
-          </Fragment>
-        )}
-      </div>
-      <div className="row">
-        {props.selectedRecipeType === "in extenso" && (
-          <Fragment>
-            <NumberInput
-              label="temps : "
-              name="tempsEtape"
-              labelUnite="min"
-              value={props.currentStage.tempsEtape}
-              onChange={props.onUpdateCurrentStage}
-            ></NumberInput>
-            <TextAreaInput
-              label="Description"
-              name="description"
-              value={props.currentStage.description}
-              onChange={props.onUpdateCurrentStage}
-            ></TextAreaInput>
-          </Fragment>
-        )}
-      </div>
+      )}
     </Card>
   );
 }

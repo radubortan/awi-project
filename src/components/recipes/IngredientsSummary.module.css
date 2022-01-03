@@ -1,0 +1,59 @@
+.ingredientsCard {
+  margin-bottom: 0;
+}
+
+.title {
+  margin: 15px 0;
+  border-bottom: 1px solid rgb(201, 201, 201);
+  padding-bottom: 10px;
+}
+
+.allergenCard {
+  margin-top: 20px;
+  padding-bottom: 10px;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+}
+
+.normalIngredients {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.allergenCard p,
+.normalIngredients p {
+  margin: 0;
+  font-weight: 500;
+}
+
+.allergenCard p:nth-of-type(n + 2),
+.normalIngredients p:nth-of-type(n + 2) {
+  margin-top: 10px;
+}
+
+.pill {
+  display: inline-block;
+  width: 80px;
+  padding: 0 2px;
+  border-radius: 5px;
+  border: 1px solid black;
+  margin-right: 7px;
+  word-wrap: break-word;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+}
+
+.ingredientName {
+  font-size: 1.2rem;
+}
+
+p.nothing {
+  font-size: 1.1rem;
+  font-weight: 500;
+}

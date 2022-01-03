@@ -13,7 +13,11 @@ function StagesList(props) {
     <DragDropContext onDragEnd={updateListOrdering}>
       <Droppable droppableId='droppable-1'>
         {(provided, snapshot) => (
-          <div ref={provided.innerRef} {...provided.droppableProps}>
+          <div
+            className={classes.stagesList}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             {props.stages.map((stage, index) => (
               <Draggable
                 key={stage.idEtape}
@@ -25,7 +29,7 @@ function StagesList(props) {
                     className={`row ${
                       stage.idEtape === props.idCurrentStage
                         ? classes.active
-                        : ''
+                        : classes.inactive
                     } ${classes.box}`}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
@@ -41,7 +45,7 @@ function StagesList(props) {
                         onDeleteStage={props.onDeleteStage}
                         isOnlyStage={props.stages.length == 1}
                         errorStageNameEmpty={props.errorStageNameEmpty}
-                      ></Stage>
+                      />
                     </div>
                     <div
                       className='col-2 d-flex align-items-center justify-content-center'
@@ -53,7 +57,7 @@ function StagesList(props) {
                             ? classes.white
                             : ''
                         }
-                      ></DragHandle>
+                      />
                     </div>
                   </div>
                 )}
