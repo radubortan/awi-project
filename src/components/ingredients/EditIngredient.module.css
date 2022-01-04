@@ -14,8 +14,21 @@
 }
 
 .checkbox {
+  display: flex;
+  align-items: center;
   margin-top: 25px;
   margin-bottom: 5px;
+}
+
+.selectInput {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  width: 100%;
+}
+
+.selectInput label {
+  padding-left: 10px;
 }
 
 .errorMessage {
@@ -45,4 +58,5 @@
 
 .buttons button {
   width: 100px;
+  font-weight: 700;
 }

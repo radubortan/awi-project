@@ -194,6 +194,7 @@ const EditIngredient = (props) => {
               dropDownList={categories}
               optionIdentifier='nomCatIng'
               onChange={handleChange}
+              className={classes.selectInput}
             />
             {categoryEmptyError && (
               <p className={classes.errorMessage}>Choisissez une catégorie</p>
@@ -220,6 +221,7 @@ const EditIngredient = (props) => {
                 dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
                 onChange={handleChange}
+                className={classes.selectInput}
               />
             )}
           </div>

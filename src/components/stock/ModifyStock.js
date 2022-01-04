@@ -134,7 +134,7 @@ const ModifyStock = (props) => {
           </div>
 
           {props.type === 'Augmentation' && (
-            <Fragment>
+            <div className={classes.costDiv}>
               <NumberInput
                 label={`Coût d'achat total (€)`}
                 onChange={handleCostChange}
@@ -143,7 +143,7 @@ const ModifyStock = (props) => {
               {isInvalidCostValue && (
                 <p className={classes.errorMessage}>{errorMessageCost}</p>
               )}
-            </Fragment>
+            </div>
           )}
         </form>
         <div className={`${classes.buttons}`}>
