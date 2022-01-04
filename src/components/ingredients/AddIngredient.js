@@ -184,6 +184,7 @@ const AddIngredient = (props) => {
               dropDownList={units}
               optionIdentifier='nomUnite'
               onChange={handleChange}
+              className={classes.selectInput}
             />
             {unitEmptyError && (
               <p className={classes.errorMessage}>Choisissez une unité</p>
@@ -200,6 +201,7 @@ const AddIngredient = (props) => {
               dropDownList={categories}
               optionIdentifier='nomCatIng'
               onChange={handleChange}
+              className={classes.selectInput}
             />
             {categoryEmptyError && (
               <p className={classes.errorMessage}>Choisissez une catégorie</p>
@@ -223,6 +225,7 @@ const AddIngredient = (props) => {
                 dropDownList={allergenCategories}
                 optionIdentifier='nomCatAllerg'
                 onChange={handleChange}
+                className={classes.selectInput}
               />
             )}
           </div>

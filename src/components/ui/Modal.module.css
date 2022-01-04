@@ -10,8 +10,6 @@
 
 .modal {
   position: fixed;
-  max-height: 86vh;
-  overflow-y: auto;
   top: 7vh;
   left: 5%;
   width: 700px;
@@ -21,6 +19,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
+  overflow-y: auto;
+  max-height: 86vh;
 }
 
 @media (min-width: 768px) {
@@ -34,6 +34,13 @@
   .modal {
     left: 3%;
     width: 94%;
+  }
+}
+
+@media (max-height: 700px) {
+  .modal {
+    top: 4vh;
+    max-height: 92vh;
   }
 }
 

@@ -10,6 +10,10 @@
   justify-content: flex-start;
 }
 
+.addBtn button {
+  font-weight: 700;
+}
+
 @media (max-width: 992px) {
   .addBtn {
     display: flex;
