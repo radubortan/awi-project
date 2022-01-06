@@ -20,8 +20,10 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 function Ingredients() {
+  const [isLoading, setIsLoading] = useState(true);
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
@@ -49,6 +51,7 @@ function Ingredients() {
       });
       setIngredientList(loadedIngredients);
       setFilteredIngredientList(loadedIngredients);
+      setIsLoading(false);
     };
     getIngredients();
   }, []);
@@ -202,73 +205,78 @@ function Ingredients() {
 
   return (
     <Fragment>
-      {onAddIngredient && (
-        <AddIngredient
-          onClose={hideAddIngredientPanel}
-          addIngredient={addIngredient}
-          ingredientList={ingredientList}
-        />
-      )}
-      {onEditIngredient && (
-        <EditIngredient
-          onClose={hideEditIngredientPanel}
-          ingredientInfo={onEditIngredient}
-          editIngredient={editIngredient}
-          ingredientList={ingredientList}
-        />
-      )}
-      {indexIngredientBeingDeleted !== null && (
-        <DeleteIngredient
-          onClose={hideDeleteIngredientPanel}
-          indexIngredient={indexIngredientBeingDeleted}
-          ingredient={ingredientBeingDeleted}
-          onDeleteIngredient={deleteIngredient}
-        />
-      )}
-      {onViewIngredient && (
-        <ViewIngredient
-          onClose={hideViewIngredientPanel}
-          ingredient={onViewIngredient}
-        />
-      )}
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col'>
-            <h1 className={classes.title}>Ingrédients</h1>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col-md-2 col-lg-3' />
-          <div className='col-sm-12 col-md-8 col-lg-6'>
-            <SearchBar onChange={searchBarFiltering} />
-          </div>
-          <div className='col-md-2 col-lg-3' />
-        </div>
-        <div className='row'>
-          <div className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}>
-            <Button className='addButton' onClick={showAddIngredientPanel}>
-              <HiPlus /> Ajouter ingrédient
-            </Button>
-          </div>
-          <div className='col-xs-12 col-md-3 order-lg-1'>
-            <IngredientFilter
-              categoriesFiltering={filterCategoryHandler}
-              allergenCategoriesFiltering={filterAllergenCategoryHandler}
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && (
+        <Fragment>
+          {onAddIngredient && (
+            <AddIngredient
+              onClose={hideAddIngredientPanel}
+              addIngredient={addIngredient}
+              ingredientList={ingredientList}
             />
+          )}
+          {onEditIngredient && (
+            <EditIngredient
+              onClose={hideEditIngredientPanel}
+              ingredientInfo={onEditIngredient}
+              editIngredient={editIngredient}
+              ingredientList={ingredientList}
+            />
+          )}
+          {indexIngredientBeingDeleted !== null && (
+            <DeleteIngredient
+              onClose={hideDeleteIngredientPanel}
+              indexIngredient={indexIngredientBeingDeleted}
+              ingredient={ingredientBeingDeleted}
+              onDeleteIngredient={deleteIngredient}
+            />
+          )}
+          {onViewIngredient && (
+            <ViewIngredient
+              onClose={hideViewIngredientPanel}
+              ingredient={onViewIngredient}
+            />
+          )}
+          <div className='container-fluid'>
+            <div className='row'>
+              <div className='col'>
+                <h1 className={classes.title}>Ingrédients</h1>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-md-2 col-lg-3' />
+              <div className='col-sm-12 col-md-8 col-lg-6'>
+                <SearchBar onChange={searchBarFiltering} />
+              </div>
+              <div className='col-md-2 col-lg-3' />
+            </div>
+            <div className='row'>
+              <div className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}>
+                <Button className='addButton' onClick={showAddIngredientPanel}>
+                  <HiPlus /> Ajouter ingrédient
+                </Button>
+              </div>
+              <div className='col-xs-12 col-md-3 order-lg-1'>
+                <IngredientFilter
+                  categoriesFiltering={filterCategoryHandler}
+                  allergenCategoriesFiltering={filterAllergenCategoryHandler}
+                />
+              </div>
+              <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
+                <Card>
+                  <IngredientList
+                    ingredientList={filteredIngredientList}
+                    wholeIngredientList={ingredientList}
+                    onEditIngredient={showEditIngredientPanel}
+                    onDeleteIngredient={showDeleteIngredientPanel}
+                    onViewIngredient={showViewIngredientPanel}
+                  />
+                </Card>
+              </div>
+            </div>
           </div>
-          <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
-            <Card>
-              <IngredientList
-                ingredientList={filteredIngredientList}
-                wholeIngredientList={ingredientList}
-                onEditIngredient={showEditIngredientPanel}
-                onDeleteIngredient={showDeleteIngredientPanel}
-                onViewIngredient={showViewIngredientPanel}
-              />
-            </Card>
-          </div>
-        </div>
-      </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 }
