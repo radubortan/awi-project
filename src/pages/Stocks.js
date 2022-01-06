@@ -9,8 +9,10 @@ import StockList from '../components/stock/StockList';
 import { db } from '../firebase-config';
 import { collection, getDocs, updateDoc, doc } from 'firebase/firestore';
 import ModifyStock from '../components/stock/ModifyStock';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 function Stocks() {
+  const [isLoading, setIsLoading] = useState(true);
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
@@ -38,6 +40,7 @@ function Stocks() {
       });
       setIngredientList(loadedIngredients);
       setFilteredIngredientList(loadedIngredients);
+      setIsLoading(false);
     };
     getIngredients();
   }, []);
@@ -140,59 +143,64 @@ function Stocks() {
 
   return (
     <Fragment>
-      {onViewStock && (
-        <ViewStock onClose={hideViewStockPanel} ingredient={onViewStock} />
-      )}
-      {onIncreaseStock && (
-        <ModifyStock
-          type='Augmentation'
-          onClose={hideIncreaseStockPanel}
-          ingredientInfo={onIncreaseStock}
-          onAction={modifiedStockHandler}
-        />
-      )}
-      {onDecreaseStock && (
-        <ModifyStock
-          type='Diminution'
-          onClose={hideDecreaseStockPanel}
-          ingredientInfo={onDecreaseStock}
-          onAction={modifiedStockHandler}
-        />
-      )}
-
-      <div className='container-fluid'>
-        <div className='row'>
-          <div className='col'>
-            <h1 className={classes.title}>Stocks</h1>
-          </div>
-        </div>
-        <div className='row'>
-          <div className='col-md-2 col-lg-3' />
-          <div className=' col-sm-12 col-md-8 col-lg-6'>
-            <SearchBar onChange={searchBarFiltering} />
-          </div>
-          <div className='col-md-2 col-lg-3' />
-        </div>
-        <div className='row'>
-          <div className='col-xs-12 col-md-3'>
-            <IngredientFilter
-              categoriesFiltering={filterCategoryHandler}
-              allergenCategoriesFiltering={filterAllergenCategoryHandler}
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && (
+        <Fragment>
+          {onViewStock && (
+            <ViewStock onClose={hideViewStockPanel} ingredient={onViewStock} />
+          )}
+          {onIncreaseStock && (
+            <ModifyStock
+              type='Augmentation'
+              onClose={hideIncreaseStockPanel}
+              ingredientInfo={onIncreaseStock}
+              onAction={modifiedStockHandler}
             />
+          )}
+          {onDecreaseStock && (
+            <ModifyStock
+              type='Diminution'
+              onClose={hideDecreaseStockPanel}
+              ingredientInfo={onDecreaseStock}
+              onAction={modifiedStockHandler}
+            />
+          )}
+
+          <div className='container-fluid'>
+            <div className='row'>
+              <div className='col'>
+                <h1 className={classes.title}>Stocks</h1>
+              </div>
+            </div>
+            <div className='row'>
+              <div className='col-md-2 col-lg-3' />
+              <div className=' col-sm-12 col-md-8 col-lg-6'>
+                <SearchBar onChange={searchBarFiltering} />
+              </div>
+              <div className='col-md-2 col-lg-3' />
+            </div>
+            <div className='row'>
+              <div className='col-xs-12 col-md-3'>
+                <IngredientFilter
+                  categoriesFiltering={filterCategoryHandler}
+                  allergenCategoriesFiltering={filterAllergenCategoryHandler}
+                />
+              </div>
+              <div className='col-xs-12 col-md-9 col-lg-6'>
+                <Card>
+                  <StockList
+                    ingredientList={filteredIngredientList}
+                    wholeIngredientList={ingredientList}
+                    onViewIngredient={showViewStockPanel}
+                    onIncreaseStock={showIncreaseStockPanel}
+                    onDecreaseStock={showDecreaseStockPanel}
+                  />
+                </Card>
+              </div>
+            </div>
           </div>
-          <div className='col-xs-12 col-md-9 col-lg-6'>
-            <Card>
-              <StockList
-                ingredientList={filteredIngredientList}
-                wholeIngredientList={ingredientList}
-                onViewIngredient={showViewStockPanel}
-                onIncreaseStock={showIncreaseStockPanel}
-                onDecreaseStock={showDecreaseStockPanel}
-              />
-            </Card>
-          </div>
-        </div>
-      </div>
+        </Fragment>
+      )}
     </Fragment>
   );
 }
