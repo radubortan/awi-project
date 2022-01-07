@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
-import NumberInput from '../general/NumberInput';
-import SelectInput from '../general/SelectInput';
-import { db } from '../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
-import classes from './AddIngredientItem.module.css';
-import { HiPlus } from 'react-icons/hi';
+import { useState, useEffect } from "react";
+import NumberInput from "../general/NumberInput";
+import SelectInput from "../general/SelectInput";
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+import classes from "./AddIngredientItem.module.css";
+import { HiPlus } from "react-icons/hi";
+import SelectInputSpecifiedValue from "../general/SelectInputSpecifiedValue";
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -16,13 +17,14 @@ function AddIngredientItem(props) {
   const [currentIngredient, setCurrentIngredient] = useState(null);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
   const [ingredients, setIngredients] = useState([]);
-  const ingredientsCollectionRef = collection(db, 'ingredients');
+  const ingredientsCollectionRef = collection(db, "ingredients");
   useEffect(() => {
     const getIngredients = async () => {
       const data = await getDocs(ingredientsCollectionRef);
       const loadedIngredients = [];
       data.docs.map((doc) => {
         return loadedIngredients.push({
+          idIng: doc.id,
           nomIng: doc.data().nomIng,
           nomUnite: doc.data().nomUnite,
           prixUnitaire: doc.data().prixUnitaire,
@@ -37,7 +39,7 @@ function AddIngredientItem(props) {
 
   const handleChangeIngredient = (e) => {
     setCurrentIngredient(
-      ingredients.find((ingredient) => ingredient.nomIng == e.target.value)
+      ingredients.find((ingredient) => ingredient.idIng == e.target.value)
     );
     setSelectedIngredient(e.target.value);
   };
@@ -76,7 +78,7 @@ function AddIngredientItem(props) {
       setqteEmptyError(true);
       isValid = false;
     } else {
-      if (!currentIngredient.nomIng) {
+      if (!currentIngredient.idIng) {
         setnomIngEmptyError(true);
         isValid = false;
       }
@@ -88,14 +90,17 @@ function AddIngredientItem(props) {
 
     return isValid;
   };
+  console.log(ingredients);
 
   return (
     <div className={classes.container}>
-      <SelectInput
+      <SelectInputSpecifiedValue
         className={classes.nameInput}
-        label='Nom'
+        label="Nom"
+        name="idIng"
         dropDownList={ingredients}
-        optionIdentifier='nomIng'
+        optionLabel="nomIng"
+        optionValue="idIng"
         onChange={handleChangeIngredient}
         selected={selectedIngredient}
       />
@@ -105,14 +110,14 @@ function AddIngredientItem(props) {
       <NumberInput
         label={`Quantité ${
           currentIngredient && currentIngredient.nomIng
-            ? '(' + currentIngredient.nomUnite + ')'
-            : ''
+            ? "(" + currentIngredient.nomUnite + ")"
+            : ""
         }`}
-        name='qte'
+        name="qte"
         value={
           currentIngredient && currentIngredient.qte
             ? currentIngredient.qte
-            : ''
+            : ""
         }
         onChange={handleChangeQuantity}
         className={classes.numberInput}

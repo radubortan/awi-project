@@ -1,10 +1,10 @@
-import Card from '../ui/Card';
-import CostsSummary from './CostsSummary';
-import { db } from '../../firebase-config';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
-import IngredientsSummary from './IngredientsSummary';
-import classes from './Summary.module.css';
+import Card from "../ui/Card";
+import CostsSummary from "./CostsSummary";
+import { db } from "../../firebase-config";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import IngredientsSummary from "./IngredientsSummary";
+import classes from "./Summary.module.css";
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -16,7 +16,7 @@ const Summary = (props) => {
   //settings state
   const [currentSettings, setCurrentSettings] = useState({});
 
-  const settingsCollectionRef = collection(db, 'settings');
+  const settingsCollectionRef = collection(db, "settings");
 
   //to fetch the stored values when the component loads
   useEffect(() => {
@@ -35,32 +35,90 @@ const Summary = (props) => {
 
   // Ingredients from recipe list
 
-  const getRecipeByName = async (nomRecette) => {
+  const addIngredientsFromSubRecipe = async (idRecette, nbCouvertsRecette) => {
     const q = query(
-      collection(db, 'recettes'),
-      where('nomRecette', '==', nomRecette)
+      collection(db, "recettes"),
+      where("__name__", "==", idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      const ingredientsFromCurrentRecipe = getAllIngredientsFromStages(
+      let ingredientsFromCurrentRecipe = getAllIngredientsFromStages(
         recipe.stages
       );
+
+      // modify quantity of ingredients according to nbCouverts
+      console.log(nbCouvertsRecette);
+      console.log(recipe);
+      if (nbCouvertsRecette) {
+        console.log("in");
+        ingredientsFromCurrentRecipe = ingredientsFromCurrentRecipe.map(
+          (ingredient) => {
+            let updatedIngredient = ingredient;
+            console.log("info");
+            console.log(updatedIngredient.qte);
+            console.log(nbCouvertsRecette);
+            console.log(recipe.nbCouverts);
+            updatedIngredient = {
+              ...updatedIngredient,
+              qte:
+                (updatedIngredient.qte * nbCouvertsRecette) / recipe.nbCouverts,
+            };
+            return updatedIngredient;
+          }
+        );
+      }
+
+      // add quantities
+      console.log("Avant set ingredients");
+      console.log(ingredientsFromRecipe);
+
+      console.log("Apres set ingredients");
+      console.log(ingredientsFromRecipe);
+
       setIngredientsFromRecipe((prevState) => {
-        return [...prevState, ...ingredientsFromCurrentRecipe];
+        const ingredients = prevState;
+        for (const ingredient of ingredientsFromCurrentRecipe) {
+          addIngredientToIngredients(ingredients, ingredient);
+        }
+        return [...ingredients];
       });
     });
   };
 
+  // Function to add ingredients quantity
+
+  const addIngredientToIngredients = (ingredients, newIngredient) => {
+    const indexIngredient = ingredients.findIndex(
+      (ingredient) => ingredient.nomIng === ingredient.nomIng
+    );
+    if (indexIngredient === -1) {
+      ingredients.push(newIngredient);
+    } else {
+      let updatedIngredient = ingredients[indexIngredient];
+      updatedIngredient = {
+        ...updatedIngredient,
+        qte:
+          parseInt(ingredients[indexIngredient].qte) +
+          parseInt(newIngredient.qte),
+      };
+      ingredients.splice(indexIngredient, 1, updatedIngredient);
+    }
+  };
+
   const getAllIngredientsFromStages = (stages) => {
     let ingredients = [];
+    console.log("start");
+    console.log(ingredientsFromRecipe);
     for (let stage of stages) {
-      if (stage.nomRecette !== undefined) {
-        getRecipeByName(stage.nomRecette);
+      if (stage.idRecette !== undefined) {
+        if (stage.idRecette) {
+          addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
+        }
       } else {
         for (let ingredient of stage.ingredients) {
-          ingredients.push(ingredient);
+          addIngredientToIngredients(ingredients, ingredient);
         }
       }
     }
@@ -73,6 +131,8 @@ const Summary = (props) => {
       const allIngredientsFromRecipe = getAllIngredientsFromStages(
         props.stages
       );
+      console.log("check");
+      console.log(allIngredientsFromRecipe);
       setIngredientsFromRecipe(allIngredientsFromRecipe);
     };
     getIngredients();
@@ -81,8 +141,8 @@ const Summary = (props) => {
   return (
     <div className={classes.summaryContainer}>
       <h1 className={classes.title}>Synthèse</h1>
-      <div className='row'>
-        <div className='col-12 col-md-6'>
+      <div className="row">
+        <div className="col-12 col-md-6">
           <CostsSummary
             avgHourlyCost={currentSettings.coutHoraireMoyen}
             flatHourlyCost={currentSettings.coutHoraireForfaitaire}
@@ -92,7 +152,7 @@ const Summary = (props) => {
             stages={props.stages}
           ></CostsSummary>
         </div>
-        <div className='col-12 col-md-6'>
+        <div className="col-12 col-md-6">
           <IngredientsSummary
             ingredients={ingredientsFromRecipe}
           ></IngredientsSummary>
