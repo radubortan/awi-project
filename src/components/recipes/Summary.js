@@ -71,11 +71,6 @@ const Summary = (props) => {
       }
 
       // add quantities
-      console.log("Avant set ingredients");
-      console.log(ingredientsFromRecipe);
-
-      console.log("Apres set ingredients");
-      console.log(ingredientsFromRecipe);
 
       setIngredientsFromRecipe((prevState) => {
         const ingredients = prevState;
@@ -91,7 +86,7 @@ const Summary = (props) => {
 
   const addIngredientToIngredients = (ingredients, newIngredient) => {
     const indexIngredient = ingredients.findIndex(
-      (ingredient) => ingredient.nomIng === ingredient.nomIng
+      (ingredient) => ingredient.nomIng === newIngredient.nomIng
     );
     if (indexIngredient === -1) {
       ingredients.push(newIngredient);
