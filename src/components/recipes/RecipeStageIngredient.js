@@ -21,7 +21,7 @@ function RecipeStageIngredient(props) {
       const getRecipeById = async () => {
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
-          getIngredients(doc.data().stages);
+          setIngredients(getIngredients(doc.data().stages));
           // doc.data() is never undefined for query doc snapshots
           setRecipe(doc.data());
         });
@@ -61,6 +61,7 @@ function RecipeStageIngredient(props) {
         //ingredients.push(ingredient);
       }
     }
+    return [];
   };
 
   return (
