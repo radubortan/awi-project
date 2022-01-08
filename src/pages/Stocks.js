@@ -12,7 +12,7 @@ import ModifyStock from '../components/stock/ModifyStock';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 function Stocks() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
@@ -166,36 +166,40 @@ function Stocks() {
             />
           )}
 
-          <div className='container-fluid'>
-            <div className='row'>
-              <div className='col'>
-                <h1 className={classes.title}>Stocks</h1>
+          <div className={`container-fluid ${classes.container}`}>
+            <div className={classes.top}>
+              <div className='row'>
+                <div className='col'>
+                  <h1 className={classes.title}>Stocks</h1>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col-md-2 col-lg-3' />
+                <div className=' col-sm-12 col-md-8 col-lg-6'>
+                  <SearchBar onChange={searchBarFiltering} />
+                </div>
+                <div className='col-md-2 col-lg-3' />
               </div>
             </div>
-            <div className='row'>
-              <div className='col-md-2 col-lg-3' />
-              <div className=' col-sm-12 col-md-8 col-lg-6'>
-                <SearchBar onChange={searchBarFiltering} />
-              </div>
-              <div className='col-md-2 col-lg-3' />
-            </div>
-            <div className='row'>
-              <div className='col-xs-12 col-md-3'>
-                <IngredientFilter
-                  categoriesFiltering={filterCategoryHandler}
-                  allergenCategoriesFiltering={filterAllergenCategoryHandler}
-                />
-              </div>
-              <div className='col-xs-12 col-md-9 col-lg-6'>
-                <Card>
-                  <StockList
-                    ingredientList={filteredIngredientList}
-                    wholeIngredientList={ingredientList}
-                    onViewIngredient={showViewStockPanel}
-                    onIncreaseStock={showIncreaseStockPanel}
-                    onDecreaseStock={showDecreaseStockPanel}
+            <div className={classes.bottom}>
+              <div className='row'>
+                <div className='col-xs-12 col-md-3'>
+                  <IngredientFilter
+                    categoriesFiltering={filterCategoryHandler}
+                    allergenCategoriesFiltering={filterAllergenCategoryHandler}
                   />
-                </Card>
+                </div>
+                <div className='col-xs-12 col-md-9 col-lg-6'>
+                  <Card>
+                    <StockList
+                      ingredientList={filteredIngredientList}
+                      wholeIngredientList={ingredientList}
+                      onViewIngredient={showViewStockPanel}
+                      onIncreaseStock={showIncreaseStockPanel}
+                      onDecreaseStock={showDecreaseStockPanel}
+                    />
+                  </Card>
+                </div>
               </div>
             </div>
           </div>

@@ -33,15 +33,23 @@
 }
 
 .nav li {
-  margin-left: 1.5rem;
+  margin-left: 0.8rem;
   font-size: 1.25rem;
   font-weight: 500;
+  transition: background-color 0.2s;
 }
 
 .nav a,
 .settings {
   text-decoration: none;
   color: #8bb2ec;
+  padding: 4px;
+  border-radius: 5px;
+}
+
+.nav li {
+  padding: 4px;
+  border-radius: 5px;
 }
 
 .nav a:hover,
@@ -50,6 +58,12 @@
 .settings:hover {
   cursor: pointer;
   color: #e6fcfc;
+}
+
+.nav a:hover,
+.nav li:hover {
+  transition: background-color 0.2s;
+  background-color: #094474;
 }
 
 .menuBtn {
@@ -123,10 +137,10 @@
 
 @media (max-width: 800px) {
   .header {
-    padding: 0 2%;
+    padding: 0 1%;
   }
   .nav li {
-    margin-left: 0.8rem;
+    margin-left: 0.4rem;
     font-size: 1.2rem;
   }
   .logo {

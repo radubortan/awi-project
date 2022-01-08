@@ -100,7 +100,7 @@ const Navigation = (props) => {
     <header className={classes.header}>
       <div>
         <NavLink to='/' className={classes.logo}>
-          Mare7
+          PolyCook
         </NavLink>
       </div>
 

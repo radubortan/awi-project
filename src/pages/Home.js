@@ -21,8 +21,7 @@ const sortRecipes = (a, b) => {
 };
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(true);
-  console.log(isLoading);
+  const [isLoading, setIsLoading] = useState(false);
   const authCtx = useContext(AuthContext);
 
   // fetch recipes
@@ -30,7 +29,7 @@ function Home() {
   const [filteredRecipeList, setFilteredRecipeList] = useState([]);
   const recipesCollectionRef = collection(db, 'recettes');
   useEffect(() => {
-    setIsLoading(true);
+    setIsLoading(false);
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
       const loadedRecipes = [];
@@ -155,8 +154,6 @@ function Home() {
     setRecipeList([...updatedRecipes]);
   };
 
-  console.log(isLoading);
-
   return (
     <Fragment>
       {isLoading && <LoadingSpinner />}
@@ -170,45 +167,52 @@ function Home() {
               onDeleteRecipe={deleteRecipe}
             />
           )}
-          <div className='container-fluid'>
-            <div className='row'>
-              <div className='col'>
-                <h1 className={classes.title}>Recettes</h1>
-              </div>
-            </div>
-            <div className='row'>
-              <div className='col-md-2 col-lg-3'></div>
-              <div className='col-sm-12 col-md-8 col-lg-6'>
-                <SearchBar onChange={searchBarFiltering} />
-              </div>
-              <div className='col-md-2 col-lg-3'></div>
-            </div>
-            <div className='row'>
-              {authCtx.isLoggedIn && (
-                <div className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}>
-                  <Link to='/ajouter-recette'>
-                    <Button className='addButton'>
-                      <HiPlus /> Ajouter Recette
-                    </Button>
-                  </Link>
+
+          <div className={`container-fluid ${classes.container}`}>
+            <div className={classes.top}>
+              <div className='row'>
+                <div className='col'>
+                  <h1 className={classes.title}>Recettes</h1>
                 </div>
-              )}
-              <div className='col-xs-12 col-md-3 order-lg-1'>
-                <RecipeFilter
-                  categoriesFiltering={filterCategoryHandler}
-                  ingredientsFiltering={filterIngredientHandler}
-                />
               </div>
-              <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
-                <Card>
-                  <RecipeList
-                    recipeList={filteredRecipeList}
-                    wholeRecipeList={recipeList}
-                    onEditRecipe={showEditRecipePanel}
-                    onDeleteRecipe={showDeleteRecipePanel}
-                    onViewRecipe={showViewRecipePanel}
+              <div className='row'>
+                <div className='col-md-2 col-lg-3'></div>
+                <div className='col-sm-12 col-md-8 col-lg-6'>
+                  <SearchBar onChange={searchBarFiltering} />
+                </div>
+                <div className='col-md-2 col-lg-3'></div>
+              </div>
+            </div>
+            <div className={`${classes.bottom}`}>
+              <div className='row'>
+                {authCtx.isLoggedIn && (
+                  <div
+                    className={`col-12 col-lg-3 order-lg-3 ${classes.addBtn}`}
+                  >
+                    <Link to='/ajouter-recette'>
+                      <Button className='addButton'>
+                        <HiPlus /> Ajouter Recette
+                      </Button>
+                    </Link>
+                  </div>
+                )}
+                <div className='col-xs-12 col-md-3 order-lg-1'>
+                  <RecipeFilter
+                    categoriesFiltering={filterCategoryHandler}
+                    ingredientsFiltering={filterIngredientHandler}
                   />
-                </Card>
+                </div>
+                <div className='col-xs-12 col-md-9 col-lg-6 order-lg-2'>
+                  <Card>
+                    <RecipeList
+                      recipeList={filteredRecipeList}
+                      wholeRecipeList={recipeList}
+                      onEditRecipe={showEditRecipePanel}
+                      onDeleteRecipe={showDeleteRecipePanel}
+                      onViewRecipe={showViewRecipePanel}
+                    />
+                  </Card>
+                </div>
               </div>
             </div>
           </div>
