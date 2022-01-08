@@ -1,10 +1,10 @@
-import Card from '../ui/Card';
-import CostsSummary from './CostsSummary';
-import { db } from '../../firebase-config';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useState, useEffect } from 'react';
-import IngredientsSummary from './IngredientsSummary';
-import classes from './Summary.module.css';
+import Card from "../ui/Card";
+import CostsSummary from "./CostsSummary";
+import { db } from "../../firebase-config";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import IngredientsSummary from "./IngredientsSummary";
+import classes from "./Summary.module.css";
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -16,7 +16,7 @@ const Summary = (props) => {
   //settings state
   const [currentSettings, setCurrentSettings] = useState({});
 
-  const settingsCollectionRef = collection(db, 'settings');
+  const settingsCollectionRef = collection(db, "settings");
 
   //to fetch the stored values when the component loads
   useEffect(() => {
@@ -35,45 +35,129 @@ const Summary = (props) => {
 
   // Ingredients from recipe list
 
-  const getRecipeByName = async (nomRecette) => {
+  const addIngredientsFromSubRecipe = async (idRecette, nbCouvertsRecette) => {
     const q = query(
-      collection(db, 'recettes'),
-      where('nomRecette', '==', nomRecette)
+      collection(db, "recettes"),
+      where("__name__", "==", idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      const ingredientsFromCurrentRecipe = getAllIngredientsFromStages(
-        recipe.stages
-      );
+      console.log(recipe);
+      getAllIngredientsFromStagesSubRecipe(recipe, nbCouvertsRecette);
+
+      // modify quantity of ingredients according to nbCouverts
+      /*
+      
+      */
+
+      // add quantities
+      /*
+      for (const ingredient of ingredientsFromCurrentRecipe) {
+        addIngredientToIngredients(ingredient);
+      }
+      */
+    });
+  };
+
+  // Function to add ingredients quantity
+
+  const addIngredientToIngredients = async (newIngredient) => {
+    //query
+    const q = query(
+      collection(db, "ingredients"),
+      where("__name__", "==", newIngredient.idIng)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      const fetchedIngredient = doc.data();
       setIngredientsFromRecipe((prevState) => {
-        return [...prevState, ...ingredientsFromCurrentRecipe];
+        const currentIngredientsState = prevState;
+
+        //prepare ingredient
+        newIngredient = {
+          ...newIngredient,
+          nomIng: fetchedIngredient.nomIng,
+          prixUnitaire: fetchedIngredient.prixUnitaire,
+        };
+        console.log("new ingredient");
+        console.log(newIngredient);
+
+        // check if already in
+        const indexIngredient = currentIngredientsState.findIndex(
+          (ingredient) => ingredient.nomIng === newIngredient.nomIng
+        );
+        if (indexIngredient === -1) {
+          console.log("non addition condition");
+          return [...currentIngredientsState, newIngredient];
+        } else {
+          console.log("addition condition");
+          let updatedIngredient = currentIngredientsState[indexIngredient];
+          updatedIngredient = {
+            ...updatedIngredient,
+            qte:
+              parseInt(currentIngredientsState[indexIngredient].qte) +
+              parseInt(newIngredient.qte),
+          };
+          currentIngredientsState.splice(indexIngredient, 1, updatedIngredient);
+          return [...currentIngredientsState];
+        }
       });
     });
   };
 
   const getAllIngredientsFromStages = (stages) => {
-    let ingredients = [];
     for (let stage of stages) {
-      if (stage.nomRecette !== undefined) {
-        getRecipeByName(stage.nomRecette);
+      if (stage.idRecette !== undefined) {
+        console.log(stage.idRecette);
+        if (stage.idRecette) {
+          addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
+        }
       } else {
         for (let ingredient of stage.ingredients) {
-          ingredients.push(ingredient);
+          addIngredientToIngredients(ingredient);
         }
       }
     }
-    return ingredients;
+
+    return [];
+  };
+
+  const getAllIngredientsFromStagesSubRecipe = (recipe, nbCouverts) => {
+    for (let stage of recipe.stages) {
+      if (stage.idRecette !== undefined) {
+        if (stage.idRecette) {
+          addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
+        }
+      } else {
+        let ingredientsWithNewQuantities = stage.ingredients;
+        if (nbCouverts) {
+          ingredientsWithNewQuantities = ingredientsWithNewQuantities.map(
+            (ingredient) => {
+              let updatedIngredient = ingredient;
+              updatedIngredient = {
+                ...updatedIngredient,
+                qte: (updatedIngredient.qte * nbCouverts) / recipe.nbCouverts,
+              };
+              return updatedIngredient;
+            }
+          );
+        }
+        for (let ingredient of ingredientsWithNewQuantities) {
+          addIngredientToIngredients(ingredient);
+        }
+      }
+    }
+
+    return [];
   };
   const [ingredientsFromRecipe, setIngredientsFromRecipe] = useState([]);
 
   useEffect(() => {
     const getIngredients = () => {
-      const allIngredientsFromRecipe = getAllIngredientsFromStages(
-        props.stages
-      );
-      setIngredientsFromRecipe(allIngredientsFromRecipe);
+      setIngredientsFromRecipe(getAllIngredientsFromStages(props.stages));
     };
     getIngredients();
   }, [props.stages]);
@@ -81,8 +165,8 @@ const Summary = (props) => {
   return (
     <div className={classes.summaryContainer}>
       <h1 className={classes.title}>Synthèse</h1>
-      <div className='row'>
-        <div className='col-12 col-md-6'>
+      <div className="row">
+        <div className="col-12 col-md-6">
           <CostsSummary
             avgHourlyCost={currentSettings.coutHoraireMoyen}
             flatHourlyCost={currentSettings.coutHoraireForfaitaire}
@@ -92,7 +176,7 @@ const Summary = (props) => {
             stages={props.stages}
           ></CostsSummary>
         </div>
-        <div className='col-12 col-md-6'>
+        <div className="col-12 col-md-6">
           <IngredientsSummary
             ingredients={ingredientsFromRecipe}
           ></IngredientsSummary>

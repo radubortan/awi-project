@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import NumberInput from '../general/NumberInput';
-import RadioButton from '../general/RadioButton';
-import SelectInput from '../general/SelectInput';
-import { db } from '../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
-import Card from '../ui/Card';
-import TextAreaInput from '../general/TexteAreaInput';
-import classes from './DetailPanel.module.css';
+import { useState, useEffect } from "react";
+import NumberInput from "../general/NumberInput";
+import RadioButton from "../general/RadioButton";
+import SelectInput from "../general/SelectInput";
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+import Card from "../ui/Card";
+import TextAreaInput from "../general/TexteAreaInput";
+import classes from "./DetailPanel.module.css";
+import SelectInputSpecifiedValue from "../general/SelectInputSpecifiedValue";
 
 const sortRecipes = (a, b) => {
   const textA = a.nomRecette;
@@ -15,13 +16,14 @@ const sortRecipes = (a, b) => {
 };
 function DetailPanel(props) {
   const [recipes, setRecipes] = useState([]);
-  const recipesCollectionRef = collection(db, 'recettes');
+  const recipesCollectionRef = collection(db, "recettes");
   useEffect(() => {
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
       const loadedRecipes = [];
       data.docs.map((doc) => {
         return loadedRecipes.push({
+          idRecette: doc.id,
           nomRecette: doc.data().nomRecette,
         });
       });
@@ -36,53 +38,54 @@ function DetailPanel(props) {
       <h1 className={classes.title}>En détail</h1>
       <div className={`${classes.radioButtons}`}>
         <RadioButton
-          label='in extenso'
-          name='stageType'
-          value='in extenso'
+          label="in extenso"
+          name="stageType"
+          value="in extenso"
           selectedValue={props.selectedRecipeType}
           onChange={props.recipeTypeChange}
         />
         <RadioButton
-          label='recette'
-          name='stageType'
-          value='recette'
+          label="recette"
+          name="stageType"
+          value="recette"
           selectedValue={props.selectedRecipeType}
           onChange={props.recipeTypeChange}
         />
       </div>
-      {props.selectedRecipeType === 'recette' && (
+      {props.selectedRecipeType === "recette" && (
         <div>
-          <SelectInput
+          <SelectInputSpecifiedValue
             className={classes.recipeName}
-            label='Nom recette'
+            label="Nom recette"
             dropDownList={recipes}
-            optionIdentifier='nomRecette'
-            name='nomRecette'
-            selected={props.currentStage.nomRecette}
+            optionLabel="nomRecette"
+            optionValue="idRecette"
+            name="idRecette"
+            selected={props.currentStage.idRecette}
             onChange={props.onUpdateCurrentStage}
           />
           <NumberInput
-            label='Couverts'
-            name='nbCouverts'
+            label="Couverts"
+            name="nbCouverts"
             value={props.currentStage.nbCouverts}
             onChange={props.onUpdateCurrentStage}
             className={classes.couvertsInput}
           />
         </div>
       )}
-      {props.selectedRecipeType === 'in extenso' && (
+      {props.selectedRecipeType === "in extenso" && (
         <div className={classes.inextenso}>
           <NumberInput
             className={classes.timeInput}
-            label='Temps (min) '
-            name='tempsEtape'
+            label="Temps (min) "
+            name="tempsEtape"
             value={props.currentStage.tempsEtape}
             onChange={props.onUpdateCurrentStage}
           />
           <TextAreaInput
             className={classes.descriptionInput}
-            label='Description'
-            name='description'
+            label="Description"
+            name="description"
             value={props.currentStage.description}
             onChange={props.onUpdateCurrentStage}
           />

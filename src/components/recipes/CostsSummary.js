@@ -1,11 +1,11 @@
-import Card from '../ui/Card';
-import RadioButton from '../general/RadioButton';
-import Checkbox from '../general/Checkbox';
-import NumberInput from '../general/NumberInput';
-import { Fragment, useState, useEffect } from 'react';
-import { db } from '../../firebase-config';
-import { collection, getDocs, query, where } from 'firebase/firestore';
-import classes from './CostsSummary.module.css';
+import Card from "../ui/Card";
+import RadioButton from "../general/RadioButton";
+import Checkbox from "../general/Checkbox";
+import NumberInput from "../general/NumberInput";
+import { Fragment, useState, useEffect } from "react";
+import { db } from "../../firebase-config";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import classes from "./CostsSummary.module.css";
 
 const sortStages = (a, b) => {
   const textA = a.idRecette;
@@ -16,7 +16,7 @@ const sortStages = (a, b) => {
 const CostsSummary = (props) => {
   //fetch recipe for duration
   const [allStages, setAllStages] = useState([]);
-  const etapesCollectionRef = collection(db, 'etapes');
+  const etapesCollectionRef = collection(db, "etapes");
   useEffect(() => {
     const getStages = async () => {
       const data = await getDocs(etapesCollectionRef);
@@ -41,19 +41,17 @@ const CostsSummary = (props) => {
 
   //seasoning
 
-  const [seasoningPrice, setSeasoningPrice] = useState('');
+  const [seasoningPrice, setSeasoningPrice] = useState("");
 
   const [errorSeasoningPrice, setErrorSeasoningPrice] = useState(false);
 
-  const [seasoningType, setSeasoningType] = useState('5%');
+  const [seasoningType, setSeasoningType] = useState("5%");
 
   const updateSeasoningType = (e) => {
-    console.log(e.target.value);
     setSeasoningType(e.target.value);
   };
 
   const updateSeasoningPrice = (e) => {
-    console.log(errorSeasoningPrice);
     setErrorSeasoningPrice(false);
     if (!/^(?!0\d)\d+(\.\d+)?$/.test(e.target.value)) {
       setErrorSeasoningPrice(true);
@@ -62,7 +60,7 @@ const CostsSummary = (props) => {
   };
 
   const updateSeasoningTypeByPriceInput = () => {
-    setSeasoningType('seasoningPrice');
+    setSeasoningType("seasoningPrice");
   };
 
   // Calculate Cost
@@ -81,7 +79,7 @@ const CostsSummary = (props) => {
   const totalCostIngredient = +getTotalCostIngredient().toFixed(2);
 
   let materialCost = 0;
-  if (seasoningType === '5%') {
+  if (seasoningType === "5%") {
     materialCost = +(totalCostIngredient + 0.05 * totalCostIngredient).toFixed(
       2
     );
@@ -98,7 +96,6 @@ const CostsSummary = (props) => {
 
   useEffect(() => {
     const getTotalDurationBis = () => {
-      console.log(props.stages);
       const totalDuration = getTotalDuration(props.stages);
       setTotalDuration(totalDuration);
     };
@@ -107,13 +104,12 @@ const CostsSummary = (props) => {
 
   const getRecipeByName = async (nomRecette) => {
     const q = query(
-      collection(db, 'recettes'),
-      where('nomRecette', '==', nomRecette)
+      collection(db, "recettes"),
+      where("nomRecette", "==", nomRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, ' => ', doc.data());
       const recipe = doc.data();
       const totalDuration = getTotalDuration(recipe.stages);
       setTotalDuration((prevState) => {
@@ -133,7 +129,6 @@ const CostsSummary = (props) => {
     }
     return total;
   };
-  console.log(totalDuration);
   const personnalCost = +((totalDuration * props.avgHourlyCost) / 60).toFixed(
     2
   );
@@ -160,20 +155,20 @@ const CostsSummary = (props) => {
           <div className={classes.assaisonnementContainer}>
             <div>
               <RadioButton
-                name='prixAssaisonnement'
-                label='5%'
-                value='5%'
+                name="prixAssaisonnement"
+                label="5%"
+                value="5%"
                 selectedValue={seasoningType}
                 onChange={updateSeasoningType}
               ></RadioButton>
               <RadioButton
-                name='prixAssaisonnement'
-                value='seasoningPrice'
+                name="prixAssaisonnement"
+                value="seasoningPrice"
                 selectedValue={seasoningType}
                 onChange={updateSeasoningType}
               >
                 <NumberInput
-                  labelUnite='€'
+                  labelUnite="€"
                   onChange={updateSeasoningPrice}
                   value={seasoningPrice}
                   onClick={updateSeasoningTypeByPriceInput}
@@ -182,7 +177,7 @@ const CostsSummary = (props) => {
               </RadioButton>
             </div>
           </div>
-          {errorSeasoningPrice && seasoningType === 'seasoningPrice' && (
+          {errorSeasoningPrice && seasoningType === "seasoningPrice" && (
             <p className={classes.errorMessage}>
               Veuillez entrer un nombre decimal
             </p>
@@ -192,7 +187,7 @@ const CostsSummary = (props) => {
       <div className={`${classes.chargesContainer}`}>
         <Card>
           <Checkbox
-            label='Charges'
+            label="Charges"
             onChange={changeAdditionalCost}
             checked={useAdditionalCost}
             className={classes.chargesCheckbox}
