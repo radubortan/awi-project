@@ -1,8 +1,10 @@
-import React from 'react';
-import Recipe from './Recipe';
-import classes from './RecipeList.module.css';
+import React from "react";
+import Recipe from "./Recipe";
+import classes from "./RecipeList.module.css";
+import { useNavigate } from "react-router-dom";
 
 function RecipeList(props) {
+  const navigate = useNavigate();
   return (
     <ul className={classes.list}>
       {props.recipeList.length === 0 && (
@@ -16,6 +18,9 @@ function RecipeList(props) {
             onDeleteRecipe={props.onDeleteRecipe}
             onViewRecipe={props.onViewRecipe}
             index={props.wholeRecipeList.indexOf(recipe)}
+            onClick={() => {
+              navigate("/" + recipe.nomRecette);
+            }}
           />
         ))}
     </ul>
