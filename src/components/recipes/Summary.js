@@ -44,13 +44,12 @@ const Summary = (props) => {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      let ingredientsFromCurrentRecipe = getAllIngredientsFromStages(
-        recipe.stages
-      );
-      console.log(ingredientsFromCurrentRecipe);
+      console.log("fetched recipe");
+      console.log(recipe);
+      getAllIngredientsFromStages(recipe.stages);
 
       // modify quantity of ingredients according to nbCouverts
-      console.log(nbCouvertsRecette);
+      /*
       if (nbCouvertsRecette) {
         ingredientsFromCurrentRecipe = ingredientsFromCurrentRecipe.map(
           (ingredient) => {
@@ -64,13 +63,14 @@ const Summary = (props) => {
           }
         );
       }
-      console.log(ingredientsFromCurrentRecipe);
+      */
 
       // add quantities
-
+      /*
       for (const ingredient of ingredientsFromCurrentRecipe) {
         addIngredientToIngredients(ingredient);
       }
+      */
     });
   };
 
@@ -87,64 +87,63 @@ const Summary = (props) => {
       // doc.data() is never undefined for query doc snapshots
       const fetchedIngredient = doc.data();
       setIngredientsFromRecipe((prevState) => {
+        const currentIngredientsState = prevState;
         //prepare ingredient
         newIngredient = {
           ...newIngredient,
           nomIng: fetchedIngredient.nomIng,
           prixUnitaire: fetchedIngredient.prixUnitaire,
         };
+        console.log("new ingredient");
+        console.log(newIngredient);
 
-        const indexIngredient = prevState.findIndex(
-          (ingredient) => ingredient.idIng === newIngredient.idIng
+        const indexIngredient = currentIngredientsState.findIndex(
+          (ingredient) => ingredient.nomIng === newIngredient.nomIng
         );
         if (indexIngredient === -1) {
-          console.log("here");
-          console.log(prevState, newIngredient);
-          return [...prevState, newIngredient];
+          console.log("non addition condition");
+          return [...currentIngredientsState, newIngredient];
         } else {
-          let updatedIngredient = prevState[indexIngredient];
+          console.log("addition condition");
+          let updatedIngredient = currentIngredientsState[indexIngredient];
           updatedIngredient = {
             ...updatedIngredient,
             qte:
-              parseInt(prevState[indexIngredient].qte) +
+              parseInt(currentIngredientsState[indexIngredient].qte) +
               parseInt(newIngredient.qte),
           };
-          const ingredients = prevState.splice(
-            indexIngredient,
-            1,
-            updatedIngredient
-          );
-          return [...ingredients];
+          currentIngredientsState.splice(indexIngredient, 1, updatedIngredient);
+          return [...currentIngredientsState];
         }
       });
     });
   };
 
   const getAllIngredientsFromStages = (stages) => {
-    let ingredients = [];
+    console.log("stages");
+    console.log(props.stages);
     for (let stage of stages) {
+      console.log("stage");
+      console.log(stage);
       if (stage.idRecette !== undefined) {
+        console.log(stage.idRecette);
         if (stage.idRecette) {
+          console.log("in idRecette");
           addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
         }
       } else {
         for (let ingredient of stage.ingredients) {
           addIngredientToIngredients(ingredient);
-          ingredients.push(ingredient);
         }
       }
     }
-    return ingredients;
+
+    return [];
   };
   const [ingredientsFromRecipe, setIngredientsFromRecipe] = useState([]);
 
   useEffect(() => {
     const getIngredients = () => {
-      /*const allIngredientsFromRecipe = getAllIngredientsFromStages(
-        props.stages
-      );*/
-      console.log("tupac");
-
       setIngredientsFromRecipe(getAllIngredientsFromStages(props.stages));
     };
     getIngredients();

@@ -249,9 +249,7 @@ function AddRecipe() {
       ? "recette"
       : "in extenso"
   );
-  useEffect(() => {
-    console.log(selectedRecipeType);
-  }, [selectedRecipeType]);
+  useEffect(() => {}, [selectedRecipeType]);
 
   const recipeTypeChange = (e) => {
     if (e.target.value === "recette") {
@@ -349,9 +347,6 @@ function AddRecipe() {
   const navigate = useNavigate();
 
   const addRecipe = async () => {
-    console.log("validation");
-    console.log(newRecipe);
-
     // deleting excess of information
     for (const stage of stages) {
       for (let ingredient of stage.ingredients) {

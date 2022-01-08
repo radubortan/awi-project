@@ -90,7 +90,6 @@ function AddIngredientItem(props) {
 
     return isValid;
   };
-  console.log(ingredients);
 
   return (
     <div className={classes.container}>

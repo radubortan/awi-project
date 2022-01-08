@@ -14,7 +14,6 @@ const sortStages = (a, b) => {
 };
 
 const CostsSummary = (props) => {
-  console.log(props.ingredients);
   //fetch recipe for duration
   const [allStages, setAllStages] = useState([]);
   const etapesCollectionRef = collection(db, "etapes");
