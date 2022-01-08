@@ -13,6 +13,7 @@ function InExtensoStageIngredient(props) {
         <div className={classes.ingredientList}>
           {props.currentStage.ingredients.map((ingredient, index) => (
             <IngredientItem
+              deletable={true}
               ingredient={ingredient}
               index={index}
               onDeleteIngredientItem={props.onDeleteIngredientItem}

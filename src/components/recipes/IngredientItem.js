@@ -13,15 +13,17 @@ function IngredientItem(props) {
           {props.ingredient.nomIng}
         </span>
       </p>
-      <button
-        className={classes.deleteButton}
-        onClick={(e) => {
-          e.stopPropagation();
-          props.onDeleteIngredientItem(props.index);
-        }}
-      >
-        <FaTrash size={20} />
-      </button>
+      {props.deletable && (
+        <button
+          className={classes.deleteButton}
+          onClick={(e) => {
+            e.stopPropagation();
+            props.onDeleteIngredientItem(props.index);
+          }}
+        >
+          <FaTrash size={20} />
+        </button>
+      )}
     </div>
   );
 }
