@@ -40,7 +40,7 @@ function RecipeFilter(props) {
       setIngredients(loadedIngredients);
     };
     getIngredients();
-  });
+  }, []);
 
   return (
     <Card>
