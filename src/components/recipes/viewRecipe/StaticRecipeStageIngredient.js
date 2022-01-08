@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { db } from "../../firebase-config";
+import { db } from "../../../firebase-config";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import classes from "./RecipeStageIngredient.module.css";
+import classes from "./../RecipeStageIngredient.module.css";
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;

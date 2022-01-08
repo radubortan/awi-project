@@ -1,17 +1,20 @@
-import { FaTrash } from 'react-icons/fa';
-import { MdModeEdit } from 'react-icons/md';
-import classes from './Recipe.module.css';
-import Button from '../general/Button';
-import { useContext } from 'react';
-import AuthContext from '../../store/auth-context';
+import { FaTrash } from "react-icons/fa";
+import { MdModeEdit } from "react-icons/md";
+import classes from "./Recipe.module.css";
+import Button from "../general/Button";
+import { useContext } from "react";
+import AuthContext from "../../store/auth-context";
+import { useNavigate } from "react-router-dom";
 
 function Recipe(props) {
+  const navigate = useNavigate();
   const authCtx = useContext(AuthContext);
   return (
     <li
       className={classes.recipe}
       onClick={() => {
-        props.onViewRecipe(props.recipe);
+        console.log("click !");
+        navigate("/" + props.recipe.nomRecette);
       }}
     >
       <div
@@ -26,7 +29,7 @@ function Recipe(props) {
           <div className={classes.buttons}>
             <div className={classes.btnSpacing}>
               <Button
-                className='addButton'
+                className="addButton"
                 onClick={(e) => {
                   e.stopPropagation();
                   props.onEditRecipe(props.recipe, props.index);
@@ -36,7 +39,7 @@ function Recipe(props) {
               </Button>
             </div>
             <Button
-              className='cancelButton'
+              className="cancelButton"
               onClick={(e) => {
                 e.stopPropagation();
                 props.onDeleteRecipe(props.index, props.recipe);

@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
-import IngredientItem from "./IngredientItem";
-import AddIngredientItem from "./AddIngredientItem";
-import classes from "./InExtensoStageIngredient.module.css";
+import React, { Fragment, useState, useEffect } from "react";
+import classes from "./../InExtensoStageIngredient.module.css";
+import StaticIngredientItem from "./StaticIngredientItem";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import { db } from "../../../firebase-config";
 
 function InExtensoStageIngredient(props) {
   const [ingredients, setIngredients] = useState([]);
@@ -45,7 +46,7 @@ function InExtensoStageIngredient(props) {
       {props.currentStage.ingredients && (
         <div className={classes.ingredientList}>
           {ingredients.map((ingredient, index) => (
-            <IngredientItem ingredient={ingredient} index={index} />
+            <StaticIngredientItem ingredient={ingredient} index={index} />
           ))}
         </div>
       )}

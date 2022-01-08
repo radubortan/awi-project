@@ -11,6 +11,7 @@ import Login from "./components/general/Login";
 import Settings from "./components/general/Settings";
 import AuthContext from "./store/auth-context";
 import AddRecipe from "./components/recipes/AddRecipe";
+import ViewRecipe from "./components/recipes/viewRecipe/ViewRecipe";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -58,7 +59,7 @@ function App() {
               <Route path="/ingredients" element={<Ingredients />} />
               <Route path="/stocks" element={<Stocks />} />
               <Route path="/parametres" element={<Parameters />} />
-              <Route path="/:nomRecette" element={<Parameters />} />
+              <Route path="/:nomRecette" element={<ViewRecipe />} />
             </Fragment>
           )}
           <Route path="*" element={<Navigate to="/" />} />

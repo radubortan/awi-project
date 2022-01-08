@@ -1,7 +1,5 @@
 import { useEffect, useRef } from "react";
-import { FaTrash } from "react-icons/fa";
-import Button from "../general/Button";
-import classes from "./Stage.module.css";
+import classes from "./../Stage.module.css";
 
 function Stage(props) {
   const stageTitleRef = useRef();

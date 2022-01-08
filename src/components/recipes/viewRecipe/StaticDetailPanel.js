@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
-import NumberInput from "../general/NumberInput";
-import RadioButton from "../general/RadioButton";
-import SelectInput from "../general/SelectInput";
-import { db } from "../../firebase-config";
-import { collection, getDocs } from "firebase/firestore";
-import Card from "../ui/Card";
-import TextAreaInput from "../general/TexteAreaInput";
-import classes from "./DetailPanel.module.css";
+import { db } from "../../../firebase-config";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import Card from "../../ui/Card";
+import classes from "./../DetailPanel.module.css";
 
 const sortRecipes = (a, b) => {
   const textA = a.nomRecette;
