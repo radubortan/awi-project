@@ -1,9 +1,6 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import NumberInput from "../../general/NumberInput";
-import SelectInput from "../../general/SelectInput";
-import TextInput from "../../general/TextInput";
 import StaticIngredientsPanel from "./StaticIngredientsPanel";
 import StaticStagesPanel from "./StaticStagesPanel";
 import StaticDetailPanel from "./StaticDetailPanel";
@@ -13,67 +10,95 @@ import { db } from "../../../firebase-config";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
 function ViewRecipe() {
-  const CATEGORIES = [
-    {
-      nomCatRecipe: "Entrée",
-    },
-    {
-      nomCatRecipe: "Principal",
-    },
-    {
-      nomCatRecipe: "Dessert",
-    },
-  ];
-
   const params = useParams();
   const [recipe, setRecipe] = useState(null);
   const [currentStage, setCurrentStage] = useState(null);
 
-  const getRecipeByName = async (nomRecette) => {
-    console.log(nomRecette);
+  const updateRecipeStage = async (idEtape, idRecette) => {
     const q = query(
       collection(db, "recettes"),
-      where("nomRecette", "==", nomRecette)
+      where("__name__", "==", idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
-      const fetchedrecipe = doc.data();
-      setRecipe(fetchedrecipe);
-      console.log("fetched");
-      console.log(recipe);
-      setCurrentStage(recipe.stages[0]);
+      const returnedRecipe = doc.data();
+      setRecipe((prevState) => {
+        return replaceStageByRecipe(prevState, idEtape, returnedRecipe);
+      });
+      for (const stage of returnedRecipe.stages) {
+        if (stage.idRecette) {
+          updateRecipeStage(stage.idEtape, stage.idRecette);
+        } else {
+          updateOrdinaryStage(stage.idEtape, stage.ingredients);
+        }
+      }
+      setCurrentStage(returnedRecipe.stages[0]);
     });
   };
-  getRecipeByName(params.nomRecette);
+
+  const updateSubRecipeStage = async (idEtape, ingredients) => {};
+  const updateOrdinaryStage = async (idEtape, ingredients) => {};
+
+  const replaceStageByRecipe = (globalRecipe, idEtape, subRecipe) => {
+    if (
+      globalRecipe.stages.findIndex((stage) => {
+        return stage.idEtape === idEtape;
+      }) !== -1
+    ) {
+      const stages = recipe.stages.map((stage) => {
+        if (stage.idEtape === idEtape) {
+          return subRecipe;
+        } else {
+          return stage;
+        }
+      });
+      let recipe = {
+        ...recipe,
+        stages: stages,
+      };
+      return recipe;
+    } else {
+    }
+  };
+
+  const generateRecipe = async (idRecette) => {
+    console.log(idRecette);
+    const q = query(
+      collection(db, "recettes"),
+      where("__name__", "==", idRecette)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      const returnedRecipe = doc.data();
+      console.log(returnedRecipe);
+      setRecipe(returnedRecipe);
+      for (const stage of returnedRecipe.stages) {
+        if (stage.idRecette) {
+          updateRecipeStage(stage.idEtape, stage.idRecette);
+        } else {
+          updateOrdinaryStage(stage.idEtape, stage.ingredients);
+        }
+      }
+      setCurrentStage(returnedRecipe.stages[0]);
+    });
+  };
+
+  useEffect(() => {
+    generateRecipe(params.idRecette);
+  }, [params.idRecette]);
 
   const changeCurrentStage = (idCurrentStage) => {
     setCurrentStage(getStageById(idCurrentStage));
-    setSelectedRecipeType(
-      getStageById(idCurrentStage).idRecette !== undefined
-        ? "recette"
-        : "in extenso"
-    );
   };
 
   const getStageById = (idStage) => {
     return recipe.stages.find((stage) => {
-      return recipe.stage.idEtape === idStage;
+      return stage.idEtape === idStage;
     });
   };
-
-  //Detail Panel
-  const [selectedRecipeType, setSelectedRecipeType] = useState(
-    currentStage.idRecette !== undefined ? "recette" : "in extenso"
-  );
-
-  const recipeTypeChange = (e) => {
-    if (e.target.value === "recette") {
-      setSelectedRecipeType("recette");
-    } else {
-      setSelectedRecipeType("in extenso");
-    }
-  };
+  console.log(recipe);
 
   return (
     <Fragment>
@@ -88,43 +113,38 @@ function ViewRecipe() {
           className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
         >
           <div className={classes.recipeNameInput}>
-            Nom du plat
-            {recipe.nomRecette}
+            Nom du plat : {recipe?.nomRecette}
           </div>
           <div className={classes.authorInputContainer}>
-            Auteur(e) du plat
-            {recipe.nomAuteur}
+            Auteur(e) du plat : {recipe?.nomAuteur}
           </div>
           <div className={`row ${classes.bottomInfoContainer}`}>
             <div className={`${classes.typeInputContainer}`}>
-              {recipe.nomCatRecette}
+              Catégorie de recette : {recipe?.nomCatRecette}
             </div>
             <div className={classes.couvertsInputContainer}>
-              Nombre de couverts
-              {recipe.nbCouverts}
+              Nombre de couverts : {recipe?.nbCouverts}
             </div>
           </div>
         </div>
       </div>
       <div className={`row ${classes.main}`}>
         <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
-          <StaticStagesPanel
-            stages={recipe.stages}
-            onChangeCurrentStage={changeCurrentStage}
-          />
+          {recipe && (
+            <StaticStagesPanel
+              stages={recipe.stages}
+              onChangeCurrentStage={changeCurrentStage}
+            />
+          )}
         </div>
         <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
-          <StaticDetailPanel
-            currentStage={currentStage}
-            selectedRecipeType={selectedRecipeType}
-            recipeTypeChange={recipeTypeChange}
-          />
+          {recipe && <StaticDetailPanel currentStage={currentStage} />}
         </div>
         <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
-          <StaticIngredientsPanel currentStage={currentStage} />
+          {recipe && <StaticIngredientsPanel currentStage={currentStage} />}
         </div>
       </div>
-      <Summary stages={recipe.stages} />
+      {recipe && <Summary stages={recipe.stages} />}
     </Fragment>
   );
 }

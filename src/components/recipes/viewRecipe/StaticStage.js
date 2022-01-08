@@ -2,9 +2,6 @@ import { useEffect, useRef } from "react";
 import classes from "./../Stage.module.css";
 
 function Stage(props) {
-  const stageTitleRef = useRef();
-  console.log(props.idCurrentStage);
-  console.log(props.stage.idEtape);
   return (
     <div
       className={`row ${classes.element}`}

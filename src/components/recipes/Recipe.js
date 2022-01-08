@@ -13,8 +13,7 @@ function Recipe(props) {
     <li
       className={classes.recipe}
       onClick={() => {
-        console.log("click !");
-        navigate("/" + props.recipe.nomRecette);
+        navigate("/" + props.recipe.idRecette);
       }}
     >
       <div

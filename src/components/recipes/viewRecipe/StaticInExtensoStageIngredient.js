@@ -30,20 +30,23 @@ function InExtensoStageIngredient(props) {
 
   useEffect(() => {
     const getIngredients = (ingredients) => {
-      for (const ingredient of ingredients) {
-        addIngredientToIngredients(ingredient);
-        //ingredients.push(ingredient);
+      if (ingredients) {
+        for (const ingredient of ingredients) {
+          addIngredientToIngredients(ingredient);
+          //ingredients.push(ingredient);
+        }
       }
+      return [];
     };
-    getIngredients(props.currentStage.ingredients);
+    setIngredients(getIngredients(props.currentStage?.ingredients));
   }, [props.currentStage]);
 
   return (
     <Fragment>
-      {props.currentStage.ingredients.length === 0 && (
+      {props.currentStage?.ingredients.length === 0 && (
         <p className={classes.noIngredient}>Aucun ingrédient</p>
       )}
-      {props.currentStage.ingredients && (
+      {props.currentStage?.ingredients && (
         <div className={classes.ingredientList}>
           {ingredients.map((ingredient, index) => (
             <StaticIngredientItem ingredient={ingredient} index={index} />

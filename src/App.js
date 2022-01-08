@@ -59,7 +59,7 @@ function App() {
               <Route path="/ingredients" element={<Ingredients />} />
               <Route path="/stocks" element={<Stocks />} />
               <Route path="/parametres" element={<Parameters />} />
-              <Route path="/:nomRecette" element={<ViewRecipe />} />
+              <Route path="/:idRecette" element={<ViewRecipe />} />
             </Fragment>
           )}
           <Route path="*" element={<Navigate to="/" />} />
