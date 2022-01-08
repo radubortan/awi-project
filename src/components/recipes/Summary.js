@@ -44,25 +44,11 @@ const Summary = (props) => {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      console.log("fetched recipe");
-      console.log(recipe);
-      getAllIngredientsFromStages(recipe.stages);
+      getAllIngredientsFromStagesSubRecipe(recipe, nbCouvertsRecette);
 
       // modify quantity of ingredients according to nbCouverts
       /*
-      if (nbCouvertsRecette) {
-        ingredientsFromCurrentRecipe = ingredientsFromCurrentRecipe.map(
-          (ingredient) => {
-            let updatedIngredient = ingredient;
-            updatedIngredient = {
-              ...updatedIngredient,
-              qte:
-                (updatedIngredient.qte * nbCouvertsRecette) / recipe.nbCouverts,
-            };
-            return updatedIngredient;
-          }
-        );
-      }
+      
       */
 
       // add quantities
@@ -120,19 +106,44 @@ const Summary = (props) => {
   };
 
   const getAllIngredientsFromStages = (stages) => {
-    console.log("stages");
-    console.log(props.stages);
     for (let stage of stages) {
-      console.log("stage");
-      console.log(stage);
       if (stage.idRecette !== undefined) {
         console.log(stage.idRecette);
         if (stage.idRecette) {
-          console.log("in idRecette");
           addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
         }
       } else {
         for (let ingredient of stage.ingredients) {
+          addIngredientToIngredients(ingredient);
+        }
+      }
+    }
+
+    return [];
+  };
+
+  const getAllIngredientsFromStagesSubRecipe = (recipe, nbCouverts) => {
+    for (let stage of recipe.stages) {
+      if (stage.idRecette !== undefined) {
+        if (stage.idRecette) {
+          addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
+        }
+      } else {
+        let ingredientsWithNewQuantities = stage.ingredients;
+        //modify according to nbCouverts
+        if (recipe.nbCouverts) {
+          ingredientsWithNewQuantities = ingredientsWithNewQuantities.map(
+            (ingredient) => {
+              let updatedIngredient = ingredient;
+              updatedIngredient = {
+                ...updatedIngredient,
+                qte: (updatedIngredient.qte * nbCouverts) / recipe.nbCouverts,
+              };
+              return updatedIngredient;
+            }
+          );
+        }
+        for (let ingredient of ingredientsWithNewQuantities) {
           addIngredientToIngredients(ingredient);
         }
       }
