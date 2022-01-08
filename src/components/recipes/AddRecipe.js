@@ -349,6 +349,17 @@ function AddRecipe() {
   const navigate = useNavigate();
 
   const addRecipe = async () => {
+    console.log("validation");
+    console.log(newRecipe);
+
+    // deleting excess of information
+    for (const stage of stages) {
+      for (let ingredient of stage.ingredients) {
+        delete ingredient.nomIng;
+        delete ingredient.prixUnitaire;
+        delete ingredient.nomCatAllerg;
+      }
+    }
     let response;
     if (isValid()) {
       response = await addDoc(recipesCollectionRef, newRecipe);
