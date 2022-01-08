@@ -49,17 +49,10 @@ const Summary = (props) => {
       );
 
       // modify quantity of ingredients according to nbCouverts
-      console.log(nbCouvertsRecette);
-      console.log(recipe);
       if (nbCouvertsRecette) {
-        console.log("in");
         ingredientsFromCurrentRecipe = ingredientsFromCurrentRecipe.map(
           (ingredient) => {
             let updatedIngredient = ingredient;
-            console.log("info");
-            console.log(updatedIngredient.qte);
-            console.log(nbCouvertsRecette);
-            console.log(recipe.nbCouverts);
             updatedIngredient = {
               ...updatedIngredient,
               qte:
@@ -104,8 +97,6 @@ const Summary = (props) => {
 
   const getAllIngredientsFromStages = (stages) => {
     let ingredients = [];
-    console.log("start");
-    console.log(ingredientsFromRecipe);
     for (let stage of stages) {
       if (stage.idRecette !== undefined) {
         if (stage.idRecette) {
@@ -126,8 +117,6 @@ const Summary = (props) => {
       const allIngredientsFromRecipe = getAllIngredientsFromStages(
         props.stages
       );
-      console.log("check");
-      console.log(allIngredientsFromRecipe);
       setIngredientsFromRecipe(allIngredientsFromRecipe);
     };
     getIngredients();

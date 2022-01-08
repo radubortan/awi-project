@@ -21,6 +21,8 @@ function RecipeStageIngredient(props) {
       const getRecipeById = async () => {
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
+          console.log(doc.data());
+          getIngredients(doc.data().stages);
           // doc.data() is never undefined for query doc snapshots
           setRecipe(doc.data());
         });
@@ -28,23 +30,49 @@ function RecipeStageIngredient(props) {
       getRecipeById();
     }
   }, [props.currentStage.idRecette]);
-  const ingredientsOfRecipe = [];
-  if (recipe) {
-    for (const stage of recipe.stages) {
+
+  const addIngredientToIngredients = async (ingredient) => {
+    const q = query(
+      collection(db, "ingredients"),
+      where("__name__", "==", ingredient.idIng)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      // doc.data() is never undefined for query doc snapshots
+      const fetchedIngredient = doc.data();
+      console.log(fetchedIngredient);
+      setIngredients((prevState) => {
+        return [
+          ...prevState,
+          {
+            ...ingredient,
+            nomIng: fetchedIngredient.nomIng,
+            prixUnitaire: fetchedIngredient.prixUnitaire,
+          },
+        ];
+      });
+    });
+  };
+
+  const [ingredients, setIngredients] = useState([]);
+
+  const getIngredients = (stages) => {
+    for (const stage of stages) {
       for (const ingredient of stage.ingredients) {
-        ingredientsOfRecipe.push(ingredient);
+        console.log("before");
+        addIngredientToIngredients(ingredient);
+        //ingredients.push(ingredient);
       }
     }
-    ingredientsOfRecipe.sort(sortIngredients);
-  }
+  };
 
   return (
     <Fragment>
-      {ingredientsOfRecipe.length === 0 && (
+      {ingredients.length === 0 && (
         <p className={classes.noIngredient}>Aucun ingrédient</p>
       )}
       <div className={classes.ingredientList}>
-        {ingredientsOfRecipe.map((ingredient) => (
+        {ingredients.map((ingredient) => (
           <p className={classes.ingredient}>
             <span className={classes.pill}>
               {ingredient.qte}
