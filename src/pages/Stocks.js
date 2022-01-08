@@ -12,7 +12,7 @@ import ModifyStock from '../components/stock/ModifyStock';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 function Stocks() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({
