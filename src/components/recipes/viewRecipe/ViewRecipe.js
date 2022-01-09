@@ -41,27 +41,28 @@ function ViewRecipe() {
     });
   };
 
-  const exploreRecipeStage = (stages, idEtape, subRecipe) => {
-    return stages.map((stage) => {
-      if (stage.idEtape === idEtape) {
-        const updatedStage = Object.assign({}, stage, subRecipe);
-        return updatedStage;
-      } else {
-        return exploreStage(stage, idEtape, subRecipe);
-      }
-    });
-  };
-
   const exploreStage = (stage, idEtape, subRecipe) => {
-    if (stage.idRecette) {
-      if (stage.idEtape === idEtape) {
-        const updatedStage = Object.assign({}, stage, subRecipe);
+    if (stage.idEtape === idEtape) {
+      const updatedStage = Object.assign({}, stage, subRecipe);
+      return updatedStage;
+    } else {
+      if (stage.nomRecette) {
+        const stages = stage.stages.map((currentStage) => {
+          if (currentStage.idEtape === idEtape) {
+            const updatedStage = Object.assign({}, currentStage, subRecipe);
+            return updatedStage;
+          } else {
+            return exploreStage(currentStage, idEtape, subRecipe);
+          }
+        });
+        let updatedStage = {
+          ...stage,
+          stages: stages,
+        };
         return updatedStage;
       } else {
-        return exploreRecipeStage(stage.stages, idEtape, subRecipe);
+        return stage;
       }
-    } else {
-      return stage;
     }
   };
 
@@ -69,6 +70,7 @@ function ViewRecipe() {
     console.log(gloabelRecipe.stages);
     const stages = gloabelRecipe.stages.map((stage) => {
       if (stage.idEtape === idEtape) {
+        console.log(1);
         const updatedStage = Object.assign({}, stage, subRecipe);
         return updatedStage;
       } else {
