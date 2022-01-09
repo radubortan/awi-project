@@ -1,0 +1,53 @@
+.printButton {
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  background-color: rgb(255, 166, 65);
+  color: white;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  font-size: 1.2rem;
+  border: none;
+  height: 50px;
+  margin-right: 10px;
+}
+
+.printButton:hover {
+  background-color: white;
+  border: 1px solid rgb(255, 166, 65);
+  color: rgb(255, 166, 65);
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+.cancelButton {
+  background-color: #ba2525;
+  width: 100px;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 10px;
+  width: 200px;
+  color: white;
+  font-weight: 700;
+  transition: background-color 0.2s;
+  font-size: 1.2rem;
+  border: none;
+  margin-left: 10px;
+}
+
+.cancelButton:hover {
+  background-color: #9e1212 !important;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+.buttons {
+  display: flex;
+  margin: 50px;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+}
