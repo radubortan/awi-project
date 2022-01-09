@@ -44,7 +44,6 @@ const Summary = (props) => {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      console.log(recipe);
       getAllIngredientsFromStagesSubRecipe(recipe, nbCouvertsRecette);
 
       // modify quantity of ingredients according to nbCouverts
@@ -82,18 +81,14 @@ const Summary = (props) => {
           nomIng: fetchedIngredient.nomIng,
           prixUnitaire: fetchedIngredient.prixUnitaire,
         };
-        console.log("new ingredient");
-        console.log(newIngredient);
 
         // check if already in
         const indexIngredient = currentIngredientsState.findIndex(
           (ingredient) => ingredient.nomIng === newIngredient.nomIng
         );
         if (indexIngredient === -1) {
-          console.log("non addition condition");
           return [...currentIngredientsState, newIngredient];
         } else {
-          console.log("addition condition");
           let updatedIngredient = currentIngredientsState[indexIngredient];
           updatedIngredient = {
             ...updatedIngredient,
@@ -111,7 +106,6 @@ const Summary = (props) => {
   const getAllIngredientsFromStages = (stages) => {
     for (let stage of stages) {
       if (stage.idRecette !== undefined) {
-        console.log(stage.idRecette);
         if (stage.idRecette) {
           addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
         }
@@ -121,7 +115,6 @@ const Summary = (props) => {
         }
       }
     }
-
     return [];
   };
 

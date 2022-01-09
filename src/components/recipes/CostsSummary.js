@@ -102,10 +102,10 @@ const CostsSummary = (props) => {
     getTotalDurationBis();
   }, [props.stages]);
 
-  const getRecipeByName = async (nomRecette) => {
+  const getRecipeById = async (idRecette) => {
     const q = query(
       collection(db, "recettes"),
-      where("nomRecette", "==", nomRecette)
+      where("__name__", "==", idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -121,8 +121,10 @@ const CostsSummary = (props) => {
   const getTotalDuration = (stages) => {
     let total = 0;
     for (let stage of stages) {
-      if (stage.nomRecette !== undefined) {
-        getRecipeByName(stage.nomRecette);
+      if (stage.idRecette !== undefined) {
+        if (stage.idRecette) {
+          getRecipeById(stage.idRecette);
+        }
       } else {
         total += +stage.tempsEtape;
       }

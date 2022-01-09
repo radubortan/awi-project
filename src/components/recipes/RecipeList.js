@@ -1,6 +1,6 @@
-import React from 'react';
-import Recipe from './Recipe';
-import classes from './RecipeList.module.css';
+import React from "react";
+import Recipe from "./Recipe";
+import classes from "./RecipeList.module.css";
 
 function RecipeList(props) {
   return (

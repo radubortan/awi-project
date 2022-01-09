@@ -1,23 +1,23 @@
-import Card from '../ui/Card';
-import CategoriesCheckBox from '../general/CategoriesCheckBox';
-import { useState, useEffect } from 'react';
-import { db } from '../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
-import classes from './RecipeFilter.module.css';
+import Card from "../ui/Card";
+import CategoriesCheckBox from "../general/CategoriesCheckBox";
+import { useState, useEffect } from "react";
+import { db } from "../../firebase-config";
+import { collection, getDocs } from "firebase/firestore";
+import classes from "./RecipeFilter.module.css";
 
 function RecipeFilter(props) {
-  const ingredientsCollectionRef = collection(db, 'ingredients');
+  const ingredientsCollectionRef = collection(db, "ingredients");
   const [ingredients, setIngredients] = useState([]);
 
   const CATEGORIES = [
     {
-      nomCatRecette: 'Entrée',
+      nomCatRecette: "Entrée",
     },
     {
-      nomCatRecette: 'Principal',
+      nomCatRecette: "Principal",
     },
     {
-      nomCatRecette: 'Dessert',
+      nomCatRecette: "Dessert",
     },
   ];
 
@@ -45,20 +45,20 @@ function RecipeFilter(props) {
   return (
     <Card>
       <div className={`row ${classes.filters}`}>
-        <div className='col-6 col-sm-6 col-md-12'>
+        <div className="col-6 col-sm-6 col-md-12">
           <CategoriesCheckBox
-            name='Catégorie repas'
+            name="Catégorie repas"
             onChange={props.categoriesFiltering}
             categories={CATEGORIES}
-            labelIdentifier='nomCatRecette'
+            labelIdentifier="nomCatRecette"
           />
         </div>
-        <div className='col-6 col-sm-6 col-md-12'>
+        <div className="col-6 col-sm-6 col-md-12">
           <CategoriesCheckBox
-            name='Ingrédients'
+            name="Ingrédients"
             onChange={props.ingredientsFiltering}
             categories={ingredients}
-            labelIdentifier='nomIng'
+            labelIdentifier="nomIng"
           />
         </div>
       </div>
