@@ -24,7 +24,6 @@ function ViewRecipe() {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
-      setRecipeDisplaying(returnedRecipe);
       setRecipeObject((prevState) => {
         const debug = replaceStageByRecipe(prevState, idEtape, returnedRecipe);
         console.log(debug);
@@ -88,6 +87,8 @@ function ViewRecipe() {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
       console.log(returnedRecipe);
+
+      setRecipeDisplaying(returnedRecipe);
       setRecipeObject(returnedRecipe);
       for (const stage of returnedRecipe.stages) {
         if (stage.idRecette) {
