@@ -12,21 +12,22 @@ const sortIngredients = (a, b) => {
 function RecipeStageIngredient(props) {
   const [recipe, setRecipe] = useState(null);
 
+  const getRecipeById = async (idRecette) => {
+    const q = query(
+      collection(db, "recettes"),
+      where("__name__", "==", idRecette)
+    );
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      setIngredients(getIngredients(doc.data().stages));
+      // doc.data() is never undefined for query doc snapshots
+      setRecipe(doc.data());
+    });
+  };
+
   useEffect(() => {
     if (props.currentStage.idRecette) {
-      const q = query(
-        collection(db, "recettes"),
-        where("__name__", "==", props.currentStage.idRecette)
-      );
-      const getRecipeById = async () => {
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach((doc) => {
-          setIngredients(getIngredients(doc.data().stages));
-          // doc.data() is never undefined for query doc snapshots
-          setRecipe(doc.data());
-        });
-      };
-      getRecipeById();
+      getRecipeById(props.currentStage.idRecette);
     }
   }, [props.currentStage.idRecette]);
 
@@ -56,9 +57,13 @@ function RecipeStageIngredient(props) {
 
   const getIngredients = (stages) => {
     for (const stage of stages) {
-      for (const ingredient of stage.ingredients) {
-        addIngredientToIngredients(ingredient);
-        //ingredients.push(ingredient);
+      if (stage.idRecette) {
+        getRecipeById(stage.idRecette);
+      } else {
+        for (const ingredient of stage.ingredients) {
+          addIngredientToIngredients(ingredient);
+          //ingredients.push(ingredient);
+        }
       }
     }
     return [];

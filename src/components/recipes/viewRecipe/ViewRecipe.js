@@ -11,7 +11,8 @@ import { collection, getDocs, query, where } from "firebase/firestore";
 
 function ViewRecipe() {
   const params = useParams();
-  const [recipe, setRecipe] = useState(null);
+  const [recipeDisplaying, setRecipeDisplaying] = useState(null);
+  const [recipeObject, setRecipeObject] = useState(null);
   const [currentStage, setCurrentStage] = useState(null);
 
   const updateRecipeStage = async (idEtape, idRecette) => {
@@ -23,29 +24,21 @@ function ViewRecipe() {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
-      setRecipe((prevState) => {
-        return replaceStageByRecipe(prevState, idEtape, returnedRecipe);
+      setRecipeDisplaying(returnedRecipe);
+      setRecipeObject((prevState) => {
+        const debug = replaceStageByRecipe(prevState, idEtape, returnedRecipe);
+        console.log(debug);
+        return debug;
       });
-      /*
-      for (const stage of returnedRecipe.stages) {
-        if (stage.idRecette) {
-          updateRecipeStage(stage.idEtape, stage.idRecette);
-        } else {
-          updateOrdinaryStage(stage.idEtape, stage.ingredients);
-        }
-      }
-      */
       setCurrentStage(returnedRecipe.stages[0]);
     });
   };
 
-  const updateSubRecipeStage = async (idEtape, ingredients) => {};
-  const updateOrdinaryStage = async (idEtape, ingredients) => {};
-
-  const exploreRecipeStage = (stage, idEtape, subRecipe) => {
-    return stage.stages.map((stage) => {
+  const exploreRecipeStage = (stages, idEtape, subRecipe) => {
+    return stages.map((stage) => {
       if (stage.idEtape === idEtape) {
-        return subRecipe;
+        const updatedStage = Object.assign({}, stage, subRecipe);
+        return updatedStage;
       } else {
         return exploreStage(stage, idEtape, subRecipe);
       }
@@ -55,32 +48,37 @@ function ViewRecipe() {
   const exploreStage = (stage, idEtape, subRecipe) => {
     if (stage.idRecette) {
       if (stage.idEtape === idEtape) {
-        return subRecipe;
+        const updatedStage = Object.assign({}, stage, subRecipe);
+        return updatedStage;
       } else {
-        return exploreRecipeStage(stage, idEtape, subRecipe);
+        if (stage.nomRecette) {
+          return exploreRecipeStage(stage.stages, idEtape, subRecipe);
+        } else {
+          updateRecipeStage(stage.idEtape, stage.idRecette);
+        }
       }
     } else {
       return stage;
     }
   };
 
-  const replaceStageByRecipe = (idEtape, subRecipe) => {
-    const stages = recipe.stages.map((stage) => {
+  const replaceStageByRecipe = (gloabelRecipe, idEtape, subRecipe) => {
+    const stages = gloabelRecipe.stages.map((stage) => {
       if (stage.idEtape === idEtape) {
-        return subRecipe;
+        const updatedStage = Object.assign({}, stage, subRecipe);
+        return updatedStage;
       } else {
         return exploreStage(stage, idEtape, subRecipe);
       }
     });
-    let recipe = {
-      ...recipe,
+    let updatedRecipe = {
+      ...recipeObject,
       stages: stages,
     };
-    return recipe;
+    return updatedRecipe;
   };
 
   const generateRecipe = async (idRecette) => {
-    console.log(idRecette);
     const q = query(
       collection(db, "recettes"),
       where("__name__", "==", idRecette)
@@ -90,7 +88,7 @@ function ViewRecipe() {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
       console.log(returnedRecipe);
-      setRecipe(returnedRecipe);
+      setRecipeObject(returnedRecipe);
       for (const stage of returnedRecipe.stages) {
         if (stage.idRecette) {
           updateRecipeStage(stage.idEtape, stage.idRecette);
@@ -111,11 +109,10 @@ function ViewRecipe() {
   };
 
   const getStageById = (idStage) => {
-    return recipe.stages.find((stage) => {
+    return recipeDisplaying.stages.find((stage) => {
       return stage.idEtape === idStage;
     });
   };
-  console.log(recipe);
 
   return (
     <Fragment>
@@ -130,38 +127,40 @@ function ViewRecipe() {
           className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
         >
           <div className={classes.recipeNameInput}>
-            Nom du plat : {recipe?.nomRecette}
+            Nom du plat : {recipeDisplaying?.nomRecette}
           </div>
           <div className={classes.authorInputContainer}>
-            Auteur(e) du plat : {recipe?.nomAuteur}
+            Auteur(e) du plat : {recipeDisplaying?.nomAuteur}
           </div>
           <div className={`row ${classes.bottomInfoContainer}`}>
             <div className={`${classes.typeInputContainer}`}>
-              Catégorie de recette : {recipe?.nomCatRecette}
+              Catégorie de recette : {recipeDisplaying?.nomCatRecette}
             </div>
             <div className={classes.couvertsInputContainer}>
-              Nombre de couverts : {recipe?.nbCouverts}
+              Nombre de couverts : {recipeDisplaying?.nbCouverts}
             </div>
           </div>
         </div>
       </div>
       <div className={`row ${classes.main}`}>
         <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
-          {recipe && (
+          {recipeDisplaying && (
             <StaticStagesPanel
-              stages={recipe.stages}
+              stages={recipeDisplaying.stages}
               onChangeCurrentStage={changeCurrentStage}
             />
           )}
         </div>
         <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
-          {recipe && <StaticDetailPanel currentStage={currentStage} />}
+          {currentStage && <StaticDetailPanel currentStage={currentStage} />}
         </div>
         <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
-          {recipe && <StaticIngredientsPanel currentStage={currentStage} />}
+          {currentStage && (
+            <StaticIngredientsPanel currentStage={currentStage} />
+          )}
         </div>
       </div>
-      {recipe && <Summary stages={recipe.stages} />}
+      {recipeDisplaying && <Summary stages={recipeDisplaying.stages} />}
     </Fragment>
   );
 }

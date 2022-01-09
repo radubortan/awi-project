@@ -38,8 +38,10 @@ function InExtensoStageIngredient(props) {
       }
       return [];
     };
-    setIngredients(getIngredients(props.currentStage?.ingredients));
-  }, [props.currentStage]);
+    if (props.currentStage) {
+      setIngredients(getIngredients(props.currentStage.ingredients));
+    }
+  }, [props.currentStage?.ingredients]);
 
   return (
     <Fragment>

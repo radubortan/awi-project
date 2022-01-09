@@ -82,18 +82,16 @@ const Summary = (props) => {
           nomIng: fetchedIngredient.nomIng,
           prixUnitaire: fetchedIngredient.prixUnitaire,
         };
-        console.log("new ingredient");
-        console.log(newIngredient);
 
         // check if already in
         const indexIngredient = currentIngredientsState.findIndex(
           (ingredient) => ingredient.nomIng === newIngredient.nomIng
         );
+        console.log(currentIngredientsState);
+        console.log(newIngredient);
         if (indexIngredient === -1) {
-          console.log("non addition condition");
           return [...currentIngredientsState, newIngredient];
         } else {
-          console.log("addition condition");
           let updatedIngredient = currentIngredientsState[indexIngredient];
           updatedIngredient = {
             ...updatedIngredient,
@@ -111,7 +109,6 @@ const Summary = (props) => {
   const getAllIngredientsFromStages = (stages) => {
     for (let stage of stages) {
       if (stage.idRecette !== undefined) {
-        console.log(stage.idRecette);
         if (stage.idRecette) {
           addIngredientsFromSubRecipe(stage.idRecette, stage.nbCouverts);
         }
@@ -121,7 +118,6 @@ const Summary = (props) => {
         }
       }
     }
-
     return [];
   };
 
