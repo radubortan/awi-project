@@ -103,7 +103,6 @@ const CostsSummary = (props) => {
   }, [props.stages]);
 
   const getRecipeById = async (idRecette) => {
-    console.log(idRecette);
     const q = query(
       collection(db, "recettes"),
       where("__name__", "==", idRecette)
@@ -132,7 +131,6 @@ const CostsSummary = (props) => {
     }
     return total;
   };
-  console.log(totalDuration);
   const personnalCost = +((totalDuration * props.avgHourlyCost) / 60).toFixed(
     2
   );

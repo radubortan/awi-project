@@ -44,7 +44,6 @@ const Summary = (props) => {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const recipe = doc.data();
-      console.log(recipe);
       getAllIngredientsFromStagesSubRecipe(recipe, nbCouvertsRecette);
 
       // modify quantity of ingredients according to nbCouverts
@@ -87,8 +86,6 @@ const Summary = (props) => {
         const indexIngredient = currentIngredientsState.findIndex(
           (ingredient) => ingredient.nomIng === newIngredient.nomIng
         );
-        console.log(currentIngredientsState);
-        console.log(newIngredient);
         if (indexIngredient === -1) {
           return [...currentIngredientsState, newIngredient];
         } else {

@@ -25,11 +25,19 @@ function ViewRecipe() {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
       setRecipeObject((prevState) => {
+        console.log("previous state");
+        console.log(prevState);
         const debug = replaceStageByRecipe(prevState, idEtape, returnedRecipe);
         console.log(debug);
         return debug;
       });
-      setCurrentStage(returnedRecipe.stages[0]);
+      for (const stage of returnedRecipe.stages) {
+        if (stage.idRecette) {
+          updateRecipeStage(stage.idEtape, stage.idRecette);
+        } else {
+          //updateOrdinaryStage(stage.idEtape, stage.ingredients);
+        }
+      }
     });
   };
 
@@ -50,11 +58,7 @@ function ViewRecipe() {
         const updatedStage = Object.assign({}, stage, subRecipe);
         return updatedStage;
       } else {
-        if (stage.nomRecette) {
-          return exploreRecipeStage(stage.stages, idEtape, subRecipe);
-        } else {
-          updateRecipeStage(stage.idEtape, stage.idRecette);
-        }
+        return exploreRecipeStage(stage.stages, idEtape, subRecipe);
       }
     } else {
       return stage;
@@ -62,6 +66,7 @@ function ViewRecipe() {
   };
 
   const replaceStageByRecipe = (gloabelRecipe, idEtape, subRecipe) => {
+    console.log(gloabelRecipe.stages);
     const stages = gloabelRecipe.stages.map((stage) => {
       if (stage.idEtape === idEtape) {
         const updatedStage = Object.assign({}, stage, subRecipe);
@@ -71,7 +76,7 @@ function ViewRecipe() {
       }
     });
     let updatedRecipe = {
-      ...recipeObject,
+      ...gloabelRecipe,
       stages: stages,
     };
     return updatedRecipe;
@@ -90,6 +95,7 @@ function ViewRecipe() {
 
       setRecipeDisplaying(returnedRecipe);
       setRecipeObject(returnedRecipe);
+
       for (const stage of returnedRecipe.stages) {
         if (stage.idRecette) {
           updateRecipeStage(stage.idEtape, stage.idRecette);
