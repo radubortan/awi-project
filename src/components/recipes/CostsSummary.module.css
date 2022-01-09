@@ -82,6 +82,23 @@
   margin-top: 15px;
 }
 
+.customParameters {
+  margin-top: 10px;
+}
+
+.customParameters:last-of-type {
+  margin-bottom: 10px;
+}
+
+.customParameters label {
+  font-weight: 500;
+}
+
+.customParameters input {
+  text-align: center;
+  width: 100px;
+}
+
 @media (max-width: 767px) {
   .costsCard {
     margin-bottom: 15px;
