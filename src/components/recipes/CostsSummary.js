@@ -40,12 +40,7 @@ const CostsSummary = (props) => {
   };
 
   const [useCustomParameters, setUseCustomParameters] = useState(false);
-  const [currentSettings, setCurrentSettings] = useState({
-    avgHourlyCost: props.avgHourlyCost,
-    flatHourlyCost: props.flatHourlyCost,
-    withAdditionalCostCoeff: props.withAdditionalCostCoeff,
-    withoutAdditionalCostCoeff: props.withoutAdditionalCostCoeff,
-  });
+  const [currentSettings, setCurrentSettings] = useState({});
   useEffect(() => {
     setCurrentSettings({
       avgHourlyCost: props.avgHourlyCost,
@@ -53,7 +48,8 @@ const CostsSummary = (props) => {
       withAdditionalCostCoeff: props.withAdditionalCostCoeff,
       withoutAdditionalCostCoeff: props.withoutAdditionalCostCoeff,
     });
-  }, []);
+  }, [props.avgHourlyCost]);
+
   const customParametersHandler = () => {
     setUseCustomParameters((oldState) => {
       return !useCustomParameters;
@@ -233,14 +229,14 @@ const CostsSummary = (props) => {
                 className={classes.customParameters}
               />
               <NumberInput
-                label='Sans évaluation'
+                label='Coeff. multi. sans évaluation'
                 name='withoutAdditionalCostCoeff'
                 value={currentSettings.withoutAdditionalCostCoeff}
                 onChange={handleChange}
                 className={classes.customParameters}
               />
               <NumberInput
-                label='Avec évaluation'
+                label='Coeff. multi. avec évaluation'
                 name='withAdditionalCostCoeff'
                 value={currentSettings.withAdditionalCostCoeff}
                 onChange={handleChange}
