@@ -2,9 +2,9 @@ import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 import { db } from '../../../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
-import classes from './PrintingComponent.module.css';
+import classes from './PrintingPdf.module.css';
 
-const PrintingComponent = React.forwardRef((props, ref) => {
+const PrintingPdf = React.forwardRef((props, ref) => {
   const [ingredientList, setIngredientList] = useState([]);
 
   useEffect(() => {
@@ -58,7 +58,17 @@ const PrintingComponent = React.forwardRef((props, ref) => {
     });
   };
 
+  const adjustQuantity = () => {
+    stagesList.forEach((stage) => {
+      stage.ingredients.forEach((ingredient) => {
+        ingredient.qte =
+          (ingredient.qte / props.recipe.nbCouverts) * props.numCouverts;
+      });
+    });
+  };
+
   extractStages(props.recipe.stages);
+  adjustQuantity(stagesList);
 
   return (
     <div className={classes.container} ref={ref}>
@@ -128,4 +138,4 @@ const PrintingComponent = React.forwardRef((props, ref) => {
   );
 });
 
-export default PrintingComponent;
+export default PrintingPdf;

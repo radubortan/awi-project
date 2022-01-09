@@ -12,12 +12,15 @@ import { collection, getDocs, query, where } from 'firebase/firestore';
 import PDFRecipe from './PDFRecipe';
 import Checkbox from '../../general/Checkbox';
 import NumberInput from '../../general/NumberInput';
+import TicketRecipe from './TicketRecipe';
 
 function ViewRecipe() {
   const params = useParams();
   const [recipeDisplaying, setRecipeDisplaying] = useState(null);
   const [recipeObject, setRecipeObject] = useState(null);
   const [currentStage, setCurrentStage] = useState(null);
+  const [pdfNumCouverts, setPdfNumCouverts] = useState(0);
+  const [errorNumCouverts, setErrorNumCouverts] = useState(false);
 
   const updateRecipeStage = async (idEtape, idRecette) => {
     const q = query(
@@ -29,10 +32,7 @@ function ViewRecipe() {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
       setRecipeObject((prevState) => {
-        console.log('previous state');
-        console.log(prevState);
         const debug = replaceStageByRecipe(prevState, idEtape, returnedRecipe);
-        console.log(debug);
         return debug;
       });
       for (const stage of returnedRecipe.stages) {
@@ -71,10 +71,8 @@ function ViewRecipe() {
   };
 
   const replaceStageByRecipe = (gloabelRecipe, idEtape, subRecipe) => {
-    console.log(gloabelRecipe.stages);
     const stages = gloabelRecipe.stages.map((stage) => {
       if (stage.idEtape === idEtape) {
-        console.log(1);
         const updatedStage = Object.assign({}, stage, subRecipe);
         return updatedStage;
       } else {
@@ -97,10 +95,10 @@ function ViewRecipe() {
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
-      console.log(returnedRecipe);
 
       setRecipeDisplaying(returnedRecipe);
       setRecipeObject(returnedRecipe);
+      setPdfNumCouverts(returnedRecipe.nbCouverts);
 
       for (const stage of returnedRecipe.stages) {
         if (stage.idRecette) {
@@ -130,19 +128,47 @@ function ViewRecipe() {
   //PDF
 
   const [viewPdf, setViewPdf] = useState(false);
+  const [viewTicket, setViewTicket] = useState(false);
 
   const viewPdfHandler = () => {
-    setViewPdf(true);
+    //check if we set a correct amount
+    if (pdfNumCouverts <= 0) {
+      setErrorNumCouverts(true);
+    } else {
+      setViewPdf(true);
+    }
   };
 
-  const handleBack = () => {
+  const handleBackPdf = () => {
     setViewPdf(false);
+  };
+
+  const handleBackTicket = () => {
+    setViewTicket(false);
+  };
+
+  const numberCouvertsHandler = (e) => {
+    const value = e.target.value;
+    setPdfNumCouverts(value);
+  };
+
+  const printTicketHandler = () => {
+    setViewTicket(true);
   };
 
   return (
     <Fragment>
-      {viewPdf && <PDFRecipe recipe={recipeObject} handleBack={handleBack} />}
-      {!viewPdf && (
+      {viewTicket && (
+        <TicketRecipe recipe={recipeObject} handleBack={handleBackTicket} />
+      )}
+      {viewPdf && (
+        <PDFRecipe
+          numCouverts={pdfNumCouverts}
+          recipe={recipeObject}
+          handleBack={handleBackPdf}
+        />
+      )}
+      {!viewPdf && !viewTicket && (
         <Fragment>
           <div className={`${classes.topContainer} row`}>
             <div className={`col-12 col-md-4 order-md-3 ${classes.buttons}`}>
@@ -223,7 +249,10 @@ function ViewRecipe() {
                   // onChange={}
                   className={extraClasses.checkbox}
                 />
-                <button className={extraClasses.bottomButton}>
+                <button
+                  onClick={printTicketHandler}
+                  className={extraClasses.bottomButton}
+                >
                   Imprimer Ticket
                 </button>
               </div>
@@ -235,11 +264,17 @@ function ViewRecipe() {
               >
                 Voir Fiche
               </button>
-              <Checkbox
-                label='Avec coûts'
-                // onChange={}
-                className={extraClasses.checkbox}
+              <Checkbox label='Avec coûts' className={extraClasses.checkbox} />
+              <NumberInput
+                label='Nombre couverts'
+                onChange={numberCouvertsHandler}
+                value={pdfNumCouverts}
+                name='numCouverts'
+                className={extraClasses.numberInput}
               />
+              {errorNumCouverts && (
+                <p className={extraClasses.errorMessage}>Nombre invalide</p>
+              )}
             </div>
           </div>
         </Fragment>

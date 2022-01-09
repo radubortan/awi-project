@@ -1,12 +1,10 @@
 import { useReactToPrint } from 'react-to-print';
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
-import classes from './PDFRecipe.module.css';
-import { db } from '../../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
-import PrintingPdf from './PrintingPdf';
+import { useRef } from 'react';
+import classes from './TicketRecipe.module.css';
+import PrintingTicket from './PrintingTicket';
 
-const PDFRecipe = (props) => {
+const TicketRecipe = (props) => {
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -19,14 +17,13 @@ const PDFRecipe = (props) => {
       <div className={classes.buttons}>
         {' '}
         <button className={classes.printButton} onClick={handlePrint}>
-          Print PDF
+          Print Ticket
         </button>
         <button className={classes.cancelButton} onClick={props.handleBack}>
           Retour
         </button>
       </div>
-
-      <PrintingPdf
+      <PrintingTicket
         numCouverts={props.numCouverts}
         ref={componentRef}
         recipe={props.recipe}
@@ -35,4 +32,4 @@ const PDFRecipe = (props) => {
   );
 };
 
-export default PDFRecipe;
+export default TicketRecipe;
