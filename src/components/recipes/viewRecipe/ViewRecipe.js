@@ -26,6 +26,7 @@ function ViewRecipe() {
       setRecipe((prevState) => {
         return replaceStageByRecipe(prevState, idEtape, returnedRecipe);
       });
+      /*
       for (const stage of returnedRecipe.stages) {
         if (stage.idRecette) {
           updateRecipeStage(stage.idEtape, stage.idRecette);
@@ -33,6 +34,7 @@ function ViewRecipe() {
           updateOrdinaryStage(stage.idEtape, stage.ingredients);
         }
       }
+      */
       setCurrentStage(returnedRecipe.stages[0]);
     });
   };
@@ -40,26 +42,41 @@ function ViewRecipe() {
   const updateSubRecipeStage = async (idEtape, ingredients) => {};
   const updateOrdinaryStage = async (idEtape, ingredients) => {};
 
-  const replaceStageByRecipe = (globalRecipe, idEtape, subRecipe) => {
-    if (
-      globalRecipe.stages.findIndex((stage) => {
-        return stage.idEtape === idEtape;
-      }) !== -1
-    ) {
-      const stages = recipe.stages.map((stage) => {
-        if (stage.idEtape === idEtape) {
-          return subRecipe;
-        } else {
-          return stage;
-        }
-      });
-      let recipe = {
-        ...recipe,
-        stages: stages,
-      };
-      return recipe;
+  const exploreRecipeStage = (stage, idEtape, subRecipe) => {
+    return stage.stages.map((stage) => {
+      if (stage.idEtape === idEtape) {
+        return subRecipe;
+      } else {
+        return exploreStage(stage, idEtape, subRecipe);
+      }
+    });
+  };
+
+  const exploreStage = (stage, idEtape, subRecipe) => {
+    if (stage.idRecette) {
+      if (stage.idEtape === idEtape) {
+        return subRecipe;
+      } else {
+        return exploreRecipeStage(stage, idEtape, subRecipe);
+      }
     } else {
+      return stage;
     }
+  };
+
+  const replaceStageByRecipe = (idEtape, subRecipe) => {
+    const stages = recipe.stages.map((stage) => {
+      if (stage.idEtape === idEtape) {
+        return subRecipe;
+      } else {
+        return exploreStage(stage, idEtape, subRecipe);
+      }
+    });
+    let recipe = {
+      ...recipe,
+      stages: stages,
+    };
+    return recipe;
   };
 
   const generateRecipe = async (idRecette) => {
@@ -78,7 +95,7 @@ function ViewRecipe() {
         if (stage.idRecette) {
           updateRecipeStage(stage.idEtape, stage.idRecette);
         } else {
-          updateOrdinaryStage(stage.idEtape, stage.ingredients);
+          //updateOrdinaryStage(stage.idEtape, stage.ingredients);
         }
       }
       setCurrentStage(returnedRecipe.stages[0]);
