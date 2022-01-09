@@ -12,12 +12,13 @@
 
 .logo {
   font-size: 2rem;
-  color: white;
+  color: #f9f9f9;
   text-decoration: none;
+  font-weight: 700;
 }
 
 .logo:hover {
-  color: white;
+  color: #f9f9f9;
 }
 
 .nav {

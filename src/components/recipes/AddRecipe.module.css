@@ -27,6 +27,7 @@
 .recipeNameInput label {
   font-size: 2rem;
   font-weight: 500;
+  color: #f9f9f9;
 }
 
 .recipeNameInput input {
@@ -46,6 +47,7 @@
 
 .authorInputContainer label {
   font-weight: 500;
+  color: #f9f9f9;
 }
 
 .authorInputContainer input {
@@ -67,6 +69,7 @@
 
 .typeInputContainer label {
   font-weight: 500;
+  color: #f9f9f9;
 }
 
 .typeInputContainer select {
@@ -80,6 +83,7 @@
 
 .couvertsInputContainer label {
   font-weight: 500;
+  color: #f9f9f9;
 }
 
 .couvertsInputContainer input {
@@ -103,15 +107,18 @@
 }
 
 .addButton {
-  background-color: #0c548f;
+  background-color: #f9f9f9;
+  color: #0c4472;
   width: 100px;
   margin-right: 20px;
   font-weight: 700;
 }
 
 .addButton:hover {
-  background-color: #0c4472;
-  transition: background-color 0.2s;
+  background-color: #0c548f;
+  border: 1px solid white;
+  color: #f9f9f9;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
 }
 
 .cancelButton {
@@ -122,7 +129,7 @@
 
 .cancelButton:hover {
   background-color: #9e1212 !important;
-  transition: background-color 0.2s;
+  transition: background-color 0.2s, color 0.2s, border 0.2s;
 }
 
 .cancelButton a {
@@ -131,9 +138,13 @@
 }
 
 .main {
-  background-color: #8bb2ec;
+  background-color: #f9f9f9;
   padding: 20px 0px 10px 0px;
   margin: 0;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
 }
 
 .main > div {

@@ -71,17 +71,11 @@ p.ingredientInfo {
 
 @media (max-width: 600px) {
   .ingredient {
-    width: 80%;
-  }
-}
-
-@media (max-width: 500px) {
-  .ingredient {
     width: 90%;
   }
 }
 
-@media (max-width: 420px) {
+@media (max-width: 500px) {
   .ingredient {
     width: 100%;
   }

@@ -11,8 +11,8 @@
   height: 64px;
   margin: 8px;
   border-radius: 50%;
-  border: 6px solid #0c548f;
-  border-color: #0c548f transparent #0c548f transparent;
+  border: 6px solid white;
+  border-color: white transparent white transparent;
   animation: spinner 1.2s linear infinite;
 }
 @keyframes spinner {

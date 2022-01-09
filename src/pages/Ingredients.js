@@ -23,7 +23,7 @@ import {
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 function Ingredients() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [ingredientList, setIngredientList] = useState([]);
   const [filteredIngredientList, setFilteredIngredientList] = useState([]);
   const [filteringOptions, setFilteringOptions] = useState({

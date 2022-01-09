@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { db } from "../../firebase-config";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import classes from "./RecipeStageIngredient.module.css";
+import React, { Fragment, useEffect, useState } from 'react';
+import { db } from '../../firebase-config';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import classes from './RecipeStageIngredient.module.css';
+import IngredientItem from './IngredientItem';
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -33,8 +34,8 @@ function RecipeStageIngredient(props) {
 
   const addIngredientToIngredients = async (ingredient) => {
     const q = query(
-      collection(db, "ingredients"),
-      where("__name__", "==", ingredient.idIng)
+      collection(db, 'ingredients'),
+      where('__name__', '==', ingredient.idIng)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -76,13 +77,18 @@ function RecipeStageIngredient(props) {
       )}
       <div className={classes.ingredientList}>
         {ingredients.map((ingredient) => (
-          <p className={classes.ingredient}>
-            <span className={classes.pill}>
-              {ingredient.qte}
-              {ingredient.nomUnite.toLowerCase()}
-            </span>
-            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
-          </p>
+          // <p className={classes.ingredient}>
+          //   <span className={classes.pill}>
+          //     {ingredient.qte}
+          //     {ingredient.nomUnite.toLowerCase()}
+          //   </span>
+          //   <span className={classes.ingredientName}>{ingredient.nomIng}</span>
+          // </p>
+          <IngredientItem
+            deletable={false}
+            ingredient={ingredient}
+            onDeleteIngredientItem={props.onDeleteIngredientItem}
+          />
         ))}
       </div>
     </Fragment>
