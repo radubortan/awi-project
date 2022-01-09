@@ -1,9 +1,7 @@
 import { useReactToPrint } from 'react-to-print';
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import { useRef } from 'react';
 import classes from './PDFRecipe.module.css';
-import { db } from '../../../firebase-config';
-import { collection, getDocs } from 'firebase/firestore';
 import PrintingPdf from './PrintingPdf';
 
 const PDFRecipe = (props) => {

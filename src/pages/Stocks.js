@@ -43,7 +43,7 @@ function Stocks() {
       setIsLoading(false);
     };
     getIngredients();
-  }, []);
+  }, [ingredientsCollectionRef]);
 
   //Filtering method
   const filterIngredient = (ingredient) => {

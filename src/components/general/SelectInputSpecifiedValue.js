@@ -1,5 +1,4 @@
-import { Fragment } from "react";
-import classes from "./SelectInput.module.css";
+import classes from './SelectInput.module.css';
 
 function SelectInputSpecifiedValue(props) {
   const style = props.className;
@@ -13,7 +12,7 @@ function SelectInputSpecifiedValue(props) {
         className={classes.input}
       >
         <option
-          selected={props.selected === "false" ? "true" : "false"}
+          selected={props.selected === 'false' ? 'true' : 'false'}
           disables
           hidden
         >

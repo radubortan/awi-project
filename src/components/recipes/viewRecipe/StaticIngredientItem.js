@@ -1,5 +1,4 @@
-import { FaTrash } from "react-icons/fa";
-import classes from "./../IngredientItem.module.css";
+import classes from './../IngredientItem.module.css';
 
 function StaticIngredientItem(props) {
   return (

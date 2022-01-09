@@ -4,7 +4,6 @@ import Card from '../ui/Card';
 import NumberInput from '../general/NumberInput';
 import Button from '../general/Button';
 import { useEffect, useState } from 'react';
-import { Fragment } from 'react/cjs/react.production.min';
 
 const ModifyStock = (props) => {
   const [currentIngredient] = useState(props.ingredientInfo.ingredient);

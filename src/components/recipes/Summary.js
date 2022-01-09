@@ -1,22 +1,15 @@
-import Card from "../ui/Card";
-import CostsSummary from "./CostsSummary";
-import { db } from "../../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { useState, useEffect } from "react";
-import IngredientsSummary from "./IngredientsSummary";
-import classes from "./Summary.module.css";
-
-const sortIngredients = (a, b) => {
-  const textA = a.nomIng;
-  const textB = b.nomIng;
-  return textA < textB ? -1 : textA > textB ? 1 : 0;
-};
+import CostsSummary from './CostsSummary';
+import { db } from '../../firebase-config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
+import IngredientsSummary from './IngredientsSummary';
+import classes from './Summary.module.css';
 
 const Summary = (props) => {
   //settings state
   const [currentSettings, setCurrentSettings] = useState({});
 
-  const settingsCollectionRef = collection(db, "settings");
+  const settingsCollectionRef = collection(db, 'settings');
 
   //to fetch the stored values when the component loads
   useEffect(() => {
@@ -37,8 +30,8 @@ const Summary = (props) => {
 
   const addIngredientsFromSubRecipe = async (idRecette, nbCouvertsRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -65,8 +58,8 @@ const Summary = (props) => {
   const addIngredientToIngredients = async (newIngredient) => {
     //query
     const q = query(
-      collection(db, "ingredients"),
-      where("__name__", "==", newIngredient.idIng)
+      collection(db, 'ingredients'),
+      where('__name__', '==', newIngredient.idIng)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -158,8 +151,8 @@ const Summary = (props) => {
   return (
     <div className={classes.summaryContainer}>
       <h1 className={classes.title}>Synthèse</h1>
-      <div className="row">
-        <div className="col-12 col-md-6">
+      <div className='row'>
+        <div className='col-12 col-md-6'>
           <CostsSummary
             avgHourlyCost={currentSettings.coutHoraireMoyen}
             flatHourlyCost={currentSettings.coutHoraireForfaitaire}
@@ -169,7 +162,7 @@ const Summary = (props) => {
             stages={props.stages}
           ></CostsSummary>
         </div>
-        <div className="col-12 col-md-6">
+        <div className='col-12 col-md-6'>
           <IngredientsSummary
             ingredients={ingredientsFromRecipe}
           ></IngredientsSummary>

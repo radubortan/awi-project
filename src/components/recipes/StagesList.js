@@ -43,7 +43,7 @@ function StagesList(props) {
                         onChangeCurrentStage={props.onChangeCurrentStage}
                         onChangeStageTitle={props.onChangeStageTitle}
                         onDeleteStage={props.onDeleteStage}
-                        isOnlyStage={props.stages.length == 1}
+                        isOnlyStage={props.stages.length === 1}
                         errorStageNameEmpty={props.errorStageNameEmpty}
                       />
                     </div>

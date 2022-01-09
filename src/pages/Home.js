@@ -21,7 +21,7 @@ const sortRecipes = (a, b) => {
 };
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const authCtx = useContext(AuthContext);
 
   // fetch recipes
@@ -29,14 +29,14 @@ function Home() {
   const [filteredRecipeList, setFilteredRecipeList] = useState([]);
   const recipesCollectionRef = collection(db, 'recettes');
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(true);
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
       const loadedRecipes = [];
-      data.docs.map((doc) => {
+      data.docs.forEach((doc) => {
         const ingredients = [];
-        doc.data().stages.map((stage) => {
-          stage.ingredients.map((ingredient) => {
+        doc.data().stages.forEach((stage) => {
+          stage.ingredients.forEach((ingredient) => {
             ingredients.push({ nomIng: ingredient.nomIng });
           });
         });
