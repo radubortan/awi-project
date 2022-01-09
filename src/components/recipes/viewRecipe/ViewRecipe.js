@@ -6,8 +6,10 @@ import StaticStagesPanel from "./StaticStagesPanel";
 import StaticDetailPanel from "./StaticDetailPanel";
 import Summary from "./../Summary";
 import classes from "./../AddRecipe.module.css";
+import classesButton from "./ViewRecipe.module.css";
 import { db } from "../../../firebase-config";
 import { collection, getDocs, query, where } from "firebase/firestore";
+import PDFRecipe from "./PDFRecipe";
 
 function ViewRecipe() {
   const params = useParams();
@@ -123,53 +125,75 @@ function ViewRecipe() {
     });
   };
 
+  //PDF
+
+  const [viewPdf, setViewPdf] = useState(false);
+
+  const viewPdfHandler = () => {
+    setViewPdf(true);
+  };
+
+  const handleBack = () => {
+    setViewPdf(false);
+  };
+
   return (
     <Fragment>
-      <div className={`${classes.topContainer} row`}>
-        <div className={`col-12 col-md-4 order-md-3 ${classes.buttons}`}>
-          <button className={`${classes.button}  ${classes.cancelButton}`}>
-            <Link to="/">Retour</Link>
-          </button>
-        </div>
-        <div className="col-3 col-md-4 d-none d-md-flex" />
-        <div
-          className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
-        >
-          <div className={classes.recipeNameInput}>
-            Nom du plat : {recipeDisplaying?.nomRecette}
-          </div>
-          <div className={classes.authorInputContainer}>
-            Auteur(e) du plat : {recipeDisplaying?.nomAuteur}
-          </div>
-          <div className={`row ${classes.bottomInfoContainer}`}>
-            <div className={`${classes.typeInputContainer}`}>
-              Catégorie de recette : {recipeDisplaying?.nomCatRecette}
+      {viewPdf && <PDFRecipe recipe={recipeObject} handleBack={handleBack} />}
+      {!viewPdf && (
+        <Fragment>
+          <div className={`${classes.topContainer} row`}>
+            <div className={`col-12 col-md-4 order-md-3 ${classes.buttons}`}>
+              <div className={classesButton.main}>
+                {!viewPdf && <button onClick={viewPdfHandler}>View PDF</button>}
+              </div>
+              <button className={`${classes.button}  ${classes.cancelButton}`}>
+                <Link to="/">Retour</Link>
+              </button>
             </div>
-            <div className={classes.couvertsInputContainer}>
-              Nombre de couverts : {recipeDisplaying?.nbCouverts}
+            <div className="col-3 col-md-4 d-none d-md-flex" />
+            <div
+              className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
+            >
+              <div className={classes.recipeNameInput}>
+                Nom du plat : {recipeDisplaying?.nomRecette}
+              </div>
+              <div className={classes.authorInputContainer}>
+                Auteur(e) du plat : {recipeDisplaying?.nomAuteur}
+              </div>
+              <div className={`row ${classes.bottomInfoContainer}`}>
+                <div className={`${classes.typeInputContainer}`}>
+                  Catégorie de recette : {recipeDisplaying?.nomCatRecette}
+                </div>
+                <div className={classes.couvertsInputContainer}>
+                  Nombre de couverts : {recipeDisplaying?.nbCouverts}
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-      <div className={`row ${classes.main}`}>
-        <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
-          {recipeDisplaying && (
-            <StaticStagesPanel
-              stages={recipeDisplaying.stages}
-              onChangeCurrentStage={changeCurrentStage}
-            />
-          )}
-        </div>
-        <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
-          {currentStage && <StaticDetailPanel currentStage={currentStage} />}
-        </div>
-        <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
-          {currentStage && (
-            <StaticIngredientsPanel currentStage={currentStage} />
-          )}
-        </div>
-      </div>
-      {recipeDisplaying && <Summary stages={recipeDisplaying.stages} />}
+          <div className={`row ${classes.main}`}>
+            <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
+              {recipeDisplaying && (
+                <StaticStagesPanel
+                  stages={recipeDisplaying.stages}
+                  onChangeCurrentStage={changeCurrentStage}
+                />
+              )}
+            </div>
+            <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
+              {currentStage && (
+                <StaticDetailPanel currentStage={currentStage} />
+              )}
+            </div>
+            <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
+              {currentStage && (
+                <StaticIngredientsPanel currentStage={currentStage} />
+              )}
+            </div>
+          </div>
+          {recipeDisplaying && <Summary stages={recipeDisplaying.stages} />}
+        </Fragment>
+      )}
     </Fragment>
   );
 }
