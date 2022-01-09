@@ -1,11 +1,11 @@
-import Card from "../ui/Card";
-import RadioButton from "../general/RadioButton";
-import Checkbox from "../general/Checkbox";
-import NumberInput from "../general/NumberInput";
-import { Fragment, useState, useEffect } from "react";
-import { db } from "../../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import classes from "./CostsSummary.module.css";
+import Card from '../ui/Card';
+import RadioButton from '../general/RadioButton';
+import Checkbox from '../general/Checkbox';
+import NumberInput from '../general/NumberInput';
+import { Fragment, useState, useEffect } from 'react';
+import { db } from '../../firebase-config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import classes from './CostsSummary.module.css';
 
 const sortStages = (a, b) => {
   const textA = a.idRecette;
@@ -16,7 +16,7 @@ const sortStages = (a, b) => {
 const CostsSummary = (props) => {
   //fetch recipe for duration
   const [allStages, setAllStages] = useState([]);
-  const etapesCollectionRef = collection(db, "etapes");
+  const etapesCollectionRef = collection(db, 'etapes');
   useEffect(() => {
     const getStages = async () => {
       const data = await getDocs(etapesCollectionRef);
@@ -39,13 +39,42 @@ const CostsSummary = (props) => {
     setUseAdditionalCost(!useAdditionalCost);
   };
 
+  const [useCustomParameters, setUseCustomParameters] = useState(false);
+  const [currentSettings, setCurrentSettings] = useState({
+    avgHourlyCost: props.avgHourlyCost,
+    flatHourlyCost: props.flatHourlyCost,
+    withAdditionalCostCoeff: props.withAdditionalCostCoeff,
+    withoutAdditionalCostCoeff: props.withoutAdditionalCostCoeff,
+  });
+  useEffect(() => {
+    setCurrentSettings({
+      avgHourlyCost: props.avgHourlyCost,
+      flatHourlyCost: props.flatHourlyCost,
+      withAdditionalCostCoeff: props.withAdditionalCostCoeff,
+      withoutAdditionalCostCoeff: props.withoutAdditionalCostCoeff,
+    });
+  }, []);
+  const customParametersHandler = () => {
+    setUseCustomParameters((oldState) => {
+      return !useCustomParameters;
+    });
+  };
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setCurrentSettings((oldSettings) => {
+      const newSettings = { ...oldSettings };
+      newSettings[e.target.name] = value;
+      return newSettings;
+    });
+  };
+
   //seasoning
 
-  const [seasoningPrice, setSeasoningPrice] = useState("");
+  const [seasoningPrice, setSeasoningPrice] = useState('');
 
   const [errorSeasoningPrice, setErrorSeasoningPrice] = useState(false);
 
-  const [seasoningType, setSeasoningType] = useState("5%");
+  const [seasoningType, setSeasoningType] = useState('5%');
 
   const updateSeasoningType = (e) => {
     setSeasoningType(e.target.value);
@@ -60,7 +89,7 @@ const CostsSummary = (props) => {
   };
 
   const updateSeasoningTypeByPriceInput = () => {
-    setSeasoningType("seasoningPrice");
+    setSeasoningType('seasoningPrice');
   };
 
   // Calculate Cost
@@ -79,7 +108,7 @@ const CostsSummary = (props) => {
   const totalCostIngredient = +getTotalCostIngredient().toFixed(2);
 
   let materialCost = 0;
-  if (seasoningType === "5%") {
+  if (seasoningType === '5%') {
     materialCost = +(totalCostIngredient + 0.05 * totalCostIngredient).toFixed(
       2
     );
@@ -104,8 +133,8 @@ const CostsSummary = (props) => {
 
   const getRecipeById = async (idRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -131,55 +160,123 @@ const CostsSummary = (props) => {
     }
     return total;
   };
-  const personnalCost = +((totalDuration * props.avgHourlyCost) / 60).toFixed(
-    2
-  );
-  const fluidCost = +((totalDuration * props.flatHourlyCost) / 60).toFixed(2);
-  const additionalCost = +(personnalCost + fluidCost).toFixed(2);
+  let additionalCost;
+  let personnalCost;
+  let fluidCost;
+  if (useCustomParameters) {
+    personnalCost = +(
+      (totalDuration * currentSettings.avgHourlyCost) /
+      60
+    ).toFixed(2);
+
+    fluidCost = +(
+      (totalDuration * currentSettings.flatHourlyCost) /
+      60
+    ).toFixed(2);
+
+    additionalCost = +(personnalCost + fluidCost).toFixed(2);
+  } else {
+    personnalCost = +((totalDuration * props.avgHourlyCost) / 60).toFixed(2);
+
+    fluidCost = +((totalDuration * props.flatHourlyCost) / 60).toFixed(2);
+
+    additionalCost = +(personnalCost + fluidCost).toFixed(2);
+  }
 
   let productionCost = 0;
   let salesPrice = 0;
   if (useAdditionalCost) {
     productionCost = +(materialCost + additionalCost).toFixed(2);
-    salesPrice = +(props.withAdditionalCostCoeff * productionCost).toFixed(2);
+    if (useCustomParameters) {
+      salesPrice = +(
+        currentSettings.withAdditionalCostCoeff * productionCost
+      ).toFixed(2);
+    } else {
+      salesPrice = +(props.withAdditionalCostCoeff * productionCost).toFixed(2);
+    }
   } else {
     productionCost = materialCost;
-    salesPrice = +(props.withoutAdditionalCostCoeff * productionCost).toFixed(
-      2
-    );
+    if (useCustomParameters) {
+      salesPrice = +(
+        currentSettings.withoutAdditionalCostCoeff * productionCost
+      ).toFixed(2);
+    } else {
+      salesPrice = +(props.withoutAdditionalCostCoeff * productionCost).toFixed(
+        2
+      );
+    }
   }
   return (
     <Card className={classes.costsCard}>
       <h1 className={classes.title}>Coûts</h1>
       <div>
+        <Card>
+          <Checkbox
+            label='Paramètres particuliers'
+            onChange={customParametersHandler}
+            className={classes.chargesCheckbox}
+          />
+          {useCustomParameters && (
+            <div>
+              <NumberInput
+                label='Cout horaire moyen'
+                name='avgHourlyCost'
+                value={currentSettings.avgHourlyCost}
+                onChange={handleChange}
+                className={classes.customParameters}
+              />
+              <NumberInput
+                label='Cout horaire forfaitaire'
+                name='flatHourlyCost'
+                value={currentSettings.flatHourlyCost}
+                onChange={handleChange}
+                className={classes.customParameters}
+              />
+              <NumberInput
+                label='Sans évaluation'
+                name='withoutAdditionalCostCoeff'
+                value={currentSettings.withoutAdditionalCostCoeff}
+                onChange={handleChange}
+                className={classes.customParameters}
+              />
+              <NumberInput
+                label='Avec évaluation'
+                name='withAdditionalCostCoeff'
+                value={currentSettings.withAdditionalCostCoeff}
+                onChange={handleChange}
+                className={classes.customParameters}
+              />
+            </div>
+          )}
+        </Card>
         <Card className={classes.assaisonnementCard}>
           <h2>Assaisonnement</h2>
           <div className={classes.assaisonnementContainer}>
             <div>
               <RadioButton
-                name="prixAssaisonnement"
-                label="5%"
-                value="5%"
+                name='prixAssaisonnement'
+                label='5%'
+                value='5%'
                 selectedValue={seasoningType}
                 onChange={updateSeasoningType}
               ></RadioButton>
               <RadioButton
-                name="prixAssaisonnement"
-                value="seasoningPrice"
+                name='prixAssaisonnement'
+                value='seasoningPrice'
                 selectedValue={seasoningType}
                 onChange={updateSeasoningType}
               >
                 <NumberInput
-                  labelUnite="€"
+                  labelUnite='€'
                   onChange={updateSeasoningPrice}
                   value={seasoningPrice}
                   onClick={updateSeasoningTypeByPriceInput}
                   className={classes.assaisonnementInput}
-                ></NumberInput>
+                />
               </RadioButton>
             </div>
           </div>
-          {errorSeasoningPrice && seasoningType === "seasoningPrice" && (
+          {errorSeasoningPrice && seasoningType === 'seasoningPrice' && (
             <p className={classes.errorMessage}>
               Veuillez entrer un nombre decimal
             </p>
@@ -189,7 +286,7 @@ const CostsSummary = (props) => {
       <div className={`${classes.chargesContainer}`}>
         <Card>
           <Checkbox
-            label="Charges"
+            label='Charges'
             onChange={changeAdditionalCost}
             checked={useAdditionalCost}
             className={classes.chargesCheckbox}
@@ -197,9 +294,19 @@ const CostsSummary = (props) => {
           {useAdditionalCost && (
             <div className={classes.charges}>
               <p>Cout horaire moyen:</p>
-              <p>{props.avgHourlyCost}€</p>
+              <p>
+                {useCustomParameters
+                  ? currentSettings.avgHourlyCost
+                  : props.avgHourlyCost}
+                €
+              </p>
               <p>Cout horaire forfaitaire:</p>
-              <p>{props.flatHourlyCost}€</p>
+              <p>
+                {useCustomParameters
+                  ? currentSettings.flatHourlyCost
+                  : props.flatHourlyCost}
+                €
+              </p>
             </div>
           )}
         </Card>

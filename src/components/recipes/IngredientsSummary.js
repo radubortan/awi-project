@@ -29,7 +29,7 @@ function IngredientsSummary(props) {
         ))}
       </div>
       <Card className={classes.allergenCard}>
-        <h2>Allèrgenes</h2>
+        <h2>Allergènes</h2>
         {allAllergenIngredientsRecipe.length === 0 && (
           <p className={classes.nothing}>Aucun ingrédient</p>
         )}
