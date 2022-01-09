@@ -35,6 +35,10 @@ li {
   align-items: center;
 }
 
+.buttons button {
+  width: 45px;
+}
+
 .stockAmount {
   text-align: center;
   margin: 0 5px;

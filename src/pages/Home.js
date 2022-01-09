@@ -21,7 +21,7 @@ const sortRecipes = (a, b) => {
 };
 
 function Home() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const authCtx = useContext(AuthContext);
 
   // fetch recipes
@@ -29,6 +29,7 @@ function Home() {
   const [filteredRecipeList, setFilteredRecipeList] = useState([]);
   const recipesCollectionRef = collection(db, 'recettes');
   useEffect(() => {
+    setIsLoading(false);
     const getRecipes = async () => {
       const data = await getDocs(recipesCollectionRef);
       const loadedRecipes = [];

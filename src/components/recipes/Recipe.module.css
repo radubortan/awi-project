@@ -40,6 +40,10 @@ li {
   display: flex;
 }
 
+.buttons button {
+  width: 45px;
+}
+
 .btnSpacing {
   margin-right: 20px;
 }

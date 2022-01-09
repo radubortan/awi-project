@@ -76,6 +76,7 @@
   border: 2px solid white;
   border-radius: 10px;
   color: white;
+  width: 60px;
 }
 
 .menuBtn:hover {
@@ -90,6 +91,7 @@
   border-radius: 10px;
   padding: 5px;
   color: #0c548f;
+  width: 50px;
 }
 
 .closeBtn:hover {
