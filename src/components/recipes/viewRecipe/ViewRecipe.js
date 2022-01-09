@@ -1,15 +1,17 @@
-import { useState, Fragment, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
-import StaticIngredientsPanel from "./StaticIngredientsPanel";
-import StaticStagesPanel from "./StaticStagesPanel";
-import StaticDetailPanel from "./StaticDetailPanel";
-import Summary from "./../Summary";
-import classes from "./../AddRecipe.module.css";
-import classesButton from "./ViewRecipe.module.css";
-import { db } from "../../../firebase-config";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import PDFRecipe from "./PDFRecipe";
+import { useState, Fragment, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import StaticIngredientsPanel from './StaticIngredientsPanel';
+import StaticStagesPanel from './StaticStagesPanel';
+import StaticDetailPanel from './StaticDetailPanel';
+import Summary from './../Summary';
+import classes from './../AddRecipe.module.css';
+import extraClasses from './ViewRecipe.module.css';
+import { db } from '../../../firebase-config';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import PDFRecipe from './PDFRecipe';
+import Checkbox from '../../general/Checkbox';
+import NumberInput from '../../general/NumberInput';
 
 function ViewRecipe() {
   const params = useParams();
@@ -19,15 +21,15 @@ function ViewRecipe() {
 
   const updateRecipeStage = async (idEtape, idRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
       // doc.data() is never undefined for query doc snapshots
       const returnedRecipe = doc.data();
       setRecipeObject((prevState) => {
-        console.log("previous state");
+        console.log('previous state');
         console.log(prevState);
         const debug = replaceStageByRecipe(prevState, idEtape, returnedRecipe);
         console.log(debug);
@@ -88,8 +90,8 @@ function ViewRecipe() {
 
   const generateRecipe = async (idRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -144,35 +146,41 @@ function ViewRecipe() {
         <Fragment>
           <div className={`${classes.topContainer} row`}>
             <div className={`col-12 col-md-4 order-md-3 ${classes.buttons}`}>
-              <div className={classesButton.main}>
-                {!viewPdf && <button onClick={viewPdfHandler}>View PDF</button>}
-              </div>
               <button className={`${classes.button}  ${classes.cancelButton}`}>
-                <Link to="/">Retour</Link>
+                <Link to='/'>Retour</Link>
               </button>
             </div>
-            <div className="col-3 col-md-4 d-none d-md-flex" />
+            <div className='col-3 col-md-4 d-none d-md-flex' />
             <div
               className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
             >
-              <div className={classes.recipeNameInput}>
-                Nom du plat : {recipeDisplaying?.nomRecette}
+              <h1 className={extraClasses.recipeName}>
+                {recipeDisplaying?.nomRecette}
+              </h1>
+              <div className={extraClasses.authorInfoContainer}>
+                <p>Auteur(e) du plat</p>
+                <p className={extraClasses.authorName}>
+                  {recipeDisplaying?.nomAuteur}
+                </p>
               </div>
-              <div className={classes.authorInputContainer}>
-                Auteur(e) du plat : {recipeDisplaying?.nomAuteur}
-              </div>
-              <div className={`row ${classes.bottomInfoContainer}`}>
-                <div className={`${classes.typeInputContainer}`}>
-                  Catégorie de recette : {recipeDisplaying?.nomCatRecette}
-                </div>
-                <div className={classes.couvertsInputContainer}>
-                  Nombre de couverts : {recipeDisplaying?.nbCouverts}
-                </div>
+              <div
+                className={`row ${classes.bottomInfoContainer} ${extraClasses.bottomInfoContainer}`}
+              >
+                <table>
+                  <tr>
+                    <th>Catégorie de recette</th>
+                    <th>N° couverts</th>
+                  </tr>
+                  <tr>
+                    <td>{recipeDisplaying?.nomCatRecette}</td>
+                    <td>{recipeDisplaying?.nbCouverts}</td>
+                  </tr>
+                </table>
               </div>
             </div>
           </div>
           <div className={`row ${classes.main}`}>
-            <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
+            <div className='col-12 col-md-12 col-lg-4 order-md-1 order-lg-2'>
               {recipeDisplaying && (
                 <StaticStagesPanel
                   stages={recipeDisplaying.stages}
@@ -180,18 +188,60 @@ function ViewRecipe() {
                 />
               )}
             </div>
-            <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
+            <div className='col-12 col-md-6 col-lg-4 order-md-3 order-lg-3'>
               {currentStage && (
                 <StaticDetailPanel currentStage={currentStage} />
               )}
             </div>
-            <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
+            <div className='col-12 col-md-6 col-lg-4 order-md-2 order-lg-1'>
               {currentStage && (
                 <StaticIngredientsPanel currentStage={currentStage} />
               )}
             </div>
           </div>
           {recipeDisplaying && <Summary stages={recipeDisplaying.stages} />}
+          <div className={extraClasses.buttonSection}>
+            <div className={`row`}>
+              <div className={`col-6 ${extraClasses.sellSection}`}>
+                <NumberInput
+                  label='Nombre plats'
+                  // onChange={}
+                  name='amountToSell'
+                  className={extraClasses.numberInput}
+                />
+                <button className={extraClasses.bottomButton}>Vendre</button>
+              </div>
+              <div className={`col-6 ${extraClasses.ticketSection}`}>
+                <NumberInput
+                  label='Nombre tickets'
+                  // onChange={}
+                  name='numTicketsToPrint'
+                  className={extraClasses.numberInput}
+                />
+                <Checkbox
+                  label='Diminuer stock'
+                  // onChange={}
+                  className={extraClasses.checkbox}
+                />
+                <button className={extraClasses.bottomButton}>
+                  Imprimer Ticket
+                </button>
+              </div>
+            </div>
+            <div className={extraClasses.pdfButtonContainer}>
+              <button
+                className={extraClasses.bottomButton}
+                onClick={viewPdfHandler}
+              >
+                Voir Fiche
+              </button>
+              <Checkbox
+                label='Avec coûts'
+                // onChange={}
+                className={extraClasses.checkbox}
+              />
+            </div>
+          </div>
         </Fragment>
       )}
     </Fragment>

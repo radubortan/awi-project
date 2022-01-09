@@ -1,0 +1,54 @@
+.element {
+  background-color: #0c548f;
+  padding: 5px 10px;
+  border-radius: 10px;
+  margin-bottom: 5px;
+  width: 100%;
+}
+
+.elementContent {
+  margin: 0;
+  color: white;
+  text-align: left;
+}
+
+.stageNumber {
+  font-size: 2rem;
+  font-weight: 700;
+  padding: 0;
+}
+
+.stageName {
+  font-weight: 700;
+  font-size: 2rem;
+}
+
+@media (max-width: 991px) {
+  .element {
+    width: 80%;
+  }
+}
+
+@media (max-width: 850px) {
+  .element {
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .element {
+    width: 70%;
+  }
+}
+
+@media (max-width: 600px) {
+  .element {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  .element {
+    width: 100%;
+  }
+}
