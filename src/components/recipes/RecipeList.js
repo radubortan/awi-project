@@ -1,6 +1,6 @@
-import React from "react";
-import Recipe from "./Recipe";
-import classes from "./RecipeList.module.css";
+import React from 'react';
+import Recipe from './Recipe';
+import classes from './RecipeList.module.css';
 
 function RecipeList(props) {
   return (
@@ -14,7 +14,6 @@ function RecipeList(props) {
             recipe={recipe}
             onEditRecipe={props.onEditRecipe}
             onDeleteRecipe={props.onDeleteRecipe}
-            onViewRecipe={props.onViewRecipe}
             index={props.wholeRecipeList.indexOf(recipe)}
           />
         ))}

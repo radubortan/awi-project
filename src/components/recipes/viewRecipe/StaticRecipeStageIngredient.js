@@ -1,7 +1,8 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { db } from "../../../firebase-config";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import classes from "./../RecipeStageIngredient.module.css";
+import React, { Fragment, useEffect, useState } from 'react';
+import { db } from '../../../firebase-config';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import classes from './../RecipeStageIngredient.module.css';
+import extraClasses from './../IngredientItem.module.css';
 
 const sortIngredients = (a, b) => {
   const textA = a.nomIng;
@@ -14,8 +15,8 @@ function StaticRecipeStageIngredient(props) {
 
   const getRecipeById = async (idRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -33,8 +34,8 @@ function StaticRecipeStageIngredient(props) {
 
   const addIngredientToIngredients = async (ingredient) => {
     const q = query(
-      collection(db, "ingredients"),
-      where("__name__", "==", ingredient.idIng)
+      collection(db, 'ingredients'),
+      where('__name__', '==', ingredient.idIng)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -76,13 +77,17 @@ function StaticRecipeStageIngredient(props) {
       )}
       <div className={classes.ingredientList}>
         {ingredients.map((ingredient) => (
-          <p className={classes.ingredient}>
-            <span className={classes.pill}>
-              {ingredient.qte}
-              {ingredient.nomUnite.toLowerCase()}
-            </span>
-            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
-          </p>
+          <div className={extraClasses.ingredient}>
+            <p className={extraClasses.ingredientInfo}>
+              <span className={extraClasses.pill}>
+                {ingredient.qte}
+                {ingredient.nomUnite.toLowerCase()}
+              </span>
+              <span className={extraClasses.ingredientName}>
+                {ingredient.nomIng}
+              </span>
+            </p>
+          </div>
         ))}
       </div>
     </Fragment>

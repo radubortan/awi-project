@@ -15,8 +15,8 @@ function RecipeStageIngredient(props) {
 
   const getRecipeById = async (idRecette) => {
     const q = query(
-      collection(db, "recettes"),
-      where("__name__", "==", idRecette)
+      collection(db, 'recettes'),
+      where('__name__', '==', idRecette)
     );
     const querySnapshot = await getDocs(q);
     querySnapshot.forEach((doc) => {
@@ -77,13 +77,6 @@ function RecipeStageIngredient(props) {
       )}
       <div className={classes.ingredientList}>
         {ingredients.map((ingredient) => (
-          // <p className={classes.ingredient}>
-          //   <span className={classes.pill}>
-          //     {ingredient.qte}
-          //     {ingredient.nomUnite.toLowerCase()}
-          //   </span>
-          //   <span className={classes.ingredientName}>{ingredient.nomIng}</span>
-          // </p>
           <IngredientItem
             deletable={false}
             ingredient={ingredient}

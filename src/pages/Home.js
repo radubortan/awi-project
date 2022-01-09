@@ -55,8 +55,6 @@ function Home() {
     getRecipes();
   }, []);
 
-  const showViewRecipePanel = () => {};
-
   const showEditRecipePanel = () => {};
 
   const [filteringOptions, setFilteringOptions] = useState({
@@ -209,7 +207,6 @@ function Home() {
                       wholeRecipeList={recipeList}
                       onEditRecipe={showEditRecipePanel}
                       onDeleteRecipe={showDeleteRecipePanel}
-                      onViewRecipe={showViewRecipePanel}
                     />
                   </Card>
                 </div>

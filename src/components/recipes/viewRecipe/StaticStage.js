@@ -1,5 +1,5 @@
-import { useEffect, useRef } from "react";
-import classes from "./../Stage.module.css";
+import { useEffect, useRef } from 'react';
+import classes from './StaticStage.module.css';
 
 function Stage(props) {
   return (
@@ -9,16 +9,10 @@ function Stage(props) {
         props.onChangeCurrentStage(props.stage.idEtape);
       }}
     >
-      <div className={`col-2 ${classes.stageNumber}`}>{`${
-        props.index + 1
-      }.`}</div>
-      <div
-        className={`d-flex align-items-center justify-content-center ${
-          props.isOnlyStage ? "col-10" : "col-8"
-        }`}
-      >
-        <div className="row">{props.stage.titreEtape}</div>
-      </div>
+      <p className={classes.elementContent}>
+        <span className={classes.stageNumber}>{props.index + 1}. </span>
+        <span className={classes.stageName}>{props.stage.titreEtape}</span>
+      </p>
     </div>
   );
 }
