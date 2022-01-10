@@ -73,6 +73,7 @@ const Summary = (props) => {
           ...newIngredient,
           nomIng: fetchedIngredient.nomIng,
           prixUnitaire: fetchedIngredient.prixUnitaire,
+          nomCatAllerg: fetchedIngredient.nomCatAllerg,
         };
 
         // check if already in
