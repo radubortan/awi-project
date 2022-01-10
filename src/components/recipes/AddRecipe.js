@@ -472,7 +472,7 @@ function AddRecipe() {
           />
         </div>
       </div>
-      <Summary stages={stages} />
+      <Summary numCouverts={newRecipe.nbCouverts} stages={stages} />
     </Fragment>
   );
 }
