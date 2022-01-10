@@ -120,7 +120,6 @@ p.authorName {
   transition: background-color 0.2s;
   font-size: 1.2rem;
   border: none;
-  height: 50px;
 }
 
 .bottomButton:hover {
@@ -133,4 +132,22 @@ p.authorName {
 .errorMessage {
   color: red;
   margin: 0;
+}
+
+@media (max-width: 767px) {
+  .sellSection,
+  .ticketSection {
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 500px) {
+  .bottomButton {
+    width: 40vw;
+    font-size: 1rem;
+  }
+
+  .numberInput input {
+    width: 80%;
+  }
 }

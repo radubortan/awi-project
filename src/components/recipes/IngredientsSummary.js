@@ -18,30 +18,42 @@ function IngredientsSummary(props) {
         {allNonAllergenIngredientsRecipe.length === 0 && (
           <p className={classes.nothing}>Aucun ingrédient</p>
         )}
-        {allNonAllergenIngredientsRecipe.map((ingredient) => (
-          <p className={classes.ingredient}>
-            <span className={classes.pill}>
-              {ingredient.qte}
-              {ingredient.nomUnite.toLowerCase()}
-            </span>
-            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
-          </p>
-        ))}
+        {allNonAllergenIngredientsRecipe.length !== 0 && (
+          <div className={classes.ingredientContainer}>
+            {allNonAllergenIngredientsRecipe.map((ingredient) => (
+              <p className={classes.ingredient}>
+                <span className={classes.pill}>
+                  {ingredient.qte}
+                  {ingredient.nomUnite.toLowerCase()}
+                </span>
+                <span className={classes.ingredientName}>
+                  {ingredient.nomIng}
+                </span>
+              </p>
+            ))}
+          </div>
+        )}
       </div>
       <Card className={classes.allergenCard}>
         <h2>Allergènes</h2>
         {allAllergenIngredientsRecipe.length === 0 && (
           <p className={classes.nothing}>Aucun ingrédient</p>
         )}
-        {allAllergenIngredientsRecipe.map((ingredient) => (
-          <p className={classes.ingredient}>
-            <span className={classes.pill}>
-              {ingredient.qte}
-              {ingredient.nomUnite.toLowerCase()}
-            </span>
-            <span className={classes.ingredientName}>{ingredient.nomIng}</span>
-          </p>
-        ))}
+        {allAllergenIngredientsRecipe.length !== 0 && (
+          <div className={classes.ingredientContainer}>
+            {allAllergenIngredientsRecipe.map((ingredient) => (
+              <p className={classes.ingredient}>
+                <span className={classes.pill}>
+                  {ingredient.qte}
+                  {ingredient.nomUnite.toLowerCase()}
+                </span>
+                <span className={classes.ingredientName}>
+                  {ingredient.nomIng}
+                </span>
+              </p>
+            ))}
+          </div>
+        )}
       </Card>
     </Card>
   );
