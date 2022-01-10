@@ -57,9 +57,9 @@ function App() {
               <Route path='/ajouter-recette' element={<AddRecipe />} />
               <Route path='/ingredients' element={<Ingredients />} />
               <Route path='/stocks' element={<Stocks />} />
-              <Route path='/:idRecette' element={<ViewRecipe />} />
             </Fragment>
           )}
+          <Route path='/:idRecette' element={<ViewRecipe />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </div>
