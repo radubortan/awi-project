@@ -26,6 +26,8 @@ const PDFRecipe = (props) => {
 
       <PrintingPdf
         numCouverts={props.numCouverts}
+        viewCosts={props.viewCosts}
+        numCouverts={props.numCouverts}
         ref={componentRef}
         recipe={props.recipe}
       />

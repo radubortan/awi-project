@@ -154,6 +154,7 @@ const Summary = (props) => {
       <div className='row'>
         <div className='col-12 col-md-6'>
           <CostsSummary
+            numCouverts={props.numCouverts}
             avgHourlyCost={currentSettings.coutHoraireMoyen}
             flatHourlyCost={currentSettings.coutHoraireForfaitaire}
             withAdditionalCostCoeff={currentSettings.coeffMultiAvec}

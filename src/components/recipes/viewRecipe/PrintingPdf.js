@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect, useState } from 'react';
 import { db } from '../../../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 import classes from './PrintingPdf.module.css';
+import CostContext from '../../../store/cost-context';
+import { Fragment } from 'react';
 
 const PrintingPdf = React.forwardRef((props, ref) => {
   const [ingredientList, setIngredientList] = useState([]);
+  const costCtx = useContext(CostContext);
+  console.log(costCtx.salesPrice);
 
   useEffect(() => {
     const getIngredients = async () => {
@@ -134,6 +138,48 @@ const PrintingPdf = React.forwardRef((props, ref) => {
           </div>
         </div>
       ))}
+      {props.viewCosts && (
+        <div className={classes.costsSection}>
+          <h1 className={classes.costTitle}>Coûts</h1>
+          <div className={`row ${classes.finalCosts}`}>
+            <div
+              className={`${
+                costCtx.useAdditionalCost ? 'col-6' : 'col-12'
+              } d-flex flex-column align-items-center`}
+            >
+              <li>Coût matiere</li>
+              <li>{costCtx.materialCost}€</li>
+              <li>Coût de production</li>
+              <li>{costCtx.productionCost}€</li>
+              <li>Prix de vente total</li>
+              <li>{costCtx.salesPrice}€</li>
+              <li>Bénéfice par portion</li>
+              {props.numCouverts > 0 ? (
+                <li>
+                  {(
+                    (costCtx.salesPrice - costCtx.productionCost) /
+                    props.numCouverts
+                  ).toFixed(2)}
+                  €
+                </li>
+              ) : (
+                <li>Erreur</li>
+              )}
+            </div>
+
+            {costCtx.useAdditionalCost && (
+              <div className='col-6 d-flex flex-column align-items-center'>
+                <li>Coût des charges</li>
+                <li>{costCtx.additionalCost}€</li>
+                <li>Coût du personnel</li>
+                <li>{costCtx.personnalCost}€</li>
+                <li>Coût des fluides</li>
+                <li>{costCtx.fluidCost}€</li>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 });

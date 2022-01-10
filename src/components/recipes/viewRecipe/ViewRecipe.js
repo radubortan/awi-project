@@ -13,6 +13,7 @@ import PDFRecipe from './PDFRecipe';
 import Checkbox from '../../general/Checkbox';
 import NumberInput from '../../general/NumberInput';
 import TicketRecipe from './TicketRecipe';
+import { CostContextProvider } from '../../../store/cost-context';
 
 function ViewRecipe() {
   const params = useParams();
@@ -126,10 +127,11 @@ function ViewRecipe() {
   };
 
   //PDF
-
   const [viewPdf, setViewPdf] = useState(false);
   const [viewTicket, setViewTicket] = useState(false);
+  const [pdfViewCosts, setPdfViewCosts] = useState(false);
 
+  //to show the pdf
   const viewPdfHandler = () => {
     //check if we set a correct amount
     if (pdfNumCouverts <= 0) {
@@ -139,30 +141,46 @@ function ViewRecipe() {
     }
   };
 
+  //handle going back from pdf view
   const handleBackPdf = () => {
     setViewPdf(false);
+    setPdfViewCosts(false);
   };
 
+  //handle going back from ticket view
   const handleBackTicket = () => {
     setViewTicket(false);
   };
 
+  //handler for changing the amount of ingredients to show inside of pdf
   const numberCouvertsHandler = (e) => {
     const value = e.target.value;
     setPdfNumCouverts(value);
   };
 
+  //handler for when we tick to see costs inside of pdf
+  const costsPdfHandler = (e) => {
+    if (e.target.checked) {
+      setPdfViewCosts(true);
+    } else {
+      setPdfViewCosts(false);
+    }
+  };
+
+  //to show the ticket
   const printTicketHandler = () => {
     setViewTicket(true);
   };
 
   return (
-    <Fragment>
+    <CostContextProvider>
       {viewTicket && (
         <TicketRecipe recipe={recipeObject} handleBack={handleBackTicket} />
       )}
       {viewPdf && (
         <PDFRecipe
+          numCouverts={recipeDisplaying?.nbCouverts}
+          viewCosts={pdfViewCosts}
           numCouverts={pdfNumCouverts}
           recipe={recipeObject}
           handleBack={handleBackPdf}
@@ -225,7 +243,12 @@ function ViewRecipe() {
               )}
             </div>
           </div>
-          {recipeDisplaying && <Summary stages={recipeDisplaying.stages} />}
+          {recipeDisplaying && (
+            <Summary
+              numCouverts={recipeDisplaying?.nbCouverts}
+              stages={recipeDisplaying.stages}
+            />
+          )}
           <div className={extraClasses.buttonSection}>
             <div className={`row`}>
               <div className={`col-6 ${extraClasses.sellSection}`}>
@@ -264,7 +287,11 @@ function ViewRecipe() {
               >
                 Voir Fiche
               </button>
-              <Checkbox label='Avec coûts' className={extraClasses.checkbox} />
+              <Checkbox
+                label='Avec coûts'
+                onChange={costsPdfHandler}
+                className={extraClasses.checkbox}
+              />
               <NumberInput
                 label='Nombre couverts'
                 onChange={numberCouvertsHandler}
@@ -279,7 +306,7 @@ function ViewRecipe() {
           </div>
         </Fragment>
       )}
-    </Fragment>
+    </CostContextProvider>
   );
 }
 export default ViewRecipe;

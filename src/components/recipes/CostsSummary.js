@@ -2,10 +2,11 @@ import Card from '../ui/Card';
 import RadioButton from '../general/RadioButton';
 import Checkbox from '../general/Checkbox';
 import NumberInput from '../general/NumberInput';
-import { Fragment, useState, useEffect } from 'react';
+import { Fragment, useState, useEffect, useContext } from 'react';
 import { db } from '../../firebase-config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import classes from './CostsSummary.module.css';
+import CostContext from '../../store/cost-context';
 
 const sortStages = (a, b) => {
   const textA = a.idRecette;
@@ -14,6 +15,7 @@ const sortStages = (a, b) => {
 };
 
 const CostsSummary = (props) => {
+  const costCtx = useContext(CostContext);
   //fetch recipe for duration
   const [allStages, setAllStages] = useState([]);
   const etapesCollectionRef = collection(db, 'etapes');
@@ -202,6 +204,18 @@ const CostsSummary = (props) => {
       );
     }
   }
+  salesPrice = (salesPrice / 1.1).toFixed(2);
+
+  costCtx.setCosts(
+    materialCost,
+    additionalCost,
+    personnalCost,
+    fluidCost,
+    productionCost,
+    salesPrice,
+    useAdditionalCost
+  );
+
   return (
     <Card className={classes.costsCard}>
       <h1 className={classes.title}>Coûts</h1>
@@ -215,14 +229,14 @@ const CostsSummary = (props) => {
           {useCustomParameters && (
             <div>
               <NumberInput
-                label='Cout horaire moyen'
+                label='Cout horaire moyen (€)'
                 name='avgHourlyCost'
                 value={currentSettings.avgHourlyCost}
                 onChange={handleChange}
                 className={classes.customParameters}
               />
               <NumberInput
-                label='Cout horaire forfaitaire'
+                label='Cout horaire forfaitaire (€)'
                 name='flatHourlyCost'
                 value={currentSettings.flatHourlyCost}
                 onChange={handleChange}
@@ -308,7 +322,7 @@ const CostsSummary = (props) => {
         </Card>
       </div>
       <ul className={classes.finalCosts}>
-        <li>Coût matiere</li>
+        <li>Coût matière</li>
         <li>{materialCost}€</li>
         {useAdditionalCost && (
           <Fragment>
@@ -324,6 +338,14 @@ const CostsSummary = (props) => {
         <li>{productionCost}€</li>
         <li>Prix de vente total</li>
         <li>{salesPrice}€</li>
+        <li>Bénéfice par portion</li>
+        {props.numCouverts > 0 ? (
+          <li>
+            {((salesPrice - productionCost) / props.numCouverts).toFixed(2)}€
+          </li>
+        ) : (
+          <li>Erreur</li>
+        )}
       </ul>
     </Card>
   );
