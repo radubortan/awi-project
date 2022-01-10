@@ -98,7 +98,7 @@ const PrintingPdf = React.forwardRef((props, ref) => {
               <p className={classes.text}>{props.recipe.nomAuteur}</p>
             </td>
             <td>
-              <p className={classes.text}>{props.recipe.nbCouverts}</p>
+              <p className={classes.text}>{props.numCouverts}</p>
             </td>
           </tr>
         </table>
@@ -148,16 +148,37 @@ const PrintingPdf = React.forwardRef((props, ref) => {
               } d-flex flex-column align-items-center`}
             >
               <li>Coût matiere</li>
-              <li>{costCtx.materialCost}€</li>
+              <li>
+                {(
+                  (costCtx.materialCost / props.recipe.nbCouverts) *
+                  props.numCouverts
+                ).toFixed(2)}
+                €
+              </li>
               <li>Coût de production</li>
-              <li>{costCtx.productionCost}€</li>
+              <li>
+                {(
+                  (costCtx.productionCost / props.recipe.nbCouverts) *
+                  props.numCouverts
+                ).toFixed(2)}
+                €
+              </li>
               <li>Prix de vente total</li>
-              <li>{costCtx.salesPrice}€</li>
+              <li>
+                {(
+                  (costCtx.salesPrice / props.recipe.nbCouverts) *
+                  props.numCouverts
+                ).toFixed(2)}
+                €
+              </li>
               <li>Bénéfice par portion</li>
               {props.numCouverts > 0 ? (
                 <li>
                   {(
-                    (costCtx.salesPrice - costCtx.productionCost) /
+                    ((costCtx.salesPrice / props.recipe.nbCouverts) *
+                      props.numCouverts -
+                      (costCtx.productionCost / props.recipe.nbCouverts) *
+                        props.numCouverts) /
                     props.numCouverts
                   ).toFixed(2)}
                   €
@@ -170,11 +191,23 @@ const PrintingPdf = React.forwardRef((props, ref) => {
             {costCtx.useAdditionalCost && (
               <div className='col-6 d-flex flex-column align-items-center'>
                 <li>Coût des charges</li>
-                <li>{costCtx.additionalCost}€</li>
+                <li>
+                  {(costCtx.additionalCost / props.recipe.nbCouverts) *
+                    props.numCouverts}
+                  €
+                </li>
                 <li>Coût du personnel</li>
-                <li>{costCtx.personnalCost}€</li>
+                <li>
+                  {(costCtx.personnalCost / props.recipe.nbCouverts) *
+                    props.numCouverts}
+                  €
+                </li>
                 <li>Coût des fluides</li>
-                <li>{costCtx.fluidCost}€</li>
+                <li>
+                  {(costCtx.fluidCost / props.recipe.nbCouverts) *
+                    props.numCouverts}
+                  €
+                </li>
               </div>
             )}
           </div>
