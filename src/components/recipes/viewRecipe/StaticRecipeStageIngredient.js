@@ -4,12 +4,6 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import classes from './../RecipeStageIngredient.module.css';
 import extraClasses from './../IngredientItem.module.css';
 
-const sortIngredients = (a, b) => {
-  const textA = a.nomIng;
-  const textB = b.nomIng;
-  return textA < textB ? -1 : textA > textB ? 1 : 0;
-};
-
 function StaticRecipeStageIngredient(props) {
   const [recipe, setRecipe] = useState(null);
 

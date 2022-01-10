@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { db } from '../../../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 import classes from './PrintingTicket.module.css';
@@ -46,7 +46,7 @@ const PrintingTicket = React.forwardRef((props, ref) => {
   };
 
   const extractStages = (stages) => {
-    stages.map((stage) => {
+    stages.forEach((stage) => {
       if (stage.idRecette === undefined) {
         let updatedStage = {
           ...stage,
@@ -62,17 +62,23 @@ const PrintingTicket = React.forwardRef((props, ref) => {
   const extractIngredients = () => {
     stagesList.forEach((stage) => {
       stage.ingredients.forEach((ingredient) => {
-        ingredientsList.push({
+        const newIngredient = {
           nomIng: ingredient.nomIng,
           nomCatAllerg: ingredient.nomCatAllerg,
-        });
+        };
+        if (
+          !ingredientsList.some(
+            (ingredient) => ingredient.nomIng === newIngredient.nomIng
+          )
+        ) {
+          ingredientsList.push(newIngredient);
+        }
       });
     });
   };
 
   extractStages(props.recipe.stages);
   extractIngredients(stagesList);
-  console.log(ingredientsList);
 
   return (
     <div className={classes.container} ref={ref}>

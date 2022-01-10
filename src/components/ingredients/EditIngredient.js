@@ -128,7 +128,6 @@ const EditIngredient = (props) => {
 
   const [nomIngEmptyError, setnomIngEmptyError] = useState(false);
   const [nomIngUnvailableError, setNomIngUnvailableError] = useState(false);
-  const [unitEmptyError, setUnitEmptyError] = useState(false);
   const [categoryEmptyError, setCategoryEmptyError] = useState(false);
 
   const isValid = () => {
@@ -153,10 +152,6 @@ const EditIngredient = (props) => {
     }
     if (currentIngredient.nomCatIng === undefined) {
       setCategoryEmptyError(true);
-      isValid = false;
-    }
-    if (currentIngredient.nomUnite === undefined) {
-      setUnitEmptyError(true);
       isValid = false;
     }
     return isValid;

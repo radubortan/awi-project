@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { db } from '../../../firebase-config';
 import { collection, getDocs } from 'firebase/firestore';
 import classes from './PrintingPdf.module.css';
@@ -45,7 +45,7 @@ const PrintingPdf = React.forwardRef((props, ref) => {
   };
 
   const extractStages = (stages) => {
-    stages.map((stage) => {
+    stages.forEach((stage) => {
       if (stage.idRecette === undefined) {
         let updatedStage = {
           ...stage,

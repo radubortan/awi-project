@@ -1,7 +1,6 @@
-import Card from "../../ui/Card";
-import StaticStagesList from "./StaticStagesList";
-import classes from "./../StagesPanel.module.css";
-import { HiPlus } from "react-icons/hi";
+import Card from '../../ui/Card';
+import StaticStagesList from './StaticStagesList';
+import classes from './../StagesPanel.module.css';
 
 function StaticStagesPanel(props) {
   return (

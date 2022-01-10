@@ -1,18 +1,17 @@
-import { Fragment, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../general/Button";
-import NumberInput from "../general/NumberInput";
-import SelectInput from "../general/SelectInput";
-import TextInput from "../general/TextInput";
-import IngredientsPanel from "./IngredientsPanel";
-import StagesPanel from "./StagesPanel";
-import DetailPanel from "./DetailPanel";
-import { v4 as uuid } from "uuid";
-import classes from "./AddRecipe.module.css";
-import { db } from "../../firebase-config";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { Fragment, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import NumberInput from '../general/NumberInput';
+import SelectInput from '../general/SelectInput';
+import TextInput from '../general/TextInput';
+import IngredientsPanel from './IngredientsPanel';
+import StagesPanel from './StagesPanel';
+import DetailPanel from './DetailPanel';
+import { v4 as uuid } from 'uuid';
+import classes from './AddRecipe.module.css';
+import { db } from '../../firebase-config';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
 
-import Summary from "./Summary";
+import Summary from './Summary';
 
 const generateId = () => {
   const unique_id = uuid();
@@ -27,7 +26,7 @@ const sortRecipes = (a, b) => {
 };
 
 function AddRecipe() {
-  const recipesCollectionRef = collection(db, "recettes");
+  const recipesCollectionRef = collection(db, 'recettes');
 
   const [allRecipesList, setAllRecipesList] = useState([]);
   useEffect(() => {
@@ -48,29 +47,29 @@ function AddRecipe() {
 
   const CATEGORIES = [
     {
-      nomCatRecipe: "Entrée",
+      nomCatRecipe: 'Entrée',
     },
     {
-      nomCatRecipe: "Principal",
+      nomCatRecipe: 'Principal',
     },
     {
-      nomCatRecipe: "Dessert",
+      nomCatRecipe: 'Dessert',
     },
   ];
 
   // Header new recipe
 
   const [newRecipe, setNewRecipe] = useState({
-    nomRecette: "",
-    nomAuteur: "",
+    nomRecette: '',
+    nomAuteur: '',
     nbCouverts: 0,
-    nomCatRecette: "",
+    nomCatRecette: '',
     stages: [
       {
         idEtape: generateId(),
-        titreEtape: "",
-        description: "",
-        tempsEtape: "",
+        titreEtape: '',
+        description: '',
+        tempsEtape: '',
         ingredients: [],
       },
     ],
@@ -116,17 +115,17 @@ function AddRecipe() {
       ...stages,
       {
         idEtape: newIdStage,
-        titreEtape: "",
-        description: "",
-        tempsEtape: "",
+        titreEtape: '',
+        description: '',
+        tempsEtape: '',
         ingredients: [],
       },
     ];
     setStages(updatedStages, setIdCurrentStage(newIdStage));
     setSelectedRecipeType(
       updatedStages[updatedStages.length - 1].idRecette !== undefined
-        ? "recette"
-        : "in extenso"
+        ? 'recette'
+        : 'in extenso'
     );
     addStagesToRecipe(updatedStages);
   };
@@ -142,16 +141,16 @@ function AddRecipe() {
             updatedStages[0].idEtape,
             setSelectedRecipeType(
               updatedStages[0].idRecette !== undefined
-                ? "recette"
-                : "in extenso"
+                ? 'recette'
+                : 'in extenso'
             )
           )
         : setIdCurrentStage(
             updatedStages[index - 1].idEtape,
             setSelectedRecipeType(
               updatedStages[index - 1].idRecette !== undefined
-                ? "recette"
-                : "in extenso"
+                ? 'recette'
+                : 'in extenso'
             )
           )
     );
@@ -182,8 +181,8 @@ function AddRecipe() {
     setIdCurrentStage(idCurrentStage);
     setSelectedRecipeType(
       getStageById(idCurrentStage).idRecette !== undefined
-        ? "recette"
-        : "in extenso"
+        ? 'recette'
+        : 'in extenso'
     );
   };
 
@@ -227,8 +226,8 @@ function AddRecipe() {
       getStageById(idCurrentStage);
     currentStage = {
       ...currentStage,
-      idRecette: "",
-      nbCouverts: "",
+      idRecette: '',
+      nbCouverts: '',
     };
     updateStages(currentStage);
   };
@@ -238,25 +237,25 @@ function AddRecipe() {
       getStageById(idCurrentStage);
     currentStage = {
       ...currentStage,
-      description: "",
-      tempsEtape: "",
+      description: '',
+      tempsEtape: '',
     };
     updateStages(currentStage);
   };
 
   const [selectedRecipeType, setSelectedRecipeType] = useState(
     getStageById(idCurrentStage).idRecette !== undefined
-      ? "recette"
-      : "in extenso"
+      ? 'recette'
+      : 'in extenso'
   );
   useEffect(() => {}, [selectedRecipeType]);
 
   const recipeTypeChange = (e) => {
-    if (e.target.value === "recette") {
-      setSelectedRecipeType("recette");
+    if (e.target.value === 'recette') {
+      setSelectedRecipeType('recette');
       setCurrentStageToRecipeMode();
     } else {
-      setSelectedRecipeType("in extenso");
+      setSelectedRecipeType('in extenso');
       setCurrentStageToInExtensoMode();
     }
   };
@@ -284,7 +283,7 @@ function AddRecipe() {
     setErrorStageNameEmpty([...errorStageNameEmpty]);
 
     let isValid = true;
-    if (newRecipe.nomRecette === "") {
+    if (newRecipe.nomRecette === '') {
       setErrorRecipeNameEmpty(true);
       isValid = false;
     }
@@ -296,11 +295,11 @@ function AddRecipe() {
       setErrorRecipeNameExists(true);
       isValid = false;
     }
-    if (newRecipe.nomAuteur === "") {
+    if (newRecipe.nomAuteur === '') {
       setErrorAuthorNameEmpty(true);
       isValid = false;
     }
-    if (newRecipe.nomCatRecette === "") {
+    if (newRecipe.nomCatRecette === '') {
       setErrorCategoryEmpty(true);
       isValid = false;
     }
@@ -320,19 +319,19 @@ function AddRecipe() {
 
   const isValidStage = (stage) => {
     let isValid = true;
-    if (stage.titreEtape === "") {
+    if (stage.titreEtape === '') {
       setErrorStageNameEmpty([...errorStageNameEmpty, stage.idEtape]);
       isValid = false;
     }
     if (stage.idRecette !== undefined) {
-      if (stage.idRecette === "") {
+      if (stage.idRecette === '') {
         isValid = false;
       }
       if (!/^(?!0\d)\d+$/.test(stage.nbCouverts)) {
         isValid = false;
       }
     } else {
-      if (stage.description === "") {
+      if (stage.description === '') {
         isValid = false;
       }
       if (!/^(?!0\d)\d+$/.test(stage.tempsEtape)) {
@@ -360,7 +359,7 @@ function AddRecipe() {
       response = await addDoc(recipesCollectionRef, newRecipe);
 
       newRecipe.id = response.id;
-      navigate("/");
+      navigate('/');
     }
   };
 
@@ -376,17 +375,17 @@ function AddRecipe() {
           </button>
 
           <button className={`${classes.button}  ${classes.cancelButton}`}>
-            <Link to="/">Annuler</Link>
+            <Link to='/'>Annuler</Link>
           </button>
         </div>
-        <div className="col-3 col-md-4 d-none d-md-flex" />
+        <div className='col-3 col-md-4 d-none d-md-flex' />
         <div
           className={`col-12 col-md-4 order-md-2 ${classes.infoInputContainer}`}
         >
           <div className={classes.recipeNameInput}>
             <TextInput
-              label="Nom du plat"
-              name="nomRecette"
+              label='Nom du plat'
+              name='nomRecette'
               value={newRecipe.nomRecette}
               onChange={handleRecipeChange}
             />
@@ -401,8 +400,8 @@ function AddRecipe() {
           </div>
           <div className={classes.authorInputContainer}>
             <TextInput
-              label="Auteur(e) du plat"
-              name="nomAuteur"
+              label='Auteur(e) du plat'
+              name='nomAuteur'
               value={newRecipe.nomAuteur}
               onChange={handleRecipeChange}
             ></TextInput>
@@ -415,11 +414,11 @@ function AddRecipe() {
           <div className={`row ${classes.bottomInfoContainer}`}>
             <div className={`${classes.typeInputContainer}`}>
               <SelectInput
-                label="Type"
-                name="nomCatRecette"
+                label='Type'
+                name='nomCatRecette'
                 value={newRecipe.nomCatRecette}
                 dropDownList={CATEGORIES}
-                optionIdentifier="nomCatRecipe"
+                optionIdentifier='nomCatRecipe'
                 onChange={handleRecipeChange}
               />
               {errorCategoryEmpty && (
@@ -430,8 +429,8 @@ function AddRecipe() {
             </div>
             <div className={classes.couvertsInputContainer}>
               <NumberInput
-                label="Couverts"
-                name="nbCouverts"
+                label='Couverts'
+                name='nbCouverts'
                 value={newRecipe.nbCouverts}
                 onChange={handleRecipeChange}
               ></NumberInput>
@@ -445,7 +444,7 @@ function AddRecipe() {
         </div>
       </div>
       <div className={`row ${classes.main}`}>
-        <div className="col-12 col-md-12 col-lg-4 order-md-1 order-lg-2">
+        <div className='col-12 col-md-12 col-lg-4 order-md-1 order-lg-2'>
           <StagesPanel
             stages={stages}
             idCurrentStage={idCurrentStage}
@@ -457,7 +456,7 @@ function AddRecipe() {
             errorStageNameEmpty={errorStageNameEmpty}
           />
         </div>
-        <div className="col-12 col-md-6 col-lg-4 order-md-3 order-lg-3">
+        <div className='col-12 col-md-6 col-lg-4 order-md-3 order-lg-3'>
           <DetailPanel
             currentStage={getStageById(idCurrentStage)}
             onUpdateCurrentStage={handleCurrentStageChange}
@@ -465,7 +464,7 @@ function AddRecipe() {
             recipeTypeChange={recipeTypeChange}
           />
         </div>
-        <div className="col-12 col-md-6 col-lg-4 order-md-2 order-lg-1">
+        <div className='col-12 col-md-6 col-lg-4 order-md-2 order-lg-1'>
           <IngredientsPanel
             currentStage={getStageById(idCurrentStage)}
             addIngredientItem={addIngredientItemToStage}
