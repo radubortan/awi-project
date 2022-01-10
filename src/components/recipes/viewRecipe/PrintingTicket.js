@@ -62,10 +62,17 @@ const PrintingTicket = React.forwardRef((props, ref) => {
   const extractIngredients = () => {
     stagesList.forEach((stage) => {
       stage.ingredients.forEach((ingredient) => {
-        ingredientsList.push({
+        const newIngredient = {
           nomIng: ingredient.nomIng,
           nomCatAllerg: ingredient.nomCatAllerg,
-        });
+        };
+        if (
+          !ingredientsList.some(
+            (ingredient) => ingredient.nomIng === newIngredient.nomIng
+          )
+        ) {
+          ingredientsList.push(newIngredient);
+        }
       });
     });
   };
