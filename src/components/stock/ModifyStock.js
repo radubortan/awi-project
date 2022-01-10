@@ -65,7 +65,9 @@ const ModifyStock = (props) => {
     }
     setIsInvalidCostValue(invalidCost);
     setIsInvalidStockValue(invalidStock);
+    console.log('1');
     if (!invalidCost && !invalidStock) {
+      console.log('2');
       const modifiedIngredient = { ...currentIngredient };
       modifiedIngredient.stock = finalValue;
 

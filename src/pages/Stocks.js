@@ -43,7 +43,7 @@ function Stocks() {
       setIsLoading(false);
     };
     getIngredients();
-  }, [ingredientsCollectionRef]);
+  }, []);
 
   //Filtering method
   const filterIngredient = (ingredient) => {
@@ -128,6 +128,7 @@ function Stocks() {
 
   const modifiedStockHandler = async (ingredient, indexIngredient) => {
     const ingredientDoc = doc(db, 'ingredients', ingredient.id);
+    console.log(ingredient);
 
     //updating the list of ingredients
     const updatedIngredients = [...ingredientList];
