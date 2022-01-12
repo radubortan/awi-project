@@ -59,7 +59,7 @@ function App() {
               <Route path='/stocks' element={<Stocks />} />
             </Fragment>
           )}
-          <Route path='/:idRecette' element={<ViewRecipe />} />
+          <Route path='/recipe/:idRecette' element={<ViewRecipe />} />
           <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </div>
