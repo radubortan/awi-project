@@ -6,6 +6,11 @@ function StagesList(props) {
     <div className={classes.stagesList}>
       {props.stages?.map((stage, index) => (
         <StaticStage
+          className={
+            stage?.idEtape === props.currentStage?.idEtape
+              ? classes.active
+              : classes.inactive
+          }
           stage={stage}
           index={index}
           idCurrentStage={props.idCurrentStage}

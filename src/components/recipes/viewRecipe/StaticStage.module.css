@@ -6,6 +6,10 @@
   width: 100%;
 }
 
+.element {
+  cursor: pointer;
+}
+
 .elementContent {
   margin: 0;
   color: white;

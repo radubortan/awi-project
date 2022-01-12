@@ -6,6 +6,10 @@
   border-bottom: 1px solid #ccc;
 }
 
+.recipe:hover {
+  cursor: pointer;
+}
+
 .nameColumnSmall {
   width: 100%;
 }

@@ -228,6 +228,7 @@ function ViewRecipe() {
               {recipeDisplaying && (
                 <StaticStagesPanel
                   stages={recipeDisplaying.stages}
+                  currentStage={currentStage}
                   onChangeCurrentStage={changeCurrentStage}
                 />
               )}

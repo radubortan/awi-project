@@ -8,7 +8,7 @@ function StaticStagesPanel(props) {
       <h1 className={classes.title}>Etapes</h1>
       <StaticStagesList
         indexCurrentStage={props.indexCurrentStage}
-        idCurrentStage={props.idCurrentStage}
+        currentStage={props.currentStage}
         stages={props.stages}
         onChangeCurrentStage={props.onChangeCurrentStage}
       />

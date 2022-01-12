@@ -6,6 +6,10 @@
   border-bottom: 1px solid #ccc;
 }
 
+.ingredient:hover {
+  cursor: pointer;
+}
+
 .nameColumn {
   width: 40%;
 }
